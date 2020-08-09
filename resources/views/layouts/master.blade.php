@@ -10,17 +10,23 @@
         <link href="{{ asset ('assets/css/styles.css')}}" rel="stylesheet" />
         <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
+        {{-- SELECTPICKER FOR DROPDOWN SEARCHING --}}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+
+
+
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+            <a class="navbar-brand" href="#"><strong>GLC</strong> Network</a>
             <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
             <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
                 <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
+                    {{-- <input class="form-control" type="text" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" /> --}}
                     <div class="input-group-append">
-                        <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
+                        {{-- <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button> --}}
                     </div>
                 </div>
             </form>
@@ -29,10 +35,8 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="#">Settings</a>
-                        <a class="dropdown-item" href="#">Activity Log</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="login.html">Logout</a>
+                        <a class="dropdown-item" href="{{route('login')}}">Logout</a>
                     </div>
                 </li>
             </ul>
@@ -42,7 +46,7 @@
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <div class="sb-sidenav-menu-heading">Core</div>
+                            <div class="sb-sidenav-menu-heading">Navigasi</div>
                             <a class="nav-link" href="index.html">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
@@ -53,23 +57,28 @@
             </div>
             <div id="layoutSidenav_content">
                 <main>
+
                     <div class="container-fluid">
-                        <h1 class="mt-4">Dashboard</h1>
-                        <ol class="breadcrumb mb-4">
+                        <ol class="breadcrumb mb-4 mt-4">
                             <li class="breadcrumb-item active">Dashboard</li>
+                            <li class="breadcrumb-item active">My_Profile</li>
                         </ol>
-                        @yield('content')
                     </div>
+
+                    
+                    @yield('content')
+                    
+                    <select class="selectpicker" data-live-search="true">
+                        <option data-tokens="ketchup mustard">Hot Dog, Fries and a Soda</option>
+                        <option data-tokens="mustard">Burger, Shake and a Smile</option>
+                        <option data-tokens="frosting">Sugar, Spice and all things nice</option>
+                      </select>
                 </main>
-                <footer class="py-4 bg-light mt-auto">
+                <footer class="py-4 bg-light mt-5">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2020</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
+                        <div class="text-muted">Copyright &copy; GLC Network {{date('Y')}}</div>
+                            
                         </div>
                     </div>
                 </footer>
@@ -84,5 +93,7 @@
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
         <script src="{{ asset ('assets/demo/datatables-demo.js')}}"></script>
+        <!-- SELECTPICKER FOR DROPDOWN SEARCHING -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
     </body>
 </html>

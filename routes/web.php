@@ -32,7 +32,7 @@ use App\EmailQueue;
 // Route::post('reset-password-with-token', 'ResetPasswordController@resetPassword');
 
 
-// Route::get('/', 'HomeController@display')->name('home');
+Route::get('/', 'HomeController@display')->name('home');
 
 
 // /**=============================dashboard================================================== **/
@@ -95,14 +95,15 @@ use App\EmailQueue;
 //     });
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/dashboard', 'AdminController@index');
 /**=============================Profile================================================== **/
 Route::get('/myprofile', 'ProfileController@display');
 Route::post('/myprofile', 'ProfileController@update');
+Route::get('/verify_update_email/{token}', 'ProfileController@verify_update_email');
 // Route::post('update_email_without_token', 'ProfileController@validateEmailRequest');
 // Route::post('update_email_with_token', 'ProfileController@updateEmail');
 //test session

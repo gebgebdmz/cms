@@ -1,5 +1,5 @@
 
-@extends('frontend.home')
+@extends('frontend.master_login')
 @section('title','Register')
 
 @section('content')

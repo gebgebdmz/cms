@@ -1,4 +1,4 @@
-@extends('frontend.home')
+@extends('frontend.master_login')
 @section('title', 'login')
 @section('content')
 
