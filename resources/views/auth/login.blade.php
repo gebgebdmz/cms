@@ -13,8 +13,8 @@
                     @csrf
                         <div class="form-group  validate-input m-b-23" data-validate = "Username is required">
                             <label class="small mb-1" for="username">Username</label>
-                            <input class="form-control py-4 @error('name') is-invalid @enderror" id="username" name="name" type="text" placeholder="Enter username" value="{{ old('username') }}" required autocomplete="username" autofocus />
-                            @error('name')
+                            <input class="form-control py-4 @error('username') is-invalid @enderror" id="username" name="username" type="text" placeholder="Enter username" value="{{ old('username') }}" required autocomplete="username" autofocus />
+                            @error('username')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
