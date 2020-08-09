@@ -152,3 +152,5 @@ Route::post('/myprofile', 'ProfileController@update');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/menu', 'MenuController@index')->name('menu');
