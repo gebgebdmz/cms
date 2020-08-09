@@ -44,11 +44,10 @@ Route::get('/', 'HomeController@display')->name('home');
 // /**=============================Activity-Log================================================== **/
 
 
-// Route::group(['middleware' => ['auth','CheckRole:1']], function () {
-//     Route::get('/activitylog', 'ActivitylogController@index')->name('activitylog');
-//     Route::post('/activitylog/search', ['as' => 'search-log', 'uses' => 'ActivitylogController@search']);
-//     Route::get('/activitylog/get-activity', 'ActivitylogController@getDataActivity')->name('activity.getData');
-// });
+Route::group(['middleware' => ['auth','CheckRole:1']], function () {
+    Route::get('/activitylog', 'ActivitylogController@index')->name('activitylog');
+    Route::get('/activitylog/get-activity', 'ActivitylogController@getDataActivity')->name('activity.getData');
+});
 
 // /**=============================Roles================================================== **/
 // Route::group(['middleware' => ['auth','CheckRole:1']], function () {

@@ -12,8 +12,37 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
         {{-- SELECTPICKER FOR DROPDOWN SEARCHING --}}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-
-
+         <!-- Datatables styling -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+        <style>
+            thead input {
+              width: 100%;
+            }
+            /* Styling untuk Activity Log App */
+            .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding : 0px;
+            margin-left: 0px;
+            display: inline;
+            border: 0px;
+            }
+            .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            border: 0px;
+            background: 0%;
+            }
+            .example_filer {
+            display: block;
+            }
+            .dataTables_filter{
+            display:flex;}
+            tfoot {
+            display: table-header-group;
+            background-color:  #1c345d;
+            border-inline-color: #1c345d
+            }
+            .table-bordered th, .table-bordered td {
+            border: 1px solid #1c345d;}
+          </style>
 
 
     </head>
@@ -95,5 +124,10 @@
         <script src="{{ asset ('assets/demo/datatables-demo.js')}}"></script>
         <!-- SELECTPICKER FOR DROPDOWN SEARCHING -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+        <!-- DataTable JS -->
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script> 
+        <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+        <script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
     </body>
 </html>
