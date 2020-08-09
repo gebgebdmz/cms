@@ -152,3 +152,5 @@ Route::post('update_email_with_token', 'ProfileController@updateEmail');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/menu', 'MenuController@index')->name('menu');
