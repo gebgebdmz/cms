@@ -103,8 +103,8 @@ Route::get('/dashboard', 'AdminController@index');
 /**=============================Profile================================================== **/
 Route::get('/myprofile', 'ProfileController@display');
 Route::post('/myprofile', 'ProfileController@update');
-Route::post('update_email_without_token', 'ProfileController@validateEmailRequest');
-Route::post('update_email_with_token', 'ProfileController@updateEmail');
+// Route::post('update_email_without_token', 'ProfileController@validateEmailRequest');
+// Route::post('update_email_with_token', 'ProfileController@updateEmail');
 //test session
 // Route::get('/testsession', 'ProfileController@testsession');
 
