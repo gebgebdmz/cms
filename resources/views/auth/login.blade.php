@@ -13,8 +13,8 @@
                     @csrf
                         <div class="form-group  validate-input m-b-23" data-validate = "Username is required">
                             <label class="small mb-1" for="username">Username</label>
-                            <input class="form-control py-4 @error('email') is-invalid @enderror" id="username" name="email" type="text" placeholder="Enter username" value="{{ old('username') }}" required autocomplete="username" autofocus />
-                            @error('email')
+                            <input class="form-control py-4 @error('name') is-invalid @enderror" id="username" name="name" type="text" placeholder="Enter username" value="{{ old('username') }}" required autocomplete="username" autofocus />
+                            @error('name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -34,12 +34,7 @@
                                 <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" {{ old('remember') ? 'checked' : '' }}/>
                                 <label class="custom-control-label" for="rememberPasswordCheck">Remember password</label>
                             </div>
-                        </div>
-
-
-                   
-
-                        
+                        </div> 
                         <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
                             @if (Route::has('password.request'))
                             <a class="small btn btn-link"  href="{{ route('password.request') }}">Forgot Password?</a>
@@ -50,6 +45,8 @@
                 </div>
                 <div class="card-footer text-center">
                     <div class="small"><a href="{{route('register')}}">Need an account? Sign up!</a></div>
+                    <br>
+                    <div class="text-muted justify-content-between small">Copyright &copy; Your Website 2020</div>
                 </div>
             </div>
         </div>

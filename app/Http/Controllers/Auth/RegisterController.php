@@ -48,12 +48,16 @@ class RegisterController extends Controller
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
-    {
-        return Validator::make($data, [
+    { 
+            return Validator::make($data, [
+            'username' => ['required', 'string', 'max:255', 'unique:bas_user'],
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:bas_user'],
+            'address' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'numeric', 'min:11'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
+
     }
 
     /**
@@ -65,9 +69,18 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+                'username' => $data['username'],
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'address' => $data['address'],
+                'phone' => $data['phone'],
+                'password' => Hash::make($data['password']),
+                'is_active' => false,
+                // 'activation_code' => Str::random(32),
+                'activation_code' => substr(sha1($data['email']), 0, 32),
+                'priv_admin' => '0',
+
+
         ]);
     }
 }

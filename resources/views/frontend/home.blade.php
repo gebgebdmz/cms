@@ -11,25 +11,26 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
     </head>
     <body class="bg-secondary">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <a class="navbar-brand" href=""><strong>CMS</strong>GLC</a>
+            <!-- Navbar-->
+            <ul class="navbar-nav ml-auto ml-md-0">
+                <li class="nav-item dropdown">
+                    <a class="nav-link " id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></a>
+                    <div class="dropdown-menu dropdown-menu-left" aria-labelledby="userDropdown">
+                        <a class="dropdown-item" href="#">Service</a>
+                        <a class="dropdown-item" href="#">Contact</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">More</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
                 <main>
                     @yield('content')                    
                 </main>
-            </div>
-            <div id="layoutAuthentication_footer">
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2020</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
