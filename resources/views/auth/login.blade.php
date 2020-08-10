@@ -1,52 +1,70 @@
-@extends('frontend.master_login')
-@section('title', 'login')
-@section('content')
+@extends('layouts.app')
+@section('title','Login')
 
+@section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-lg-5">
-            <div class="card shadow-lg border-0 rounded-lg mt-5">
-                <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
+        <div class="col-md-6  ">
+            <div class="card">
+
                 <div class="card-body">
-                    
-                <form action="{{route('login')}}" method="POST">
-                    @csrf
-                        <div class="form-group  validate-input m-b-23" data-validate = "Username is required">
-                            <label class="small mb-1" for="username">Username</label>
-                            <input class="form-control py-4 @error('username') is-invalid @enderror" id="username" name="username" type="text" placeholder="Enter username" value="{{ old('username') }}" required autocomplete="username" autofocus />
+                    <form class="login100-form validate-form" method="POST" action="{{ route('login') }}">
+                        @csrf
+
+                        <br>
+                        <span class="login100-form-title p-b-26 ">
+
+                            <center> Login </center>
+
+                        </span>
+                        <br>
+                        <span class="login100-form-title p-b-48">
+                        </span>
+
+                        <div class="wrap-input100 validate-input">
+                            <input class="input100 @error('username') is-invalid @enderror" value="{{ old('username') }}" required autocomplete="username" autofocus type="text" name="username">
+                            <span class="focus-input100" data-placeholder="username"></span>
                             @error('username')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
-                        @enderror
+                            @enderror
                         </div>
-                        <div class="form-group">
-                            <label class="small mb-1" for="password">Password</label>
-                            <input class="form-control py-4  @error('password') is-invalid @enderror" id="password" type="password" placeholder="Enter password" name="password" required autocomplete="current-password" />
-                            @error('password')
+
+                        <div class="wrap-input100 validate-input" data-validate="Enter password">
+                            <span class="btn-show-pass">
+                            </span>
+                            <input class="input100  @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" type="password">
+                            <span class="focus-input100" data-placeholder="Password"></span>
+                            @error('username')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
-                        @enderror
+                            @enderror
                         </div>
-                        <div class="form-group">
-                            <div class="custom-control custom-checkbox">
-                                <input class="custom-control-input" id="rememberPasswordCheck" type="checkbox" {{ old('remember') ? 'checked' : '' }}/>
-                                <label class="custom-control-label" for="rememberPasswordCheck">Remember password</label>
+
+                        <div class="container-login100-form-btn">
+                            <div class="wrap-login100-form-btn">
+                                <div class="login100-form-bgbtn"></div>
+                                <button class="login100-form-btn">
+                                    Login
+                                </button>
                             </div>
-                        </div> 
-                        <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
-                            @if (Route::has('password.request'))
-                            <a class="small btn btn-link"  href="{{ route('password.request') }}">Forgot Password?</a>
-                            @endif
-                            <button type="submit" class="btn btn-primary" href="index.html">Login</button>
+                        </div>
+
+                        <div class="text-center p-t-100">
+                            <span class="txt1">
+                                Don’t have an account?
+                            </span>
+                            <a class="txt2" href="{{ route('register') }}">
+                                Register
+                            </a>
+                            <br>
+                            <a class=" txt1 btn btn-link" href="{{ route('password.request') }}">
+                                {{ __('Forgot Your Password?') }}
+                            </a>
                         </div>
                     </form>
-                </div>
-                <div class="card-footer text-center">
-                    <div class="small"><a href="{{route('register')}}">Need an account? Sign up!</a></div>
-                    <br>
-                    <div class="text-muted justify-content-between small">Copyright &copy; Your Website 2020</div>
                 </div>
             </div>
         </div>
