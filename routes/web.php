@@ -85,14 +85,12 @@ use App\EmailQueue;
 
 // /**=============================Application================================================== **/
 // Route::group(['middleware' => ['auth','CheckRole:1']], function () {
-//     Route::get('/app', 'appController@index');
-//     Route::get('/app/show', 'appController@show');
-//     Route::get('/app/create', 'appController@create');
-//     Route::post('/posts/search/app', ['as' => 'search-posts', 'uses' => 'appController@searchApp']);
-//     Route::post('/app/create', 'appController@create');
-//     Route::get('/destroy/{app_id}', 'appController@destroy');
-//     Route::post('/update/{app_id}', 'appController@update');
-//     });
+    Route::get('/app', 'appController@index');
+    Route::post('/app/create', 'appController@create');
+    Route::get('/destroy/{app}', 'appController@destroy');
+    Route::post('/update/{app_id}', 'appController@update');
+    Route::get('/ajaxdata/get-app','appController@getapp')->name('ajaxdata.app');
+    // });
 
 
 Route::get('/', function () {
