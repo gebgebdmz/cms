@@ -26,11 +26,11 @@ class ProfileController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    // public function __construct()
-    // {
-    //    $this->middleware(['auth', 'verified']);
-    //     //  $this->middleware('auth');
-    // }
+    public function __construct()
+    {
+       $this->middleware(['auth', 'verified']);
+        //  $this->middleware('auth');
+    }
 
     public function display(Request $request)
     {
@@ -44,10 +44,9 @@ class ProfileController extends Controller
         $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
         $routes = $matches[0];
         $action = $matches[2];
-        // if (Auth::check()) {
+        if (Auth::check()) {
 
-        //     $id = Auth::id();
-        $id = '5';
+            $id = Auth::id();
             $profile_data = User::find($id);
             // $a=DB::table('bas_user')->where('id', '=', $profile_data->id)->update([
             //     'activation_code' => Str::random(32),
@@ -88,13 +87,13 @@ class ProfileController extends Controller
                 DB::rollback();
                 //  return response()->json(['error' => $ex->getMessage()], 500);
             }
-        //     dd($profile_data);
+            // dd($profile_data);
             return view("myprofile.profile_isi", ['profile_data' => $profile_data]);
+            // return view('profile/profile_isi');
+        } else {
 
-        // } else {
-
-        //     return view("login");
-        // }
+            return view("login");
+        }
     }
 
     /**
@@ -162,8 +161,7 @@ class ProfileController extends Controller
         $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
         $routes = $matches[0];
         $action = $matches[2];
-        // $id = Auth::id();
-        $id = '5';
+        $id = Auth::id();
         $before_data = User::find($id);
 
         $validator = Validator::make($req->all(), [
@@ -294,83 +292,83 @@ class ProfileController extends Controller
             'user_agent' => $req->server('HTTP_USER_AGENT')
          ]);
 
-        //  if($password!=$password2 ||  $dataLama->username!= $req->username ||   $dataLama->name!=$req->name || $dataLama->new_email_candidate!=$req->email ||  $dataLama->phone!= $req->phone|| $dataLama->address!= $req->address){
+         if($password!=$password2 ||  $dataLama->username!= $req->username ||   $dataLama->name!=$req->name || $dataLama->new_email_candidate!=$req->email ||  $dataLama->phone!= $req->phone|| $dataLama->address!= $req->address){
 
 
-        //     $html = '<!DOCTYPE html>
-        //     <html lang="en">
+            $html = '<!DOCTYPE html>
+            <html lang="en">
 
-        //     <body>
+            <body>
 
-        //         <p>Dear ' . $dataLama->name . '</p>
-        //         <p>Your data has been changed in Myprofile
+                <p>Dear ' . $dataLama->name . '</p>
+                <p>Your data has been changed in Myprofile
 
-        //         <p>Thanks</p>
+                <p>Thanks</p>
 
-        //     </body>
+            </body>
 
-        //     </html>';
-        //     EmailQueue::create([
-        //         'destination_email' =>  $req->email,
-        //         'email_body' => $html,
-        //         'email_subject' => "Data Changed in myprofile",
-        //         'created_at' => Carbon::now()->TimeZone('asia/jakarta'),
-        //         'is_processed' => '0',
-        //     ]);
-        //  }
+            </html>';
+            EmailQueue::create([
+                'destination_email' =>  $req->email,
+                'email_body' => $html,
+                'email_subject' => "Data Changed in myprofile",
+                'created_at' => Carbon::now()->TimeZone('asia/jakarta'),
+                'is_processed' => '0',
+            ]);
+         }
 
-        //  if($OldEmail!=$NewEmail){
+         if($OldEmail!=$NewEmail){
             
            
             
-        //   $user = DB::table('bas_user')->where('email', $before_data->email)->select('name', 'username', 'email', 'new_email_candidate')->first();
-        //     //Check if the user exists
+          $user = DB::table('bas_user')->where('email', $before_data->email)->select('name', 'username', 'email', 'new_email_candidate')->first();
+            //Check if the user exists
 
-        //     // dd($user);
-        //     $username = $user->username;
-        //     $desc = "User with username: " . $username . " requested Update email.";
-
-
-        //     // Create Password Reset Token
-        //    $token= DB::table('bas_user')->where('email', '=', $before_data->email)->update([
-        //         'activation_code' => Str::random(32),
-        //     ]);
+            // dd($user);
+            $username = $user->username;
+            $desc = "User with username: " . $username . " requested Update email.";
 
 
-        //     $coba= DB::table('bas_user')->where('email', $before_data->email)->select('*')->first();
-        //  //   dd($coba);
+            // Create Password Reset Token
+           $token= DB::table('bas_user')->where('email', '=', $before_data->email)->update([
+                'activation_code' => Str::random(32),
+            ]);
 
-        //     $html = '<!DOCTYPE html>
-        //     <html lang="en">
+
+            $coba= DB::table('bas_user')->where('email', $before_data->email)->select('*')->first();
+         //   dd($coba);
+
+            $html = '<!DOCTYPE html>
+            <html lang="en">
     
-        //     <body>
+            <body>
 
           
-        //         <p>Dear ' . $user->name . '</p>
-        //         <p>Your account requested to update email, by clicking this link you will change your email</p>
+                <p>Dear ' . $user->name . '</p>
+                <p>Your account requested to update email, by clicking this link you will change your email</p>
                 
-        //         <p><a href="' . url('verify_update_email', $coba->activation_code)  . '">
-        //         ' . url('verify_update_email', $coba->activation_code)  . '
-        //         </a></p>    
+                <p><a href="' . url('verify_update_email', $coba->activation_code)  . '">
+                ' . url('verify_update_email', $coba->activation_code)  . '
+                </a></p>    
     
-        //         <p>Thanks</p>
+                <p>Thanks</p>
                 
 
-        //     </body>
+            </body>
     
-        //     </html>';
+            </html>';
 
-        //     EmailQueue::create([
-        //         'destination_email' => $user->new_email_candidate,
-        //         'email_body' => $html,
-        //         'email_subject' => "Request Update Email",
-        //         'created_at' => Carbon::now()->TimeZone('asia/jakarta'),
-        //         'is_processed' => '0',
-        //     ]);
+            EmailQueue::create([
+                'destination_email' => $req->email,
+                'email_body' => $html,
+                'email_subject' => "Request Update Email",
+                'created_at' => Carbon::now()->TimeZone('asia/jakarta'),
+                'is_processed' => '0',
+            ]);
        
 
 
-        // }
+        }
 
 
         DB::commit();
@@ -434,7 +432,7 @@ class ProfileController extends Controller
                 'application' => $routes,
                 'creator' => 'System',
                 'ip_user' => $request->ip(),
-                'action' => $request->method(),
+                'action' => 'update',
                 'description' => $desc,
                 'user_agent' => $request->server('HTTP_USER_AGENT'),
             ]);
@@ -468,7 +466,7 @@ class ProfileController extends Controller
             $user->update([
                 'email' => $user->new_email_candidate,
                 'activation_code' => ' ',
-                'new_email_candidate' => null,
+                'new_email_candidate' => ' ',
             ]);
             makeLog($routes, $request, $desc, $username);
             DB::commit();

@@ -33,8 +33,7 @@ use App\EmailQueue;
 
 
 Route::get('/', 'HomeController@display')->name('home');
-Route::get('/fetch_data', 'HomeController@fetch_data');
-
+Route::post('home/loaddata','HomeController@loadDataAjax' );
 
 // /**=============================dashboard================================================== **/
 // Route::group(['middleware' => ['auth']], function () {
@@ -152,6 +151,6 @@ Route::get('/verify_update_email/{token}', 'ProfileController@verify_update_emai
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/menu', 'MenuController@index')->name('menu');
