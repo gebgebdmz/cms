@@ -174,15 +174,16 @@
 
 						<!-- single course -->
 						@foreach($isi_aset as $isi)
-						<div class="col-md-3 col-sm-6 col-xs-6">
+						<div class="col-md-4 col-sm-6 col-xs-6">
 							<div class="course">
 								<a href="#" class="course-img">
 									<img src="front/img/blank.jpg" alt="">
 									<i class="course-link-icon fa fa-link"></i>
 								</a>
 								<a class="course-title" href="#">{{$isi->name}}</a>
+								{{$isi->description}}
 								<div class="course-details">
-									<span class="course-category">Business</span>
+									{{-- <span class="course-category">Business</span> --}}
 									<span class="course-price course-free">{{$isi->currency.' '.$isi->price}}</span>
 								</div>
 							</div>
@@ -192,88 +193,12 @@
 				
 					</div>
 	
-
+					{{-- {{$isi_aset->links()}} --}}
 				</div>
 
-
-
-
-				<div class="row">
-					<div class="section-header text-center">
-						<h2>Explore Courses</h2>
-						<p class="lead">Libris vivendo eloquentiam ex ius, nec id splendide abhorreant.</p>
-					</div>
-				</div>
-				<!-- /row -->
-
-				<!-- courses -->
-				<div id="courses-wrapper">
-
-					<!-- row -->
-					<div class="row">
-
-						<!-- single course -->
-						@foreach($isi_aset as $isi)
-						<div class="col-md-3 col-sm-6 col-xs-6">
-							<div class="course">
-								<a href="#" class="course-img">
-									<img src="front/img/blank.jpg" alt="">
-									<i class="course-link-icon fa fa-link"></i>
-								</a>
-								<a class="course-title" href="#">{{$isi->name}}</a>
-								<div class="course-details">
-									<span class="course-category">Business</span>
-									<span class="course-price course-free">{{$isi->currency.' '.$isi->price}}</span>
-								</div>
-							</div>
-						</div>
-						@endforeach
-				<!-- row -->
 				
-					</div>
-	
+				{{-- {{ $item_event->links() }} --}}
 
-				</div>
-
-
-
-
-				<div class="row">
-					<div class="section-header text-center">
-						<h2>Explore Courses</h2>
-						<p class="lead">Libris vivendo eloquentiam ex ius, nec id splendide abhorreant.</p>
-					</div>
-				</div>
-				<!-- /row -->
-
-				<!-- courses -->
-				<div id="courses-wrapper">
-
-					<!-- row -->
-					<div class="row">
-
-						<!-- single course -->
-						@foreach($isi_aset as $isi)
-						<div class="col-md-3 col-sm-6 col-xs-6">
-							<div class="course">
-								<a href="#" class="course-img">
-									<img src="front/img/blank.jpg" alt="">
-									<i class="course-link-icon fa fa-link"></i>
-								</a>
-								<a class="course-title" href="#">{{$isi->name}}</a>
-								<div class="course-details">
-									<span class="course-category">Business</span>
-									<span class="course-price course-free">{{$isi->currency.' '.$isi->price}}</span>
-								</div>
-							</div>
-						</div>
-						@endforeach
-				<!-- row -->
-				
-					</div>
-	
-
-				</div>
 				<!-- /courses -->
 
 				{{-- <div class="row">
@@ -286,6 +211,8 @@
 			<!-- container -->
 
 		</div>
+
+		
 		<!-- /Courses -->
 
 		<!-- Call To Action -->

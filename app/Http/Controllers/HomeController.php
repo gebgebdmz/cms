@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Route;
 use App\ActivityLog;
+use App\CmsItemEvent;
+use Helper;
 
 class HomeController extends Controller
 {
@@ -48,24 +50,13 @@ class HomeController extends Controller
             ]);
 
 
-            // $as= DB::table('cms_item_event')
-            // ->from('cms_teacher')
-            // ->select('name','teacher_id','price','currency')
-            // ->join('cms_item_event','cms_item_event.teacher_id','=','cms_teacher.id')
-            // ->get();
-            
-            // $as= DB::table('cms_item_event')
-            // ->from('cms_teacher')
-            // ->select('bas_user.name', 'cms_item_event.name', 'cms_item_event.description')
-            // ->join('cms_item_event','cms_item_event.teacher_id','=','cms_teacher.id')
-            // ->join('bas_user','bas_user.id','=','cms_teacher.user_id')
-            // ->get();
             $isi_aset= DB::table('cms_item_event')
             ->select('cms_item_event.name', 'cms_item_event.description','cms_item_event.price', 'cms_item_event.currency')
             ->get();
 
+            // $item_event= CmsItemEvent::get()->orderBy('id', 'asc');
 
-          //   dd($as);
+            // dd($item_event);
     
             DB::commit();
         } catch (\Exception $ex) {
@@ -75,4 +66,8 @@ class HomeController extends Controller
         return view('home',['isi_aset' => $isi_aset]);
         // return view('layouts.frontend');
     }
+
+
+
+
 }

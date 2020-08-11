@@ -33,6 +33,7 @@ use App\EmailQueue;
 
 
 Route::get('/', 'HomeController@display')->name('home');
+Route::get('/fetch_data', 'HomeController@fetch_data');
 
 
 // /**=============================dashboard================================================== **/
