@@ -128,5 +128,10 @@ class LoginController extends Controller
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
+
+    public function logout(Request $request) {
+        Auth::logout();
+        return redirect('/');
+      }
    
 }
