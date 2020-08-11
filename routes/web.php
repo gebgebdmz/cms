@@ -99,7 +99,11 @@ Route::get('/user/delete-user/{user}', 'UserController@deleteUser')->name('delet
 Route::get('/dashboard', 'AdminController@index');
 /**=============================Profile================================================== **/
 Route::get('/myprofile', 'ProfileController@display');
+Route::get('/myprofile/edit_email', 'ProfileController@edit_email');
+Route::get('/myprofile/edit_password', 'ProfileController@edit_password');
 Route::post('/myprofile', 'ProfileController@update');
+Route::post('/myprofile/update_email', 'ProfileController@update_email');
+Route::post('/myprofile/update_password', 'ProfileController@update_password');
 Route::get('/verify_update_email/{token}', 'ProfileController@verify_update_email');
 // Route::post('update_email_without_token', 'ProfileController@validateEmailRequest');
 // Route::post('update_email_with_token', 'ProfileController@updateEmail');

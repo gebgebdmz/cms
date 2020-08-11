@@ -30,37 +30,15 @@
 
 
 
-            <form action="/myprofile" method="POST" class="mt-3">
+            <form action="/myprofile/update_email" method="POST" class="mt-3">
                 {{ csrf_field() }}
-                    <div class="form-group">
-                      <label for="username">username:</label>
-                      <input type="text" class="form-control" name="username"  value="{{$profile_data -> username}}">
-                    </div>
-                    <div class="form-group">
-                      <label for="password">password:</label>
-                      <input type="password" class="form-control" onmouseover="this.type='text'"
-                      onmouseout="this.type='password'" name="password" >
-                    </div>
-
-                    <div class="form-group">
-                        <label for="name">name:</label>
-                        <input type="text" class="form-control" name="name" value="{{$profile_data -> name}}">
-                      </div>
+                 
 
                     <div class="form-group">
                         <label for="email">e-mail:</label>
-                        <input type="email" class="form-control" name="email" value="{{$profile_data -> email}}" disabled>
+                        <input type="email" class="form-control" name="email" value=" " >
                       </div>
 
-                      <div class="form-group">
-                        <label for="phone">phone:</label>
-                        <input type="text" class="form-control" name="phone" value="{{$profile_data -> phone}}">
-                      </div>
-
-                      <div class="form-group">
-                        <label for="address">address:</label>
-                        <input type="address" class="form-control" name="address" value="{{$profile_data -> address}}">
-                      </div>
 
                        <div class="row">
                            <div class="col-md-4">

@@ -124,5 +124,6 @@
         <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script> 
         <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
         <script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+        @yield('javascript')
     </body>
 </html>
