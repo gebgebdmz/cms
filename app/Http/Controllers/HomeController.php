@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Route;
 use App\ActivityLog;
+use App\CmsItemEvent;
+use Helper;
 
 class HomeController extends Controller
 {
@@ -35,7 +37,7 @@ class HomeController extends Controller
             DB::beginTransaction();
             try {
     
-         $as=   ActivityLog::create([
+          ActivityLog::create([
     
                 'inserted_date'=>Carbon::now()->TimeZone('asia/jakarta'),
                 'username'=>"-",
@@ -47,14 +49,25 @@ class HomeController extends Controller
                 'user_agent' => $request->server('HTTP_USER_AGENT')
             ]);
 
-            // dd($as);
+
+            $isi_aset= DB::table('cms_item_event')
+            ->select('cms_item_event.name', 'cms_item_event.description','cms_item_event.price', 'cms_item_event.currency')
+            ->get();
+
+            // $item_event= CmsItemEvent::get()->orderBy('id', 'asc');
+
+            // dd($item_event);
     
             DB::commit();
         } catch (\Exception $ex) {
             DB::rollback();
             return response()->json(['error' => $ex->getMessage()], 500);
         }
-        return view('home');
+        return view('home',['isi_aset' => $isi_aset]);
         // return view('layouts.frontend');
     }
+
+
+
+
 }
