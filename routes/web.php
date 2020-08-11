@@ -20,16 +20,16 @@ use App\EmailQueue;
 
 
 /**=============================Login & Register================================================== **/
-// Auth::routes();
+Auth::routes();
 // /**=============================Email Verification================================================== **/
-// Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
-// Route::post('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
-// Route::get('/verify/{token}', 'VerifyController@VerifyEmail')->name('verify');
-// // Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
+Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
+Route::post('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
+Route::get('/verify/{token}', 'VerifyController@VerifyEmail')->name('verify');
+// Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
 
 // /**=============================Reset Password================================================== **/
-// Route::post('reset-password-without-token', 'ResetPasswordController@validatePasswordRequest');
-// Route::post('reset-password-with-token', 'ResetPasswordController@resetPassword');
+Route::post('reset-password-without-token', 'ResetPasswordController@validatePasswordRequest');
+Route::post('reset-password-with-token', 'ResetPasswordController@resetPassword');
 
 
 Route::get('/', 'HomeController@display')->name('home');
@@ -145,8 +145,8 @@ Route::get('/verify_update_email/{token}', 'ProfileController@verify_update_emai
 // Route::get('/send-mail', 'EmailQueueController@send');
 // Route::get('/send-mail-smtp', 'EmailQueueController@sendSMTP');
 
-// //logout+destroy session
-// Route::get('/logout','LogoutController@logout');
+//logout+destroy session
+Route::get('/logout','LoginController@logout');
 
 Auth::routes();
 

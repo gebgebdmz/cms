@@ -74,21 +74,7 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    // protected function create(array $data)
-    // {
-    //     // return User::create([
-    //     //     'username' => $data['username'],
-    //     //     'name' => $data['name'],
-    //     //     'email' => $data['email'],
-    //     //     'address' => $data['address'],
-    //     //     'phone' => $data['phone'],
-    //     //     'password' => Hash::make($data['password']),
-    //     //     'is_active' => false,
-    //     //     'activation_code' => false,
-    //     //     'priv_admin' => '0',
-    //     // ]);
-    // }
-
+    
     public function update(Request $request)
     {
         //
