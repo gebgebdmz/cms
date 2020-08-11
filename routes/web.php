@@ -32,7 +32,7 @@ use App\EmailQueue;
 // Route::post('reset-password-with-token', 'ResetPasswordController@resetPassword');
 
 
-// Route::get('/', 'HomeController@display')->name('home');
+Route::get('/', 'HomeController@display')->name('home');
 
 
 // /**=============================dashboard================================================== **/
@@ -45,9 +45,8 @@ use App\EmailQueue;
 
 
 // Route::group(['middleware' => ['auth','CheckRole:1']], function () {
-//     Route::get('/activitylog', 'ActivitylogController@index')->name('activitylog');
-//     Route::post('/activitylog/search', ['as' => 'search-log', 'uses' => 'ActivitylogController@search']);
-//     Route::get('/activitylog/get-activity', 'ActivitylogController@getDataActivity')->name('activity.getData');
+    Route::get('/activitylog', 'ActivitylogController@index')->name('activitylog');
+    Route::get('/activitylog/get-activity', 'ActivitylogController@getDataActivity')->name('activity.getData');
 // });
 
 // /**=============================Roles================================================== **/
@@ -95,14 +94,15 @@ use App\EmailQueue;
 //     });
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/dashboard', 'AdminController@index');
 /**=============================Profile================================================== **/
 Route::get('/myprofile', 'ProfileController@display');
 Route::post('/myprofile', 'ProfileController@update');
+Route::get('/verify_update_email/{token}', 'ProfileController@verify_update_email');
 // Route::post('update_email_without_token', 'ProfileController@validateEmailRequest');
 // Route::post('update_email_with_token', 'ProfileController@updateEmail');
 //test session
@@ -153,11 +153,14 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 // menu====================================
-Route::get('/menu', 'MenuController@index')->name('menu');
-Route::post('/menu/create', 'MenuController@create')->name('create');
-Route::get('/menu/destroy/{id}', 'MenuController@destroy');
-Route::post('/menu/update/{id}', 'MenuController@update');
-Route::get('/ajaxdata/getdata', 'MenuController@getData')->name('ajaxdata.datajax');
+Route::group(['middleware' => ['auth']], function () {
+    
+    Route::get('/menu', 'MenuController@index')->name('menu');
+    Route::post('/menu/create', 'MenuController@create')->name('create');
+    Route::get('/menu/destroy/{id}', 'MenuController@destroy');
+    Route::post('/menu/update/{id}', 'MenuController@update');
+    Route::get('/ajaxdata/getdata', 'MenuController@getData')->name('ajaxdata.datajax');
+});
 
 Route::group(['prefix' => 'cms-course-user'], function () {
     Route::get('/','CmsCourseUserController@index')->name('cms-course-user');

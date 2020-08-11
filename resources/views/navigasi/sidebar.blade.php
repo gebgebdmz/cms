@@ -1,5 +1,14 @@
-<!-- <ul class="navbar-nav">
-    < ?php 
+<!--  
+  <div class="sb-sidenav-menu-heading">Navigasi</div>
+
+    <a class="nav-link" href="index.html">
+        
+        Dashboard
+    </a>
+  -->
+
+  <div class="sb-sidenav-menu-heading">Navigasi</div>
+    <?php 
     
     use App\Menu;
     use App\App;
@@ -8,9 +17,11 @@
  
 
     $roles =Request::session()->get('role');
-
+    
+    
     If(count($roles) > 0) {
         $role = DB::table('bas_role')->where('name',$roles[0])->get();
+        // dd($role);
    
                 $menu = DB::table('bas_menu')->where('role_id',$role[0]->id)->select()->distinct('app_name')->get();
        
@@ -26,7 +37,7 @@
                 }
             }
         foreach($resultMenu as $r){
-        echo '<li class="nav-item"><a class="nav-link active" href="'.$r['url'].'"> <i class="ni ni-tv-2 text-primary"></i> <span class="nav-link-text">'.$r['name_app'].'</span></a> </li';
+        echo '<a class="nav-link" href="'.$r['url'].'"><span class="nav-link-text">'.$r['name_app'].'</span></a>';
         }
             } else {
                 return view('home');
@@ -34,4 +45,3 @@
                 
     
  ?> 
-          </ul> -->
