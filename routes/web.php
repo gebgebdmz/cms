@@ -146,10 +146,10 @@ Route::get('/verify_update_email/{token}', 'ProfileController@verify_update_emai
 
 // //cron email queue
 // Route::get('/send-mail', 'EmailQueueController@send');
-// Route::get('/send-mail-smtp', 'EmailQueueController@sendSMTP');
+Route::get('/emailqueue', 'EmailQueueController@sendSMTP');
 
 //logout+destroy session
-Route::get('/logout','LoginController@logout');
+Route::get('/logout','Auth\LoginController@logout');
 
 Auth::routes();
 
