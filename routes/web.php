@@ -152,5 +152,14 @@ Route::post('/myprofile', 'ProfileController@update');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
+// menu====================================
 Route::get('/menu', 'MenuController@index')->name('menu');
+Route::post('/menu/create', 'MenuController@create')->name('create');
+Route::get('/menu/destroy/{id}', 'MenuController@destroy');
+Route::post('/menu/update/{id}', 'MenuController@update');
+Route::get('/ajaxdata/getdata', 'MenuController@getData')->name('ajaxdata.datajax');
+
+Route::group(['prefix' => 'cms-course-user'], function () {
+    Route::get('/','CmsCourseUserController@index')->name('cms-course-user');
+    Route::get('/ajaxdata/getcourseuser', 'CmsCourseController@getcourseUser')->name('ajaxdata.getcourseuser');
+});

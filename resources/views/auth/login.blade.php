@@ -11,7 +11,7 @@
                     
                 <form action="{{route('login')}}" method="POST">
                     @csrf
-                        <div class="form-group  validate-input m-b-23" data-validate = "Username is required">
+                        <div class="form-group">
                             <label class="small mb-1" for="username">Username</label>
                             <input class="form-control py-4 @error('username') is-invalid @enderror" id="username" name="username" type="text" placeholder="Enter username" value="{{ old('username') }}" required autocomplete="username" autofocus />
                             @error('username')
