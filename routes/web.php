@@ -32,7 +32,8 @@ use App\EmailQueue;
 // Route::post('reset-password-with-token', 'ResetPasswordController@resetPassword');
 
 
-// Route::get('/', 'HomeController@display')->name('home');
+Route::get('/', 'HomeController@display')->name('home');
+Route::get('/fetch_data', 'HomeController@fetch_data');
 
 
 // /**=============================dashboard================================================== **/
@@ -45,25 +46,22 @@ use App\EmailQueue;
 
 
 // Route::group(['middleware' => ['auth','CheckRole:1']], function () {
-//     Route::get('/activitylog', 'ActivitylogController@index')->name('activitylog');
-//     Route::post('/activitylog/search', ['as' => 'search-log', 'uses' => 'ActivitylogController@search']);
-//     Route::get('/activitylog/get-activity', 'ActivitylogController@getDataActivity')->name('activity.getData');
+Route::get('/activitylog', 'ActivitylogController@index')->name('activitylog');
+Route::get('/activitylog/get-activity', 'ActivitylogController@getDataActivity')->name('activity.getData');
 // });
 
 // /**=============================Roles================================================== **/
 // Route::group(['middleware' => ['auth','CheckRole:1']], function () {
 //     Route::resource('role', 'RolesController');
 // });
-// /**=============================Users================================================== **/
-// Route::group(['middleware' => ['auth','CheckRole:1']], function () {
-//     Route::get('/user', 'UserController@index')->name('user');
-//     Route::post('/user/editUser/{user}', 'UserController@updateUser')->name('editUser');
-//     Route::get('/user/deleteUser/{user}', 'UserController@deleteUser')->name('deleteUser');
-//     Route::post('/user/create', 'UserController@create');
-//     Route::get('/user/verify/{email}/{code}', 'UserController@verifyEmail')->name('userVerify');
-//     Route::get('/user/get-data', 'UserController@getDataUser')->name('user.getData');
+// 
 
-// });
+/**=============================Users================================================== **/
+Route::get('/user', 'UserController@index')->name('user');
+Route::get('/user/get-data', 'UserController@getDataUser')->name('user.getData');
+Route::post('/user/insert-user', 'UserController@insertUser');
+Route::post('/user/edit-user/{user}', 'UserController@updateUser')->name('editUser');
+Route::get('/user/delete-user/{user}', 'UserController@deleteUser')->name('deleteUser');
 
 // Route::group(['middleware' => ['auth','CheckRole:1']], function () {
 //     Route::resource('user-role','UserRoleController');
@@ -92,15 +90,20 @@ use App\EmailQueue;
     Route::get('/ajaxdata/get-app','appController@getapp')->name('ajaxdata.app');
     // });
 
-
-Route::get('/', function () {
-    return view('welcome');
-});
+/**=============================EmailQueue================================================== **/
+// Route::group(['middleware' => ['auth','CheckRole:1']], function () {
+    Route::get('/emailqueue', 'EmailQueueController@index');
+    Route::get('/ajaxdata/get-email','EmailQueueController@getEmail')->name('ajaxdata.email');
+    // });
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/dashboard', 'AdminController@index');
 /**=============================Profile================================================== **/
 Route::get('/myprofile', 'ProfileController@display');
 Route::post('/myprofile', 'ProfileController@update');
+Route::get('/verify_update_email/{token}', 'ProfileController@verify_update_email');
 // Route::post('update_email_without_token', 'ProfileController@validateEmailRequest');
 // Route::post('update_email_with_token', 'ProfileController@updateEmail');
 //test session

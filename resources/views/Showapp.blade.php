@@ -1,5 +1,10 @@
+@extends('layouts.master')
+@section('title','Display App')
 
-
+@section('content')
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <div class="container mt-5">
     <div class="row">
     @if (session('status'))
@@ -22,7 +27,7 @@
                     <form class="form-inline">
                        
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModalCenter">
-                        <i class="ni ni-fat-add"></i>
+            <span class="glyphicon glyphicon-plus"></span>
                         </button>
                     </div>
                     </form>
@@ -66,8 +71,8 @@
                                 </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="ni ni-fat-remove"></i></button>
-                            <button type="submit" class="btn btn-primary"><i class="ni ni-check-bold"></i></button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><span class="glyphicon glyphicon-remove-sign"></span></button>
+                            <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok-sign"></span></button>
                         </div>
                         </form>
                     </div>
@@ -129,8 +134,8 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="ni ni-fat-remove"></i></button>
-                            <button type="submit" form="app_form_{{$p->id}}" class="btn btn-primary"><i class="ni ni-check-bold"></i></button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><span class="glyphicon glyphicon-remove-sign"></span></button>
+                            <button type="submit" form="app_form_{{$p->id}}" class="btn btn-primary"><span class="glyphicon glyphicon-ok-sign"></span></button>
                         </div>
                         </form>
                     </div>
@@ -152,8 +157,8 @@
                             Data yang dihapus tidak dapat dikembalikan!
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success" data-dismiss="modal"><i class="ni ni-fat-remove"></i></button>
-                            <a href="{{ url('destroy', [$p->id]) }}" class="btn btn-danger"><i class="ni ni-check-bold"></i></a>
+                            <button type="button" class="btn btn-success" data-dismiss="modal"><span class="glyphicon glyphicon-remove-sign"></span></button>
+                            <a href="{{ url('destroy', [$p->id]) }}" class="btn btn-danger"><span class="glyphicon glyphicon-ok-sign"></span></a>
                         </div>
                     </div>
                 </div>
@@ -162,7 +167,8 @@
         </div>
     </div>
 </div>
-<link  rel="stylesheet" href="{{ asset('css/breadcrumb.css') }}">
+@endsection
+@section('javascript')
 <script>
     var row = 0;
 
@@ -203,14 +209,14 @@
                 {
                     sortable: false,
                     "render": function ( data, type, full, meta ) {
-                        return '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_edit_'+full.id+'"><i class="ni ni-single-02"></i></button>';
+                        return '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_edit_'+full.id+'"><span class="glyphicon glyphicon-user"></span></button>';
                     }
                 },
 
                 {
                     sortable: false,
                     "render": function ( data, type, full, meta ) {
-                        return '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_hapus_'+full.id+'"><i class="ni ni-fat-delete"></i></button>';
+                        return '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_hapus_'+full.id+'"><span class="glyphicon glyphicon-trash"></span></button>';
                     }
                 },
 
@@ -224,3 +230,4 @@
 } );
     </script>
 
+@endsection

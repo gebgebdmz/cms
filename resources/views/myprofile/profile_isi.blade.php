@@ -9,15 +9,6 @@
             </div>
             <div class="col-md-6">
 
-                {{-- @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-                @endif --}}
 
                 @if($errors->any())
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -28,7 +19,7 @@
             </div>
             @endif
 
-                @if(session()->has('message'))
+            @if(session()->has('message'))
     <div class="alert alert-success">
         {{ session()->get('message') }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -36,6 +27,8 @@
         </button>
     </div>
 @endif
+
+
 
             <form action="/myprofile" method="POST" class="mt-3">
                 {{ csrf_field() }}
