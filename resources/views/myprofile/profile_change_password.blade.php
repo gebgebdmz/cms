@@ -32,22 +32,21 @@
 
             <form action="/myprofile/update_password" method="POST" class="mt-3">
                 {{ csrf_field() }}
+
+                
                     <div class="form-group">
                       <label for="password">Old password:</label>
-                      <input type="password" class="form-control" onmouseover="this.type='text'"
-                      onmouseout="this.type='password'" name="old_password" >
+                      <input type="password" class="form-control" data-toggle="password" name="old_password" >
                     </div>
 
                     <div class="form-group">
                         <label for="password">New password:</label>
-                        <input type="password" class="form-control" onmouseover="this.type='text'"
-                        onmouseout="this.type='password'" name="new_password" >
+                        <input type="password" class="form-control" data-toggle="password" name="new_password" >
                       </div>
 
                       <div class="form-group">
                         <label for="password">Confirm New password:</label>
-                        <input type="password" class="form-control" onmouseover="this.type='text'"
-                        onmouseout="this.type='password'" name="confirm_new_password" >
+                        <input type="password" class="form-control" data-toggle="password" name="confirm_new_password" >
                       </div>
 
                  

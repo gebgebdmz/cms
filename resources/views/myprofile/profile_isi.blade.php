@@ -48,10 +48,11 @@
 
                     <div class="form-group"> 
                         <label for="email">e-mail:</label>
-                        <input type="email" class="form-control" name="email" value="{{$profile_data -> email}}" disabled>
-
-                        <a href="{{ url('myprofile/edit_email') }}" class="btn btn-warning btn-sm">Edit Email</a>
-                      </div>
+                        <div class="form-inline"> 
+                            <input type="email" class="form-control" name="email" value="{{$profile_data -> email}}" disabled>
+                            <a href="{{ url('myprofile/edit_email') }}" class="btn btn-warning ">Edit Email</a>
+                        </div>
+                    </div>
 
                       
 
