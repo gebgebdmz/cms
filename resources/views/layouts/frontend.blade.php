@@ -183,7 +183,7 @@
 								<a class="course-title" href="#">{{$isi->name}}</a>
 								{{$isi->description}}
 								<div class="course-details">
-									{{-- <span class="course-category">Business</span> --}}
+									{{-- <span class="course-category">{{$isi->start_date.'-'.$isi->end_date}}</span> --}}
 									<span class="course-price course-free">{{$isi->currency.' '.$isi->price}}</span>
 								</div>
 							</div>
@@ -197,15 +197,15 @@
 				</div>
 
 				
-				{{-- {{ $item_event->links() }} --}}
+				{{-- {{ $isi_aset->links() }} --}}
 
 				<!-- /courses -->
 
-				{{-- <div class="row">
+				<div class="row">
 					<div class="center-btn">
 						<a class="main-button icon-button" href="#">More Courses</a>
 					</div>
-				</div> --}}
+				</div>
 
 			</div>
 			<!-- container -->

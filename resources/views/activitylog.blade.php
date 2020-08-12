@@ -38,7 +38,6 @@
 </div>
 @endsection
 @section('javascript')
-
 <script>
 
 // Simple server-side processing

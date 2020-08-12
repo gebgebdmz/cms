@@ -17,6 +17,7 @@
  
 
     $roles =Request::session()->get('role');
+
     
     
     If(count($roles) > 0) {

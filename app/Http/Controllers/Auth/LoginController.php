@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Auth;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\HomeController;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -14,7 +14,7 @@ use App\User;
 use App\Role;
 use App\App;
 use App\ActivityLog;
-use App\Http\Controllers\Auth\Auth;
+
 
 
 class LoginController extends Controller
@@ -133,7 +133,7 @@ class LoginController extends Controller
 
     public function logout(Request $request) {
         Auth::logout();
-        return redirect('/home');
+        return redirect('/');
       }
    
 }

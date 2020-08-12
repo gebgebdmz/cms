@@ -30,42 +30,26 @@
 
 
 
-            <form action="/myprofile" method="POST" class="mt-3">
+            <form action="/myprofile/update_password" method="POST" class="mt-3">
                 {{ csrf_field() }}
+
+                
                     <div class="form-group">
-                      <label for="username">username:</label>
-                      <input type="text" class="form-control" name="username"  value="{{$profile_data -> username}}">
-                    </div>
-                    <div class="form-group">
-                      <label for="password">password:</label>
-                      <a href="{{ url('myprofile/edit_password') }}" class="btn btn-warning btn-sm">Edit Password</a>
+                      <label for="password">Old password:</label>
+                      <input type="password" class="form-control" data-toggle="password" name="old_password" >
                     </div>
 
                     <div class="form-group">
-                        <label for="name">name:</label>
-                        <input type="text" class="form-control" name="name" value="{{$profile_data -> name}}">
-                      </div>
-
-                    <div class="form-group"> 
-                        <label for="email">e-mail:</label>
-                        <div class="form-inline"> 
-                            <input type="email" class="form-control" name="email" value="{{$profile_data -> email}}" disabled>
-                            <a href="{{ url('myprofile/edit_email') }}" class="btn btn-warning ">Edit Email</a>
-                        </div>
-                    </div>
-
-                      
-
-                      <div class="form-group">
-                        <label for="phone">phone:</label>
-                        <input type="text" class="form-control" name="phone" value="{{$profile_data -> phone}}">
+                        <label for="password">New password:</label>
+                        <input type="password" class="form-control" data-toggle="password" name="new_password" >
                       </div>
 
                       <div class="form-group">
-                        <label for="address">address:</label>
-                        <input type="address" class="form-control" name="address" value="{{$profile_data -> address}}">
+                        <label for="password">Confirm New password:</label>
+                        <input type="password" class="form-control" data-toggle="password" name="confirm_new_password" >
                       </div>
 
+                 
                        <div class="row">
                            <div class="col-md-4">
                             </div>

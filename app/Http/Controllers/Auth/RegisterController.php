@@ -96,6 +96,7 @@ class RegisterController extends Controller
                 'address' => $data['address'],
                 'phone' => $data['phone'],
                 'password' => Hash::make($data['password']),
+                // 'password' => sha1($data['password']),
                 'is_active' => false,
                 // 'activation_code' => Str::random(32),
                 'activation_code' => substr(sha1($data['email']), 0, 32),

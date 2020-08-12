@@ -33,14 +33,13 @@ Route::post('reset-password-with-token', 'ResetPasswordController@resetPassword'
 
 
 Route::get('/', 'HomeController@display')->name('home');
-Route::get('/fetch_data', 'HomeController@fetch_data');
-
+Route::post('home/loaddata','HomeController@loadDataAjax' );
 
 // /**=============================dashboard================================================== **/
-// Route::group(['middleware' => ['auth']], function () {
-//     Route::get('/dashboard', 'AdminController@index');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/dashboard', 'AdminController@index');
 
-// });
+});
 
 // /**=============================Activity-Log================================================== **/
 
@@ -97,10 +96,13 @@ Route::get('/user/delete-user/{user}', 'UserController@deleteUser')->name('delet
 //     return view('welcome');
 // });
 
-Route::get('/dashboard', 'AdminController@index')->name('dashboard');
 /**=============================Profile================================================== **/
 Route::get('/myprofile', 'ProfileController@display');
+Route::get('/myprofile/edit_email', 'ProfileController@edit_email');
+Route::get('/myprofile/edit_password', 'ProfileController@edit_password');
 Route::post('/myprofile', 'ProfileController@update');
+Route::post('/myprofile/update_email', 'ProfileController@update_email');
+Route::post('/myprofile/update_password', 'ProfileController@update_password');
 Route::get('/verify_update_email/{token}', 'ProfileController@verify_update_email');
 // Route::post('update_email_without_token', 'ProfileController@validateEmailRequest');
 // Route::post('update_email_with_token', 'ProfileController@updateEmail');
@@ -128,27 +130,36 @@ Route::get('/verify_update_email/{token}', 'ProfileController@verify_update_emai
 
 
 // //BasConfig
-// Route::get('/basconfig','BasConfigsController@index')->name('ajaxdata');
 
+Route::get('/BasConfig/Insert','BasConfigController@create');
 
-// Route::get('/basconfig/insert','BasConfigsController@create');
-// Route::post('/basconfig/insert','BasConfigsController@store');
+Route::get('/BasConfig','BasConfigController@index');
+Route::get('/BasConfig/{BasConfig}','BasConfigController@show');
+Route::get('/BasConfig/Update/{BasConfig}','BasConfigController@edit');
 
-// Route::get('/basconfig/update/{BasConfig}','BasConfigsController@edit');
-// Route::patch('/basconfig/update/{BasConfig}','BasConfigsController@update');
+Route::get('ajaxdata/getdata','BasConfigController@getdata')->name('ajaxdata.getdata');
+Route::patch('/BasConfig/Update/{BasConfig}','BasConfigController@update');
+Route::post('/BasConfig/Insert','BasConfigController@store');
 
+// BasRole
 
-// Route::get('ajaxdata/getdata','BasConfigsController@getdata')->name('ajaxdata.getdata');
-// Route::get('/basconfig/{BasConfig}','BasConfigsController@show');
+Route::get('/BasRole/Insert','BasRoleController@create');
+Route::get('/BasRole','BasRoleController@index');
+Route::get('/BasRole/{BasRole}','BasRoleController@show');
+Route::get('/BasRole/Update/{BasRole}','BasRoleController@edit');
+Route::get('ajaxdata/getrole','BasRoleController@getrole')->name('ajaxdata.getrole');
+Route::patch('/BasRole/Update/{BasRole}','BasRoleController@update');
+Route::post('/BasRole/Insert','BasRoleController@store');
+Route::get('/BasRole/Delete/{BasRole}','BasRoleController@destroy');
+
 
 // //cron email queue
 // Route::get('/send-mail', 'EmailQueueController@send');
-// Route::get('/send-mail-smtp', 'EmailQueueController@sendSMTP');
+Route::get('/emailqueue', 'EmailQueueController@sendSMTP');
 
 //logout+destroy session
-// Route::get('/logout','LoginController@logout');
+Route::get('/logout','LoginController@logout');
 
-Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 // menu====================================
