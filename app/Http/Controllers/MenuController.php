@@ -37,7 +37,7 @@ class MenuController extends Controller
             $routes = preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(),$matches);
             $routes = $matches[0];
             $action = $matches[2];
-            if(True){
+            if(Auth::check()){
                 $id = Auth::id();
                 $user = User::find($id);
                 DB::beginTransaction();
@@ -65,7 +65,10 @@ class MenuController extends Controller
                         ->select('*')
                         ->get();
                         return view('navigasi.menu',['menu'=>$menu]);
-                    }
+                    }else{
+                        return view('login');
+                        }
+                    
 
     }
 
@@ -79,7 +82,7 @@ class MenuController extends Controller
         $routes = preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(),$matches);
             $routes = $matches[0];
             $action = $matches[2];
-            if(True){
+            if(Auth::check()){
                 $id = Auth::id();
                 $user = User::find($id);
                 DB::beginTransaction();
@@ -107,7 +110,9 @@ class MenuController extends Controller
      
         // alihkan halaman ke halaman pegawai
         return redirect('menu');
-             } 
+             } else{
+                 return view('login');
+             }
     }
 
     /**
@@ -156,7 +161,7 @@ class MenuController extends Controller
   $routes = preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(),$matches);
   $routes = $matches[0];
   $action = $matches[2];
-  if (True) {
+  if (Auth::check()) {
 
     $idd = Auth::id();
    DB::beginTransaction();
@@ -210,7 +215,9 @@ Menu::where('id', $id)
 
 
      return redirect('/menu')->with('success', 'Data has been successfully sent!');
-}
+    }else{
+        return view('login');
+    }
 
     }
 
@@ -242,7 +249,7 @@ Menu::where('id', $id)
         $routes = preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(),$matches);
         $routes = $matches[0];
         $action = $matches[2];
-        if(True){
+        if(Auth::check()){
             $idd = Auth::id();
             $user = User::find($idd);
             DB::beginTransaction();
@@ -271,7 +278,9 @@ Menu::where('id', $id)
 
         Menu::where('id', $id)->delete();
         return redirect('/menu');
-    } 
+    } else{
+        return view('login');
+    }
     }
     public function searchMenu(Request $request){
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\HomeController;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ use App\User;
 use App\Role;
 use App\App;
 use App\ActivityLog;
+use App\Http\Controllers\Auth\Auth;
 
 
 class LoginController extends Controller
@@ -89,7 +91,7 @@ class LoginController extends Controller
                 
                 session(['role' =>$roles]);
                 session(['user_app'=>$apps]);
-                return redirect()->route('admin');
+                return redirect()->route('dashboard');
                 
             } else {
                 ActivityLog::create([
@@ -128,5 +130,10 @@ class LoginController extends Controller
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
+
+    public function logout(Request $request) {
+        Auth::logout();
+        return redirect('/home');
+      }
    
 }

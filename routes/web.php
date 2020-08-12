@@ -20,19 +20,20 @@ use App\EmailQueue;
 
 
 /**=============================Login & Register================================================== **/
-// Auth::routes();
+Auth::routes();
 // /**=============================Email Verification================================================== **/
-// Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
-// Route::post('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
-// Route::get('/verify/{token}', 'VerifyController@VerifyEmail')->name('verify');
-// // Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
+Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
+Route::post('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
+Route::get('/verify/{token}', 'VerifyController@VerifyEmail')->name('verify');
+// Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
 
 // /**=============================Reset Password================================================== **/
-// Route::post('reset-password-without-token', 'ResetPasswordController@validatePasswordRequest');
-// Route::post('reset-password-with-token', 'ResetPasswordController@resetPassword');
+Route::post('reset-password-without-token', 'ResetPasswordController@validatePasswordRequest');
+Route::post('reset-password-with-token', 'ResetPasswordController@resetPassword');
 
 
 Route::get('/', 'HomeController@display')->name('home');
+Route::get('/fetch_data', 'HomeController@fetch_data');
 
 
 // /**=============================dashboard================================================== **/
@@ -45,24 +46,22 @@ Route::get('/', 'HomeController@display')->name('home');
 
 
 // Route::group(['middleware' => ['auth','CheckRole:1']], function () {
-    Route::get('/activitylog', 'ActivitylogController@index')->name('activitylog');
-    Route::get('/activitylog/get-activity', 'ActivitylogController@getDataActivity')->name('activity.getData');
+Route::get('/activitylog', 'ActivitylogController@index')->name('activitylog');
+Route::get('/activitylog/get-activity', 'ActivitylogController@getDataActivity')->name('activity.getData');
 // });
 
 // /**=============================Roles================================================== **/
 // Route::group(['middleware' => ['auth','CheckRole:1']], function () {
 //     Route::resource('role', 'RolesController');
 // });
-// /**=============================Users================================================== **/
-// Route::group(['middleware' => ['auth','CheckRole:1']], function () {
-//     Route::get('/user', 'UserController@index')->name('user');
-//     Route::post('/user/editUser/{user}', 'UserController@updateUser')->name('editUser');
-//     Route::get('/user/deleteUser/{user}', 'UserController@deleteUser')->name('deleteUser');
-//     Route::post('/user/create', 'UserController@create');
-//     Route::get('/user/verify/{email}/{code}', 'UserController@verifyEmail')->name('userVerify');
-//     Route::get('/user/get-data', 'UserController@getDataUser')->name('user.getData');
+// 
 
-// });
+/**=============================Users================================================== **/
+Route::get('/user', 'UserController@index')->name('user');
+Route::get('/user/get-data', 'UserController@getDataUser')->name('user.getData');
+Route::post('/user/insert-user', 'UserController@insertUser');
+Route::post('/user/edit-user/{user}', 'UserController@updateUser')->name('editUser');
+Route::get('/user/delete-user/{user}', 'UserController@deleteUser')->name('deleteUser');
 
 // Route::group(['middleware' => ['auth','CheckRole:1']], function () {
 //     Route::resource('user-role','UserRoleController');
@@ -98,7 +97,7 @@ Route::get('/', 'HomeController@display')->name('home');
 //     return view('welcome');
 // });
 
-Route::get('/dashboard', 'AdminController@index');
+Route::get('/dashboard', 'AdminController@index')->name('dashboard');
 /**=============================Profile================================================== **/
 Route::get('/myprofile', 'ProfileController@display');
 Route::post('/myprofile', 'ProfileController@update');
@@ -146,8 +145,8 @@ Route::get('/verify_update_email/{token}', 'ProfileController@verify_update_emai
 // Route::get('/send-mail', 'EmailQueueController@send');
 // Route::get('/send-mail-smtp', 'EmailQueueController@sendSMTP');
 
-// //logout+destroy session
-// Route::get('/logout','LogoutController@logout');
+//logout+destroy session
+// Route::get('/logout','LoginController@logout');
 
 Auth::routes();
 

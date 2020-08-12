@@ -36,6 +36,8 @@
         </table>
     </div>
 </div>
+@endsection
+@section('javascript')
 
 <script>
 
