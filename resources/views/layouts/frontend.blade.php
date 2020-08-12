@@ -55,7 +55,7 @@
 				<!-- Navigation -->
 				<nav id="nav">
 					<ul class="main-menu nav navbar-nav navbar-right">
-						<li><a href="index.html">Home</a></li>
+						<li><a href="">Home</a></li>
 						{{-- <li><a href="#">Schedule</a></li>
 						<li><a href="#">Calender</a></li>
 						<li><a href="#">Search Certificate</a></li> --}}

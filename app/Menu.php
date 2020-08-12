@@ -20,16 +20,6 @@ class Menu extends Model
         return $this->belongsToMany(Role::class);
         
     }
-    public function children(){
-        $role_menu = Auth::user()->role->access;
-        $role_menu_arr =array();
-        foreach ($role_menu as $item) {
-            $role_menu_arr[]=$item->id;
-        }
-        return $this->hasMany(Menu::class,'app_name')
-                    ->where("role_id",$role_menu_arr);
-   
-    }
 
 }
 

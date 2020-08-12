@@ -16,6 +16,7 @@ use App\App;
 use App\ActivityLog;
 
 
+
 class LoginController extends Controller
 {
     /*
@@ -90,7 +91,7 @@ class LoginController extends Controller
                 
                 session(['role' =>$roles]);
                 session(['user_app'=>$apps]);
-                return redirect()->route('admin');
+                return redirect()->route('dashboard');
                 
             } else {
                 ActivityLog::create([

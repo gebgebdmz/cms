@@ -36,10 +36,10 @@ Route::get('/', 'HomeController@display')->name('home');
 Route::post('home/loaddata','HomeController@loadDataAjax' );
 
 // /**=============================dashboard================================================== **/
-// Route::group(['middleware' => ['auth']], function () {
-//     Route::get('/dashboard', 'AdminController@index');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/dashboard', 'AdminController@index');
 
-// });
+});
 
 // /**=============================Activity-Log================================================== **/
 
@@ -96,7 +96,6 @@ Route::get('/user/delete-user/{user}', 'UserController@deleteUser')->name('delet
 //     return view('welcome');
 // });
 
-Route::get('/dashboard', 'AdminController@index');
 /**=============================Profile================================================== **/
 Route::get('/myprofile', 'ProfileController@display');
 Route::get('/myprofile/edit_email', 'ProfileController@edit_email');
@@ -159,10 +158,21 @@ Route::get('/BasRole/Delete/{BasRole}','BasRoleController@destroy');
 Route::get('/emailqueue', 'EmailQueueController@sendSMTP');
 
 //logout+destroy session
-Route::get('/logout','Auth\LoginController@logout');
+Route::get('/logout','LoginController@logout');
 
-Auth::routes();
 
-// Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');
+// menu====================================
+Route::group(['middleware' => ['auth']], function () {
+    
+    Route::get('/menu', 'MenuController@index')->name('menu');
+    Route::post('/menu/create', 'MenuController@create')->name('create');
+    Route::get('/menu/destroy/{id}', 'MenuController@destroy');
+    Route::post('/menu/update/{id}', 'MenuController@update');
+    Route::get('/ajaxdata/getdata', 'MenuController@getData')->name('ajaxdata.datajax');
+});
 
-Route::get('/menu', 'MenuController@index')->name('menu');
+Route::group(['prefix' => 'cms-course-user'], function () {
+    Route::get('/','CmsCourseUserController@index')->name('cms-course-user');
+    Route::get('/ajaxdata/getcourseuser', 'CmsCourseController@getcourseUser')->name('ajaxdata.getcourseuser');
+});
