@@ -20,16 +20,16 @@ use App\EmailQueue;
 
 
 /**=============================Login & Register================================================== **/
-// Auth::routes();
+Auth::routes();
 // /**=============================Email Verification================================================== **/
-// Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
-// Route::post('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
-// Route::get('/verify/{token}', 'VerifyController@VerifyEmail')->name('verify');
-// // Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
+Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
+Route::post('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
+Route::get('/verify/{token}', 'VerifyController@VerifyEmail')->name('verify');
+// Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
 
 // /**=============================Reset Password================================================== **/
-// Route::post('reset-password-without-token', 'ResetPasswordController@validatePasswordRequest');
-// Route::post('reset-password-with-token', 'ResetPasswordController@resetPassword');
+Route::post('reset-password-without-token', 'ResetPasswordController@validatePasswordRequest');
+Route::post('reset-password-with-token', 'ResetPasswordController@resetPassword');
 
 
 Route::get('/', 'HomeController@display')->name('home');
@@ -130,25 +130,35 @@ Route::get('/verify_update_email/{token}', 'ProfileController@verify_update_emai
 
 
 // //BasConfig
-// Route::get('/basconfig','BasConfigsController@index')->name('ajaxdata');
 
+Route::get('/BasConfig/Insert','BasConfigController@create');
 
-// Route::get('/basconfig/insert','BasConfigsController@create');
-// Route::post('/basconfig/insert','BasConfigsController@store');
+Route::get('/BasConfig','BasConfigController@index');
+Route::get('/BasConfig/{BasConfig}','BasConfigController@show');
+Route::get('/BasConfig/Update/{BasConfig}','BasConfigController@edit');
 
-// Route::get('/basconfig/update/{BasConfig}','BasConfigsController@edit');
-// Route::patch('/basconfig/update/{BasConfig}','BasConfigsController@update');
+Route::get('ajaxdata/getdata','BasConfigController@getdata')->name('ajaxdata.getdata');
+Route::patch('/BasConfig/Update/{BasConfig}','BasConfigController@update');
+Route::post('/BasConfig/Insert','BasConfigController@store');
 
+// BasRole
 
-// Route::get('ajaxdata/getdata','BasConfigsController@getdata')->name('ajaxdata.getdata');
-// Route::get('/basconfig/{BasConfig}','BasConfigsController@show');
+Route::get('/BasRole/Insert','BasRoleController@create');
+Route::get('/BasRole','BasRoleController@index');
+Route::get('/BasRole/{BasRole}','BasRoleController@show');
+Route::get('/BasRole/Update/{BasRole}','BasRoleController@edit');
+Route::get('ajaxdata/getrole','BasRoleController@getrole')->name('ajaxdata.getrole');
+Route::patch('/BasRole/Update/{BasRole}','BasRoleController@update');
+Route::post('/BasRole/Insert','BasRoleController@store');
+Route::get('/BasRole/Delete/{BasRole}','BasRoleController@destroy');
+
 
 // //cron email queue
 // Route::get('/send-mail', 'EmailQueueController@send');
-// Route::get('/send-mail-smtp', 'EmailQueueController@sendSMTP');
+Route::get('/emailqueue', 'EmailQueueController@sendSMTP');
 
-// //logout+destroy session
-// Route::get('/logout','LogoutController@logout');
+//logout+destroy session
+Route::get('/logout','Auth\LoginController@logout');
 
 Auth::routes();
 
