@@ -160,7 +160,7 @@ class ProfileController extends Controller
                     'creator' => "System",
                     'ip_user' => $request->ip(),
                     'action' => 'Display',
-                    'description' => "View update email",
+                    'description' => "View update password",
                     'user_agent' => $request->server('HTTP_USER_AGENT')
                 ]);
 
@@ -371,6 +371,12 @@ public function update_password(Request $req)
         $id = Auth::id();
         $before_data = User::find($id);
 
+
+        // if (Hash::check($req->old_password, $before_data->password) && $req->new_password == $req->confirm_new_password) {
+        //     die('bacot');
+        // }
+
+
         $validator = Validator::make($req->all(), [
 
             'old_password' => 'required|string| min:8',
@@ -406,10 +412,113 @@ public function update_password(Request $req)
      
         DB::beginTransaction();
 
-      
-        if(Hash::make($req->old_password)!=$before_data->password){
+        if(Hash::check($req->old_password, $before_data->password)){
+           // die('true');
+            // $checkhash = 'kebenaran';
 
-            $message = "Failed to change password, cant find old password on database"
+            if($req->new_password!=$req->confirm_new_password){
+
+               // die('false double check');
+
+                $message = "Failed to change password, new password and confirm new password did not match";
+                ActivityLog::create([
+                    'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
+                    'username' => $before_data->username,
+                    'application' => $routes,
+                    'creator' => "System",
+                    'ip_user' => $req->ip(),
+                    'action' =>$action,
+                    'description' => $message,
+                    'user_agent' => $req->server('HTTP_USER_AGENT')
+                 ]);
+    
+                 return redirect('/myprofile/edit_password')
+                 ->withErrors($message)
+                 ->withInput();
+    
+                }elseif($req->new_password == $req->confirm_new_password){
+    
+                   // die('true all check');
+                    try {
+        
+                        $dataLama = User::find($id);
+                         DB::table('bas_user')
+                         ->where('id', $id)
+                         ->update(array(
+                             'password' =>  Hash::make($req->confirm_new_password)
+                         ));
+                      //   dd($password);
+                 
+                 $old_pw = $req->old_password;
+                 $new_pw = $req->confirm_new_password;
+                 $old_pw = '-';
+                 $new_pw = '--';
+                         $oldData = array(
+                             $old_pw,
+                         );
+                         $newData = array(
+                             $new_pw,
+                         );
+                 
+                         $field = array(
+                             'password',
+                         );
+                 
+                 
+                         $desc = 'Edit profile password<br>';
+                         $desc = $desc . $this->descriptionLog($dataLama->id, $field, $oldData, $newData);
+                         ActivityLog::create([
+                             'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
+                             'username' => $before_data->username,
+                             'application' => $routes,
+                             'creator' => "System",
+                             'ip_user' => $req->ip(),
+                             'action' =>$action,
+                             'description' => $desc,
+                             'user_agent' => $req->server('HTTP_USER_AGENT')
+                          ]);
+                 
+                         //  if($req->old_password!= $req->confirm_new_password ){
+                 
+                 
+                             $html = '<!DOCTYPE html>
+                             <html lang="en">
+                 
+                             <body>
+                 
+                                 <p>Dear ' . $dataLama->name . '</p>
+                                 <p>Your password has been changed in Myprofile.
+                 
+                                 <p>Thanks</p>
+                 
+                             </body>
+                 
+                             </html>';
+                             EmailQueue::create([
+                                 'destination_email' =>  $dataLama->email,
+                                 'email_body' => $html,
+                                 'email_subject' => "Data Changed in myprofile",
+                                 'created_at' => Carbon::now()->TimeZone('asia/jakarta'),
+                                 'is_processed' => '0',
+                             ]);
+                         //  }
+                 
+                 
+                         DB::commit();
+                        } catch (\Exception $ex) {
+                            DB::rollback();
+                           return response()->json(['error' => $ex->getMessage()], 500);
+                        }      
+                         return redirect('/myprofile')->with('message', 'Edit password success!');
+                         
+                   
+                }
+        }else{
+
+            //die('false pw on db');
+          //   die('false');
+            // $checkhash = 'kesalahan';
+            $message = "Failed to change password, cant find old password on database";
             ActivityLog::create([
                 'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
                 'username' => $before_data->username,
@@ -424,104 +533,9 @@ public function update_password(Request $req)
              return redirect('/myprofile/edit_password')
              ->withErrors($message)
              ->withInput();
+            }
 
-        }elseif($req->new_password!=$req->confirm_new_password){
-            $message = "Failed to change password, new password and confirm new password did not match"
-            ActivityLog::create([
-                'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
-                'username' => $before_data->username,
-                'application' => $routes,
-                'creator' => "System",
-                'ip_user' => $req->ip(),
-                'action' =>$action,
-                'description' => $desc,
-                'user_agent' => $req->server('HTTP_USER_AGENT')
-             ]);
-
-             return redirect('/myprofile/edit_password')
-             ->withErrors($message)
-             ->withInput();
-        }else{
-
-       
-
-        // $oldData = array(
-        //     Hash::make($req->old_password),
-        //     $before_data->password
-        // );
-
-        // dd($oldData);
-
-        try {
-
-       $dataLama = User::find($id);
-        DB::table('bas_user')
-        ->where('id', $id)
-        ->update(array(
-            'password' =>  Hash::make($req->confirm_new_password)
-        ));
-     //   dd($password);
-
-
-        $oldData = array(
-            $req->old_password,
-        );
-        $newData = array(
-            $req->confirm_new_password,
-        );
-
-        $field = array(
-            'password',
-        );
-
-
-        $desc = 'Edit profile success<br>';
-        $desc = $desc . $this->descriptionLog($dataLama->id, $field, $oldData, $newData);
-        ActivityLog::create([
-            'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
-            'username' => $before_data->username,
-            'application' => $routes,
-            'creator' => "System",
-            'ip_user' => $req->ip(),
-            'action' =>$action,
-            'description' => $desc,
-            'user_agent' => $req->server('HTTP_USER_AGENT')
-         ]);
-
-        //  if($req->old_password!= $req->confirm_new_password ){
-
-
-            $html = '<!DOCTYPE html>
-            <html lang="en">
-
-            <body>
-
-                <p>Dear ' . $dataLama->name . '</p>
-                <p>Your password has been changed in Myprofile.
-
-                <p>Thanks</p>
-
-            </body>
-
-            </html>';
-            EmailQueue::create([
-                'destination_email' =>  $dataLama->email,
-                'email_body' => $html,
-                'email_subject' => "Data Changed in myprofile",
-                'created_at' => Carbon::now()->TimeZone('asia/jakarta'),
-                'is_processed' => '0',
-            ]);
-        //  }
-
-
-        DB::commit();
-       } catch (\Exception $ex) {
-           DB::rollback();
-          return response()->json(['error' => $ex->getMessage()], 500);
-       }      
-        return redirect('/myprofile')->with('message', 'Edit password success!');
         }
-    }
 }
 
 

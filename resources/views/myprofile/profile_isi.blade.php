@@ -38,8 +38,7 @@
                     </div>
                     <div class="form-group">
                       <label for="password">password:</label>
-                      <input type="password" class="form-control" onmouseover="this.type='text'"
-                      onmouseout="this.type='password'" name="password" >
+                      <a href="{{ url('myprofile/edit_password') }}" class="btn btn-warning btn-sm">Edit Password</a>
                     </div>
 
                     <div class="form-group">
@@ -47,10 +46,14 @@
                         <input type="text" class="form-control" name="name" value="{{$profile_data -> name}}">
                       </div>
 
-                    <div class="form-group">
+                    <div class="form-group"> 
                         <label for="email">e-mail:</label>
                         <input type="email" class="form-control" name="email" value="{{$profile_data -> email}}" disabled>
+
+                        <a href="{{ url('myprofile/edit_email') }}" class="btn btn-warning btn-sm">Edit Email</a>
                       </div>
+
+                      
 
                       <div class="form-group">
                         <label for="phone">phone:</label>
