@@ -99,6 +99,9 @@ Route::get('/user/delete-user/{user}', 'UserController@deleteUser')->name('delet
 //     return view('welcome');
 // });
 
+Route::get('/studymaterial', 'StudyMaterialController@index');
+
+
 Route::get('/dashboard', 'AdminController@index');
 /**=============================Profile================================================== **/
 Route::get('/myprofile', 'ProfileController@display');

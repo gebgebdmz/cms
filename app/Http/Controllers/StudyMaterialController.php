@@ -22,47 +22,47 @@ class StudyMaterialController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
 
      public function index()
     {
-        $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
-        $routes = $matches[0];
-        $action = $matches[2];
-        if (Auth::check()) {
+    //     $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
+    //     $routes = $matches[0];
+    //     $action = $matches[2];
+    //     if (Auth::check()) {
 
-            $id = Auth::id();
-           DB::beginTransaction();
+    //         $id = Auth::id();
+    //        DB::beginTransaction();
 
-        try {
-           $profile_data = User::find($id);
-             ActivityLog::create([
+    //     try {
+    //        $profile_data = User::find($id);
+    //          ActivityLog::create([
 
-                'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
-                'username' => $profile_data->username,
-                'application' =>$routes,
-                'creator' => "System",
-                'ip_user' => $request->ip(),
-                'action' => $action,
-                'description' => $profile_data->username. " is looking study material",
-                'user_agent' => $request->server('HTTP_USER_AGENT')
-             ]);
+    //             'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
+    //             'username' => $profile_data->username,
+    //             'application' =>$routes,
+    //             'creator' => "System",
+    //             'ip_user' => $request->ip(),
+    //             'action' => $action,
+    //             'description' => $profile_data->username. " is looking study material",
+    //             'user_agent' => $request->server('HTTP_USER_AGENT')
+    //          ]);
 
-             DB::commit();
-            } catch (\Exception $ex) {
-                DB::rollback();
-            }
+    //          DB::commit();
+    //         } catch (\Exception $ex) {
+    //             DB::rollback();
+    //         }
 
-        // $pagination = TRUE;
+    //     // $pagination = TRUE;
         $studymaterial = StudyMaterial::Orderby('id')->get();
         return view('/studymaterial', ['studymaterial' => $studymaterial]);
-    }else {
+    // }else {
 
-        return view("login");
-    }
+    //     return view("login");
+    // }
     }
 
     /**
@@ -72,43 +72,6 @@ class StudyMaterialController extends Controller
      */
     public function create()
     {
-
-        $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
-        $routes = $matches[0];
-        $action = $matches[2];
-        if (Auth::check()) {
-
-            $id = Auth::id();
-           DB::beginTransaction();
-
-        try {
-           $profile_data = User::find($id);
-             ActivityLog::create([
-
-                'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
-                'username' => $profile_data->username,
-                'application' =>$routes,
-                'creator' => "System",
-                'ip_user' => $request->ip(),
-                'action' => $action,
-                'description' => $profile_data->username. " managed to add a app <br>The App is " . $request->app_name,
-                'user_agent' => $request->server('HTTP_USER_AGENT')
-             ]);
-
-             DB::commit();
-            } catch (\Exception $ex) {
-                DB::rollback();
-            }
-
-        StudyMaterial::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            ]);
-        return redirect('/studymaterial');
-    } else {
-
-        return view("login");
-    }
 
     }
 
