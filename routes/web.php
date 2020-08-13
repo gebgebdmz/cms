@@ -33,11 +33,7 @@ Route::post('reset-password-with-token', 'ResetPasswordController@resetPassword'
 
 
 Route::get('/', 'HomeController@display')->name('home');
-<<<<<<< HEAD
 Route::get('/store', 'StoreController@display');
-=======
-Route::post('home/loaddata', 'HomeController@loadDataAjax');
->>>>>>> 99bc531c8aa1159d46683d521888286c4b622da5
 
 // /**=============================dashboard================================================== **/
 Route::group(['middleware' => ['auth']], function () {
@@ -143,7 +139,6 @@ Route::get('/emailqueue', 'EmailQueueController@sendSMTP');
 Route::get('/logout', 'Auth\LoginController@logout');
 
 
-Route::get('/home', 'HomeController@index')->name('home');
 // menu====================================
 Route::group(['middleware' => ['auth']], function () {
 

@@ -17,9 +17,9 @@
                     Latest
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
-                    <a class="dropdown-item" href="#">Men</a>
-                    <a class="dropdown-item" href="#">Women</a>
-                    <a class="dropdown-item" href="#">Children</a>
+                    <a class="dropdown-item" href="#">Book</a>
+                    <a class="dropdown-item" href="#">Course</a>
+                    <a class="dropdown-item" href="#">Certificate</a>
                   </div>
                 </div>
                 <div class="btn-group">
