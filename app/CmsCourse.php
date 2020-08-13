@@ -10,6 +10,12 @@ class CmsCourse extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'id',
        'course_fullname','course_shortname','course_idnumber','course_category','course_duration'
     ];
+
+    public function cmsCU()
+    {
+        return $this->hasMany(CmsCourseUser::class, 'courseid' ,'id');
+    }
 }
