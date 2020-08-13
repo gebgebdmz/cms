@@ -37,7 +37,7 @@ Route::post('home/loaddata','HomeController@loadDataAjax' );
 
 // /**=============================dashboard================================================== **/
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/dashboard', 'AdminController@index');
+    Route::get('/dashboard', 'AdminController@index')->name('dashboard');
 
 });
 
