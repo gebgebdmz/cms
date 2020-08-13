@@ -9,7 +9,6 @@ class ActivityLog extends Model
     public $timestamps = false;
     protected $table = 'bas_activitylog';
     protected $fillable = [
-        'id',
         'inserted_date',
         'username',
         'application',
