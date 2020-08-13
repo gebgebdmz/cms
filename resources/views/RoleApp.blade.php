@@ -32,19 +32,9 @@
         <div class="row">
             <div class="col-12">
                 <!-- Modal -->
-                <div class="float-left">
-                    <div class="form-group mx-sm-3 mb-2">
-                        <form class="form-inline">
-
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#exampleModalCenter">
-                                <i class="ni ni-fat-add"></i>
-                            </button>
-                    </div>
-                    </form>
-                </div>
 
 
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal fade" id="ModalInsertData" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -61,7 +51,6 @@
                                     <div class="form-group">
                                         <label class="control-label">Role Name:</label>
                                         <select class="form-control select2bs4" data-placeholder="Choose Role Name" tabindex="1" name="role_name" style="width: 100%;" required>
-                                            <option value="">Choose Role Name.......</option>
                                             @foreach ($bas_role as $category)
                                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
@@ -71,7 +60,6 @@
                                     <div class="form-group">
                                         <label class="control-label">App Name:</label>
                                         <select class="form-control select2bs4" data-placeholder="Choose App Name" tabindex="1" name="app_name" style="width: 100%;" required>
-                                            <option value="">Choose App Name.......</option>
                                             @foreach ($bas_app as $category)
                                             <option value="{{ $category->app_name }}">{{ $category->app_name }}</option>
                                             @endforeach
@@ -80,15 +68,15 @@
 
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="ni ni-fat-remove"></i></button>
-                                <button type="submit" class="btn btn-primary"><i class="ni ni-check-bold"></i></button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel <i class="ni ni-fat-remove"></i></button>
+                                <button type="submit" class="btn btn-primary">Add Data<i class="ni ni-check-bold"></i></button>
                             </div>
                             </form>
                         </div>
                     </div>
                 </div>
 
-
+                <button type="button" class="btn btn-primary mb-2 float-right" data-toggle="modal" data-target="#ModalInsertData">Insert Data</button>
 
                 <table class="table table-striped" id="app">
                     <thead>
