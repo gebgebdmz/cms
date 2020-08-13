@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Bas_Role Page')
+@section('title', 'Bas_Cron Page')
 
 @section('content')
 <link  rel="stylesheet" href="{{ asset('css/breadcrumb.css') }}">
@@ -35,34 +35,13 @@
 
                 "processing": true,
                 "serverSide": true,
-                "ajax": "{{ route('ajaxdata.getrole') }}",
+                "ajax": "{{ route('ajaxdata.getcron') }}",
                 "lengthMenu" : [[20, 50, 100, 500, 1000, -1],[20, 50, 100, 500, 1000, "All"]],
                 "columns":[
                     { "data": "id" },
-                    { "data": "name" },
-                    { "data": "remark" },
-                    {
-                        sortable: false,
-                        "render": function ( data, type, full, meta ) {
-                        var buttonID = '/BasRole/'+full.id;
-                        return '<a href='+buttonID+' class="btn btn-info rolloverBtn" role="button">Details</a>';
-                        }
-                    },
+                    { "data": "app_name" },
+                    { "data": "is_running" }
 
-                    {
-                        sortable: false,
-                        "render": function ( data, type, full, meta ) {
-                        var buttonID = '/BasRole/Update/'+full.id;
-                        return '<a href='+buttonID+' class="btn btn-warning rolloverBtn" role="button">Update</a>';
-                        }
-                    },
-                    {
-                        sortable: false,
-                        "render": function ( data, type, full, meta ) {
-                        var buttonID = '/BasRole/Delete/'+full.id;
-                        return '<a href='+buttonID+' class="btn btn-warning rolloverBtn" role="button">Delete</a>';
-                        }
-                    },
 
 ]       
 });
@@ -71,13 +50,15 @@
  </script>   
 
 <div class="container">
+
+<!--
     <div class="col-md-3">
         <ul class="breadcrumb">
-            <li><a href="/BasRole">Display</a></li>
-            <li><a href="/BasRole/Insert">Insert</a></li>
+            <li><a href="/BasConfig">Display</a></li>
+            <li><a href="/BasConfig/Insert">Insert</a></li>
         </ul>
     </div>
-    
+    -->
     <!--
     <div class="col-md-10">
     -->
@@ -87,23 +68,28 @@
                 <thead class="thead-dark">
                     <tr >
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Remark</th>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <th>App_name</th>
+                        <th>is_running</th>
+
                     </tr>
                 </thead>
+
+                
                 <tfoot>
-                    <tr >
+                    <!--
+                    <tr>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Remark</th>
-                        <td></td>
+                        <th>Key</th>
+                        <th>Value</th>
+                        <th>Description</th>
                         <td></td>
                         <td></td>
                     </tr>
+
+    -->
                 </tfoot>
+
+    
             </table>
         </div>
 

@@ -152,6 +152,11 @@ Route::post('/BasRole/Insert', 'BasRoleController@store');
 Route::get('/BasRole/Delete/{BasRole}', 'BasRoleController@destroy');
 
 
+// Bas Cron 
+Route::get('/BasCron','BasCronController@index');
+Route::get('ajaxdata/getcron','BasCronController@getcron')->name('ajaxdata.getcron');
+
+
 // //cron email queue
 // Route::get('/send-mail', 'EmailQueueController@send');
 Route::get('/emailqueue', 'EmailQueueController@sendSMTP');
