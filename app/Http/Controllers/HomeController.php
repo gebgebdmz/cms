@@ -30,6 +30,9 @@ class HomeController extends Controller
     public function display(Request $request)
     {
 
+
+        // $la=env('APP_URL');
+        // dd($la);
         $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
         $routes = $matches[0];
         $action = $matches[2];
