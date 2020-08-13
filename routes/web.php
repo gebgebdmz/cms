@@ -158,7 +158,7 @@ Route::get('/BasRole/Delete/{BasRole}','BasRoleController@destroy');
 Route::get('/emailqueue', 'EmailQueueController@sendSMTP');
 
 //logout+destroy session
-Route::get('/logout','LoginController@logout');
+Route::get('/logout','Auth\LoginController@logout');
 
 
 Route::get('/home', 'HomeController@index')->name('home');
