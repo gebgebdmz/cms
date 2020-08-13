@@ -33,12 +33,11 @@ Route::post('reset-password-with-token', 'ResetPasswordController@resetPassword'
 
 
 Route::get('/', 'HomeController@display')->name('home');
-Route::post('home/loaddata','HomeController@loadDataAjax' );
+Route::post('home/loaddata', 'HomeController@loadDataAjax');
 
 // /**=============================dashboard================================================== **/
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', 'AdminController@index');
-
 });
 
 // /**=============================Activity-Log================================================== **/
@@ -119,38 +118,38 @@ Route::get('/verify_update_email/{token}', 'ProfileController@verify_update_emai
 // Route::get('/search','SearchController@search');
 
 
-// /**=============================RoleApp================================================== **/
-// Route::get('/roleapp', 'RoleAppController@display');
-// Route::post('/roleapp/create', 'RoleAppController@create');
-// Route::get('/roleapp/delete/{roleapp}', 'RoleAppController@delete');
-// Route::post('/roleapp/update/{id}', 'RoleAppController@update');
-// Route::get('ajaxdata/getapp','RoleAppController@getroleapp')->name('ajaxdata.getroleapp');
-// Route::get('/roleapp/search','RoleAppController@search');
+/**=============================RoleApp================================================== **/
+Route::get('/roleapp', 'RoleAppController@display');
+Route::post('/roleapp/create', 'RoleAppController@create');
+Route::get('/roleapp/delete/{roleapp}', 'RoleAppController@delete');
+Route::post('/roleapp/update/{id}', 'RoleAppController@update');
+Route::get('ajaxdata/getapp', 'RoleAppController@getroleapp')->name('ajaxdata.getroleapp');
+Route::get('/roleapp/search', 'RoleAppController@search');
 
 
 
 // //BasConfig
 
-Route::get('/BasConfig/Insert','BasConfigController@create');
+Route::get('/BasConfig/Insert', 'BasConfigController@create');
 
-Route::get('/BasConfig','BasConfigController@index');
-Route::get('/BasConfig/{BasConfig}','BasConfigController@show');
-Route::get('/BasConfig/Update/{BasConfig}','BasConfigController@edit');
+Route::get('/BasConfig', 'BasConfigController@index');
+Route::get('/BasConfig/{BasConfig}', 'BasConfigController@show');
+Route::get('/BasConfig/Update/{BasConfig}', 'BasConfigController@edit');
 
-Route::get('ajaxdata/getdata','BasConfigController@getdata')->name('ajaxdata.getdata');
-Route::patch('/BasConfig/Update/{BasConfig}','BasConfigController@update');
-Route::post('/BasConfig/Insert','BasConfigController@store');
+Route::get('ajaxdata/getdata', 'BasConfigController@getdata')->name('ajaxdata.getdata');
+Route::patch('/BasConfig/Update/{BasConfig}', 'BasConfigController@update');
+Route::post('/BasConfig/Insert', 'BasConfigController@store');
 
 // BasRole
 
-Route::get('/BasRole/Insert','BasRoleController@create');
-Route::get('/BasRole','BasRoleController@index');
-Route::get('/BasRole/{BasRole}','BasRoleController@show');
-Route::get('/BasRole/Update/{BasRole}','BasRoleController@edit');
-Route::get('ajaxdata/getrole','BasRoleController@getrole')->name('ajaxdata.getrole');
-Route::patch('/BasRole/Update/{BasRole}','BasRoleController@update');
-Route::post('/BasRole/Insert','BasRoleController@store');
-Route::get('/BasRole/Delete/{BasRole}','BasRoleController@destroy');
+Route::get('/BasRole/Insert', 'BasRoleController@create');
+Route::get('/BasRole', 'BasRoleController@index');
+Route::get('/BasRole/{BasRole}', 'BasRoleController@show');
+Route::get('/BasRole/Update/{BasRole}', 'BasRoleController@edit');
+Route::get('ajaxdata/getrole', 'BasRoleController@getrole')->name('ajaxdata.getrole');
+Route::patch('/BasRole/Update/{BasRole}', 'BasRoleController@update');
+Route::post('/BasRole/Insert', 'BasRoleController@store');
+Route::get('/BasRole/Delete/{BasRole}', 'BasRoleController@destroy');
 
 
 // //cron email queue
@@ -158,13 +157,13 @@ Route::get('/BasRole/Delete/{BasRole}','BasRoleController@destroy');
 Route::get('/emailqueue', 'EmailQueueController@sendSMTP');
 
 //logout+destroy session
-Route::get('/logout','Auth\LoginController@logout');
+Route::get('/logout', 'Auth\LoginController@logout');
 
 
 Route::get('/home', 'HomeController@index')->name('home');
 // menu====================================
 Route::group(['middleware' => ['auth']], function () {
-    
+
     Route::get('/menu', 'MenuController@index')->name('menu');
     Route::post('/menu/create', 'MenuController@create')->name('create');
     Route::get('/menu/destroy/{id}', 'MenuController@destroy');
@@ -173,6 +172,6 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::group(['prefix' => 'cms-course-user'], function () {
-    Route::get('/','CmsCourseUserController@index')->name('cms-course-user');
+    Route::get('/', 'CmsCourseUserController@index')->name('cms-course-user');
     Route::get('/ajaxdata/getcourseuser', 'CmsCourseController@getcourseUser')->name('ajaxdata.getcourseuser');
 });
