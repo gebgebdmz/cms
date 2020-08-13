@@ -33,7 +33,7 @@ Route::post('reset-password-with-token', 'ResetPasswordController@resetPassword'
 
 
 Route::get('/', 'HomeController@display')->name('home');
-Route::post('home/loaddata', 'HomeController@loadDataAjax');
+Route::get('/store', 'StoreController@display');
 
 // /**=============================dashboard================================================== **/
 Route::group(['middleware' => ['auth']], function () {
@@ -61,24 +61,6 @@ Route::post('/user/insert-user', 'UserController@insertUser');
 Route::post('/user/edit-user/{user}', 'UserController@updateUser')->name('editUser');
 Route::get('/user/delete-user/{user}', 'UserController@deleteUser')->name('deleteUser');
 
-// Route::group(['middleware' => ['auth','CheckRole:1']], function () {
-//     Route::resource('user-role','UserRoleController');
-//     Route::get('user-role/edit','UserRoleController@edit')->name('edit-user-role');
-//     Route::get('user-role/delete','UserRoleController@delete')->name('delete-user-role');
-//     Route::get('user-role/create', 'UserRoleController@create')->name('create-user-role');
-//     Route::post('user-role/update', 'UserRoleController@update')->name('user-role.update');
-//     Route::get('user-role/save', 'UserRoleController@destroy')->name('save');
-// });
-
-// // Route::group(['middleware' => ['auth','CheckRole:1']], function () {
-// //     Route::resource('user-role','UserRoleController');
-// //     Route::get('user-role/get','UserRoleController@get')->name('userloadjson');
-// //     Route::get('user-role/edit','UserRoleController@edit')->name('edit-user-role');
-// //     Route::get('user-role/delete','UserRoleController@delete')->name('delete-user-role');
-// //     Route::get('user-role/create', 'UserRoleController@create')->name('create-user-role');
-// //     Route::post('user-role/update', 'UserRoleController@update')->name('user-role.update');
-// //     Route::get('user-role/save', 'UserRoleController@destroy')->name('save');
-
 // /**=============================Application================================================== **/
 // Route::group(['middleware' => ['auth','CheckRole:1']], function () {
 //     Route::get('/app', 'appController@index');
@@ -103,10 +85,7 @@ Route::post('/myprofile', 'ProfileController@update');
 Route::post('/myprofile/update_email', 'ProfileController@update_email');
 Route::post('/myprofile/update_password', 'ProfileController@update_password');
 Route::get('/verify_update_email/{token}', 'ProfileController@verify_update_email');
-// Route::post('update_email_without_token', 'ProfileController@validateEmailRequest');
-// Route::post('update_email_with_token', 'ProfileController@updateEmail');
-//test session
-// Route::get('/testsession', 'ProfileController@testsession');
+
 
 // Route::post('/posts/search/role',['as'=>'search-role','uses'=>'RolesController@search']);
 // Route::get('/app', 'appController@index');
@@ -165,7 +144,6 @@ Route::get('/emailqueue', 'EmailQueueController@sendSMTP');
 Route::get('/logout', 'Auth\LoginController@logout');
 
 
-Route::get('/home', 'HomeController@index')->name('home');
 // menu====================================
 Route::group(['middleware' => ['auth']], function () {
 
