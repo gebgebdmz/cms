@@ -73,8 +73,8 @@
 <div class="container">
     <div class="col-md-3">
         <ul class="breadcrumb">
-            <li><a href="/BasConfig">Display</a></li>
-            <li><a href="/BasConfig/Insert">Insert</a></li>
+            <li><a href="/BasRole">Display</a></li>
+            <li><a href="/BasRole/Insert">Insert</a></li>
         </ul>
     </div>
     

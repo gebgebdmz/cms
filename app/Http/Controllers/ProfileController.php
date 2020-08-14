@@ -555,6 +555,8 @@ public function update_email(Request $req)
         'email' => 'required|string|max:255|email:rfc,dns',
     ]);
 
+
+
     if ($validator->fails()) {
         $desc = 'Failed to change email';
         DB::beginTransaction();
@@ -731,7 +733,7 @@ public function update_email(Request $req)
     {
        // die('rollback die');
         $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
-        $routes = $matches[0];
+         $routes = $matches[0];
         function makeLog($routes, $request, $desc, $username)
         {
             return ActivityLog::create([

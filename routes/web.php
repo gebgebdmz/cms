@@ -33,12 +33,11 @@ Route::post('reset-password-with-token', 'ResetPasswordController@resetPassword'
 
 
 Route::get('/', 'HomeController@display')->name('home');
-Route::post('home/loaddata','HomeController@loadDataAjax' );
+Route::get('/store', 'StoreController@display');
 
 // /**=============================dashboard================================================== **/
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/dashboard', 'AdminController@index');
-
 });
 
 // /**=============================Activity-Log================================================== **/
@@ -61,24 +60,6 @@ Route::get('/user/get-data', 'UserController@getDataUser')->name('user.getData')
 Route::post('/user/insert-user', 'UserController@insertUser');
 Route::post('/user/edit-user/{user}', 'UserController@updateUser')->name('editUser');
 Route::get('/user/delete-user/{user}', 'UserController@deleteUser')->name('deleteUser');
-
-// Route::group(['middleware' => ['auth','CheckRole:1']], function () {
-//     Route::resource('user-role','UserRoleController');
-//     Route::get('user-role/edit','UserRoleController@edit')->name('edit-user-role');
-//     Route::get('user-role/delete','UserRoleController@delete')->name('delete-user-role');
-//     Route::get('user-role/create', 'UserRoleController@create')->name('create-user-role');
-//     Route::post('user-role/update', 'UserRoleController@update')->name('user-role.update');
-//     Route::get('user-role/save', 'UserRoleController@destroy')->name('save');
-// });
-
-// // Route::group(['middleware' => ['auth','CheckRole:1']], function () {
-// //     Route::resource('user-role','UserRoleController');
-// //     Route::get('user-role/get','UserRoleController@get')->name('userloadjson');
-// //     Route::get('user-role/edit','UserRoleController@edit')->name('edit-user-role');
-// //     Route::get('user-role/delete','UserRoleController@delete')->name('delete-user-role');
-// //     Route::get('user-role/create', 'UserRoleController@create')->name('create-user-role');
-// //     Route::post('user-role/update', 'UserRoleController@update')->name('user-role.update');
-// //     Route::get('user-role/save', 'UserRoleController@destroy')->name('save');
 
 // /**=============================Application================================================== **/
 // Route::group(['middleware' => ['auth','CheckRole:1']], function () {
@@ -110,48 +91,50 @@ Route::post('/myprofile', 'ProfileController@update');
 Route::post('/myprofile/update_email', 'ProfileController@update_email');
 Route::post('/myprofile/update_password', 'ProfileController@update_password');
 Route::get('/verify_update_email/{token}', 'ProfileController@verify_update_email');
-// Route::post('update_email_without_token', 'ProfileController@validateEmailRequest');
-// Route::post('update_email_with_token', 'ProfileController@updateEmail');
-//test session
-// Route::get('/testsession', 'ProfileController@testsession');
+
 
 // Route::post('/posts/search/role',['as'=>'search-role','uses'=>'RolesController@search']);
 // // Route::post('/posts/search/role', ['as' => 'search-role', 'uses' => 'RolesController@search']);
 // Route::get('/search','SearchController@search');
 
 
-// /**=============================RoleApp================================================== **/
-// Route::get('/roleapp', 'RoleAppController@display');
-// Route::post('/roleapp/create', 'RoleAppController@create');
-// Route::get('/roleapp/delete/{roleapp}', 'RoleAppController@delete');
-// Route::post('/roleapp/update/{id}', 'RoleAppController@update');
-// Route::get('ajaxdata/getapp','RoleAppController@getroleapp')->name('ajaxdata.getroleapp');
-// Route::get('/roleapp/search','RoleAppController@search');
+/**=============================RoleApp================================================== **/
+Route::get('/roleapp', 'RoleAppController@display');
+Route::post('/roleapp/create', 'RoleAppController@create');
+Route::get('/roleapp/delete/{roleapp}', 'RoleAppController@delete');
+Route::post('/roleapp/update/{id}', 'RoleAppController@update');
+Route::get('ajaxdata/getapp', 'RoleAppController@getroleapp')->name('ajaxdata.getroleapp');
+Route::get('/roleapp/search', 'RoleAppController@search');
 
 
 
 // //BasConfig
 
-Route::get('/BasConfig/Insert','BasConfigController@create');
+Route::get('/BasConfig/Insert', 'BasConfigController@create');
 
-Route::get('/BasConfig','BasConfigController@index');
-Route::get('/BasConfig/{BasConfig}','BasConfigController@show');
-Route::get('/BasConfig/Update/{BasConfig}','BasConfigController@edit');
+Route::get('/BasConfig', 'BasConfigController@index');
+Route::get('/BasConfig/{BasConfig}', 'BasConfigController@show');
+Route::get('/BasConfig/Update/{BasConfig}', 'BasConfigController@edit');
 
-Route::get('ajaxdata/getdata','BasConfigController@getdata')->name('ajaxdata.getdata');
-Route::patch('/BasConfig/Update/{BasConfig}','BasConfigController@update');
-Route::post('/BasConfig/Insert','BasConfigController@store');
+Route::get('ajaxdata/getdata', 'BasConfigController@getdata')->name('ajaxdata.getdata');
+Route::patch('/BasConfig/Update/{BasConfig}', 'BasConfigController@update');
+Route::post('/BasConfig/Insert', 'BasConfigController@store');
 
 // BasRole
 
-Route::get('/BasRole/Insert','BasRoleController@create');
-Route::get('/BasRole','BasRoleController@index');
-Route::get('/BasRole/{BasRole}','BasRoleController@show');
-Route::get('/BasRole/Update/{BasRole}','BasRoleController@edit');
-Route::get('ajaxdata/getrole','BasRoleController@getrole')->name('ajaxdata.getrole');
-Route::patch('/BasRole/Update/{BasRole}','BasRoleController@update');
-Route::post('/BasRole/Insert','BasRoleController@store');
-Route::get('/BasRole/Delete/{BasRole}','BasRoleController@destroy');
+Route::get('/BasRole/Insert', 'BasRoleController@create');
+Route::get('/BasRole', 'BasRoleController@index');
+Route::get('/BasRole/{BasRole}', 'BasRoleController@show');
+Route::get('/BasRole/Update/{BasRole}', 'BasRoleController@edit');
+Route::get('ajaxdata/getrole', 'BasRoleController@getrole')->name('ajaxdata.getrole');
+Route::patch('/BasRole/Update/{BasRole}', 'BasRoleController@update');
+Route::post('/BasRole/Insert', 'BasRoleController@store');
+Route::get('/BasRole/Delete/{BasRole}', 'BasRoleController@destroy');
+
+
+// Bas Cron 
+Route::get('/BasCron','BasCronController@index');
+Route::get('ajaxdata/getcron','BasCronController@getcron')->name('ajaxdata.getcron');
 
 
 // //cron email queue
@@ -159,13 +142,12 @@ Route::get('/BasRole/Delete/{BasRole}','BasRoleController@destroy');
 Route::get('/emailqueue', 'EmailQueueController@sendSMTP');
 
 //logout+destroy session
-Route::get('/logout','LoginController@logout');
+Route::get('/logout', 'Auth\LoginController@logout');
 
 
-Route::get('/home', 'HomeController@index')->name('home');
 // menu====================================
 Route::group(['middleware' => ['auth']], function () {
-    
+
     Route::get('/menu', 'MenuController@index')->name('menu');
     Route::post('/menu/create', 'MenuController@create')->name('create');
     Route::get('/menu/destroy/{id}', 'MenuController@destroy');
@@ -174,6 +156,6 @@ Route::group(['middleware' => ['auth']], function () {
 });
 
 Route::group(['prefix' => 'cms-course-user'], function () {
-    Route::get('/','CmsCourseUserController@index')->name('cms-course-user');
+    Route::get('/', 'CmsCourseUserController@index')->name('cms-course-user');
     Route::get('/ajaxdata/getcourseuser', 'CmsCourseController@getcourseUser')->name('ajaxdata.getcourseuser');
 });

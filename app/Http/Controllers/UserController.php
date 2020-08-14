@@ -22,143 +22,151 @@ class UserController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('auth');
     }
 
     public function index()
     {
-        $users = DB::table('bas_user')
-            ->select('bas_user.id', 'bas_user.username', 'bas_user.password', 'bas_user.name', 'bas_user.email', 'bas_user.phone', 'bas_user.address', 'bas_user.is_active', 'bas_user.activation_code', 'bas_user.priv_admin', DB::raw("'-' as role"))
-            ->get();
-        $listRole = DB::table('bas_role')->get();
+        if (Auth::check()) {
+            $users = DB::table('bas_user')
+                ->select('bas_user.id', 'bas_user.username', 'bas_user.password', 'bas_user.name', 'bas_user.email', 'bas_user.phone', 'bas_user.address', 'bas_user.is_active', 'bas_user.activation_code', 'bas_user.priv_admin', DB::raw("'-' as role"))
+                ->get();
+            $listRole = DB::table('bas_role')->get();
 
-        // Ambil data user dengan role
-        $role = DB::table('bas_user_role')->get();
-        $newUsers = array();
-        foreach ($users as $user) {
-            $strRole = '';
-            $roles = DB::table('bas_user_role')->where('user_id', $user->id)->get();
-            if (count($roles) > 0) {
-                foreach ($roles as $role) {
-                    $roleName = DB::table('bas_role')->where('id', $role->role_id)->get();
-                    $strRole = $strRole . $roleName[0]->name . '|';
+            // Ambil data user dengan role
+            $role = DB::table('bas_user_role')->get();
+            $newUsers = array();
+            foreach ($users as $user) {
+                $strRole = '';
+                $roles = DB::table('bas_user_role')->where('user_id', $user->id)->get();
+                if (count($roles) > 0) {
+                    foreach ($roles as $role) {
+                        $roleName = DB::table('bas_role')->where('id', $role->role_id)->get();
+                        $strRole = $strRole . $roleName[0]->name . '|';
+                    }
+
+                    $user->role = $strRole;
+                    array_push($newUsers, $user);
+                } else {
+                    array_push($newUsers, $user);
                 }
-
-                $user->role = $strRole;
-                array_push($newUsers, $user);
-            } else {
-                array_push($newUsers, $user);
             }
+            return view('user', ['users' => $newUsers, 'roles' => $listRole]);
+        } else {
+            return view("login");
         }
-        return view('user', ['users' => $newUsers, 'roles' => $listRole]);
     }
 
     public function insertUser(Request $request)
     {
-        $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
-        $routes = $matches[0];
-        $action = $matches[2];
+        if (Auth::check()) {
+            $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
+            $routes = $matches[0];
+            $action = $matches[2];
 
-        $desc = 'admin is trying to add user';
-        $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:bas_user'],
-            'address' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'numeric', 'min:11'],
-            'username' => ['required', 'string', 'max:255'],
-            'password' => ['required', 'string', 'min:8'],
-        ]);
-
-        if ($validator->fails()) {
-            $desc = 'admin failed to add a user';
-            try {
-                ActivityLog::create([
-                    'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
-                    // 'username' => $profile_data->username,
-                    'username' => 'developing_user',
-                    'application' => $routes,
-                    'creator' => "ADMIN",
-                    'ip_user' => $request->ip(),
-                    'action' => $action,
-                    'description' => $desc,
-                    'user_agent' => $request->server('HTTP_USER_AGENT')
-                ]);
-
-                DB::commit();
-            } catch (\Exception $ex) {
-                DB::rollback();
-            }
-            return redirect('/user')
-                ->withErrors($validator)
-                ->withInput();
-        }
-        $dns = explode("@", $request->email);
-        if (checkdnsrr($dns[1], "MX")) {
-            // insert data ke table pegawai
-            $activationCode = substr(sha1($request->email), 0, 32);
-            User::create([
-                'name' => $request->name,
-                'username' => $request->username,
-                'password' => Hash::make($request->password),
-                'email' => "No Valid Email Found",
-                'phone' => $request->phone,
-                'address' => $request->address,
-                'is_active' => $request->is_active,
-                'activation_code' => $activationCode,
-                'priv_admin' => '0',
-                'is_email_valid' => '0',
-                'new_email_candidate' => $request->email
+            $desc = 'admin is trying to add user';
+            $validator = Validator::make($request->all(), [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:bas_user'],
+                'address' => ['required', 'string', 'max:255'],
+                'phone' => ['required', 'numeric', 'min:11'],
+                'username' => ['required', 'string', 'max:255', 'unique:bas_user'],
+                'password' => ['required', 'string', 'min:8'],
             ]);
 
-            // insert role untuk user
-            $lastUserId = User::max('id');
-            $roleUser = $request->role;
-            foreach ($roleUser as $role) {
-                DB::table('bas_user_role')->insert([
-                    'role_id' => $role,
-                    'user_id' => $lastUserId
-                ]);
+            if ($validator->fails()) {
+                $desc = 'admin failed to add a user';
+                try {
+                    ActivityLog::create([
+                        'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
+                        // 'username' => $profile_data->username,
+                        'username' => 'developing_user',
+                        'application' => $routes,
+                        'creator' => "ADMIN",
+                        'ip_user' => $request->ip(),
+                        'action' => $action,
+                        'description' => $desc,
+                        'user_agent' => $request->server('HTTP_USER_AGENT')
+                    ]);
+
+                    DB::commit();
+                } catch (\Exception $ex) {
+                    DB::rollback();
+                }
+                return redirect('/user')
+                    ->withErrors($validator)
+                    ->withInput();
             }
-
-            // Kirim email ke user
-            // $html = '<!DOCTYPE html>
-            // <html lang="en">
-            //     <body>
-            //         <p>Dear ' . $request->name . '</p>
-            //         <p>Your account has been created, please activate your account by clicking this link</p>
-            //         <p><a href="' . route("userVerify", ['email' => $request->email, 'code' => $activationCode]) . '">Click Here</a></p>
-            //         <p>Thanks</p>
-            //     </body>
-            // </html>';
-            // EmailQueue::create([
-            //     'destination_email' => $request->email,
-            //     'email_body' => $html,
-            //     'email_subject' => "Email Verification for New User, Created in Display User",
-            //     'created_at' => Carbon::now()->TimeZone('asia/jakarta'),
-            //     'is_processed' => '0',
-            // ]);
-
-            $desc = 'admin managed to add a user<br>The user is ' . $request->username;
-
-            try {
-                ActivityLog::create([
-
-                    'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
-                    // 'username' => $profile_data->username,
-                    'username' => "develope_user",
-                    'application' => $routes,
-                    'creator' => "ADMIN",
-                    'ip_user' => $request->ip(),
-                    'action' => $action,
-                    'description' => $desc,
-                    'user_agent' => $request->server('HTTP_USER_AGENT')
+            $dns = explode("@", $request->email);
+            if (checkdnsrr($dns[1], "MX")) {
+                // insert data ke table pegawai
+                $activationCode = substr(sha1($request->email), 0, 32);
+                User::create([
+                    'name' => $request->name,
+                    'username' => $request->username,
+                    'password' => Hash::make($request->password),
+                    'email' => "No Valid Email Found",
+                    'phone' => $request->phone,
+                    'address' => $request->address,
+                    'is_active' => $request->is_active,
+                    'activation_code' => $activationCode,
+                    'priv_admin' => '0',
+                    'is_email_valid' => '0',
+                    'new_email_candidate' => $request->email
                 ]);
 
-                DB::commit();
-            } catch (\Exception $ex) {
-                DB::rollback();
+                // insert role untuk user
+                $lastUserId = User::max('id');
+                $roleUser = $request->role;
+                foreach ($roleUser as $role) {
+                    DB::table('bas_user_role')->insert([
+                        'role_id' => $role,
+                        'user_id' => $lastUserId
+                    ]);
+                }
+
+                // Kirim email ke user
+                $html = '<!DOCTYPE html>
+                <html lang="en">
+                    <body>
+                        <p>Dear ' . $request->name . '</p>
+                        <p>Your account has been created, please activate your account by clicking this link</p>
+                        <p><a href="' . route("userVerify", ['email' => $request->email, 'code' => $activationCode]) . '">Click Here</a></p>
+                        <p>Thanks</p>
+                    </body>
+                </html>';
+                EmailQueue::create([
+                    'destination_email' => $request->email,
+                    'email_body' => $html,
+                    'email_subject' => "Email Verification for New User, Created in Display User",
+                    'created_at' => Carbon::now()->TimeZone('asia/jakarta'),
+                    'is_processed' => '0',
+                ]);
+
+                $desc = 'admin managed to add a user<br>The user is ' . $request->username;
+
+                try {
+                    ActivityLog::create([
+
+                        'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
+                        'username' => $profile_data->username,
+                        'application' => $routes,
+                        'creator' => "ADMIN",
+                        'ip_user' => $request->ip(),
+                        'action' => $action,
+                        'description' => $desc,
+                        'user_agent' => $request->server('HTTP_USER_AGENT')
+                    ]);
+
+                    DB::commit();
+                } catch (\Exception $ex) {
+                    DB::rollback();
+                }
+                // alihkan halaman ke halaman pegawai
+                return redirect('/user');
             }
-            // alihkan halaman ke halaman pegawai
-            return redirect('/user');
+        } else {
+            return view("login");
         }
     }
 
@@ -168,9 +176,9 @@ class UserController extends Controller
         $routes = $matches[0];
         $action = $matches[2];
 
-        if (TRUE) {
-            // $id = Auth::id();
-            // $profile_data = User::find($id);
+        if (Auth::check()) {
+            $id = Auth::id();
+            $profile_data = User::find($id);
             $dataLama = User::find($idDataUpdate);
 
             // ambil role lama
@@ -227,8 +235,7 @@ class UserController extends Controller
                     ActivityLog::create([
 
                         'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
-                        'username' => 'develope_mode',
-                        // 'username' => $profile_data->username,
+                        'username' => $profile_data->username,
                         'application' => $routes,
                         'creator' => "ADMIN",
                         'ip_user' => $request->ip(),
@@ -251,8 +258,7 @@ class UserController extends Controller
                 try {
                     ActivityLog::create([
                         'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
-                        'username' => 'develope_mode',
-                        // 'username' => $profile_data->username,
+                        'username' => $profile_data->username,
                         'application' => $routes,
                         'creator' => "ADMIN",
                         'ip_user' => $request->ip(),
@@ -302,7 +308,7 @@ class UserController extends Controller
         $routes = $matches[0];
         $action = $matches[2];
 
-        if (TRUE) {
+        if (Auth::check()) {
             $id = Auth::id();
             $profile_data = User::find($id);
             DB::beginTransaction();

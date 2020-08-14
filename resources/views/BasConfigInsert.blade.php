@@ -13,17 +13,22 @@
                 </ul>
             </div>
             <div class="col-md-8">
-                <form  action="/BasRole/Insert" method="post" > 
+                <form  action="/BasConfig/Insert" method="post" > 
                 @csrf
 
                     <div class="form-group">
-                        <label>Name:</label>
-                        <input type="text" class="form-control" name="name"  >
+                        <label>Key:</label>
+                        <input type="text" class="form-control" name="key"  >
                     </div>
                     <div class="form-group">
-                        <label>Remark:</label>
-                        <input type="text" class="form-control" name="remark"   >
+                        <label>Value:</label>
+                        <input type="text" class="form-control" name="value"   >
                     </div>
+                    <div class="form-group">
+                        <label>Description:</label>
+                        <input type="text" class="form-control" name="description"  >
+                    </div>
+                   
                   
                     <button type="submit" class="btn btn-default" > Insert </button>
                 </form>
