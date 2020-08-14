@@ -33,14 +33,13 @@ Route::post('reset-password-with-token', 'ResetPasswordController@resetPassword'
 
 
 Route::get('/', 'HomeController@display')->name('home');
-Route::get('/fetch_data', 'HomeController@fetch_data');
-
+Route::post('home/loaddata','HomeController@loadDataAjax' );
 
 // /**=============================dashboard================================================== **/
-// Route::group(['middleware' => ['auth']], function () {
-//     Route::get('/dashboard', 'AdminController@index');
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/dashboard', 'AdminController@index');
 
-// });
+});
 
 // /**=============================Activity-Log================================================== **/
 
@@ -92,7 +91,7 @@ Route::get('/user/delete-user/{user}', 'UserController@deleteUser')->name('delet
 
 /**=============================EmailQueue================================================== **/
 // Route::group(['middleware' => ['auth','CheckRole:1']], function () {
-    Route::get('/emailqueue', 'EmailQueueController@index');
+    Route::get('/email', 'EmailQueueController@index');
     Route::get('/ajaxdata/get-email','EmailQueueController@getEmail')->name('ajaxdata.email');
     // });
 // Route::get('/', function () {
@@ -105,7 +104,11 @@ Route::get('/studymaterial', 'StudyMaterialController@index');
 Route::get('/dashboard', 'AdminController@index');
 /**=============================Profile================================================== **/
 Route::get('/myprofile', 'ProfileController@display');
+Route::get('/myprofile/edit_email', 'ProfileController@edit_email');
+Route::get('/myprofile/edit_password', 'ProfileController@edit_password');
 Route::post('/myprofile', 'ProfileController@update');
+Route::post('/myprofile/update_email', 'ProfileController@update_email');
+Route::post('/myprofile/update_password', 'ProfileController@update_password');
 Route::get('/verify_update_email/{token}', 'ProfileController@verify_update_email');
 // Route::post('update_email_without_token', 'ProfileController@validateEmailRequest');
 // Route::post('update_email_with_token', 'ProfileController@updateEmail');
@@ -113,11 +116,6 @@ Route::get('/verify_update_email/{token}', 'ProfileController@verify_update_emai
 // Route::get('/testsession', 'ProfileController@testsession');
 
 // Route::post('/posts/search/role',['as'=>'search-role','uses'=>'RolesController@search']);
-// Route::get('/app', 'appController@index');
-// Route::post('/app/create', 'appController@create');
-// Route::get('/destroy/{app_id}', 'appController@destroy');
-// Route::post('/update/{app_id}', 'appController@update');
-// Route::get('ajaxdata/getapp','appController@getapp')->name('ajaxdata.getapp');
 // // Route::post('/posts/search/role', ['as' => 'search-role', 'uses' => 'RolesController@search']);
 // Route::get('/search','SearchController@search');
 
@@ -161,10 +159,21 @@ Route::get('/BasRole/Delete/{BasRole}','BasRoleController@destroy');
 Route::get('/emailqueue', 'EmailQueueController@sendSMTP');
 
 //logout+destroy session
-Route::get('/logout','Auth\LoginController@logout');
+Route::get('/logout','LoginController@logout');
 
-Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+// menu====================================
+Route::group(['middleware' => ['auth']], function () {
+    
+    Route::get('/menu', 'MenuController@index')->name('menu');
+    Route::post('/menu/create', 'MenuController@create')->name('create');
+    Route::get('/menu/destroy/{id}', 'MenuController@destroy');
+    Route::post('/menu/update/{id}', 'MenuController@update');
+    Route::get('/ajaxdata/getdata', 'MenuController@getData')->name('ajaxdata.datajax');
+});
 
-Route::get('/menu', 'MenuController@index')->name('menu');
+Route::group(['prefix' => 'cms-course-user'], function () {
+    Route::get('/','CmsCourseUserController@index')->name('cms-course-user');
+    Route::get('/ajaxdata/getcourseuser', 'CmsCourseController@getcourseUser')->name('ajaxdata.getcourseuser');
+});

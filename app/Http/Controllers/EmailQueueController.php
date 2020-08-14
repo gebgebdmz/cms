@@ -20,42 +20,48 @@ use DataTables;
 class EmailQueueController extends Controller
 {
 
+    public function __construct()
+    {
+       $this->middleware(['auth', 'verified']);
+        //  $this->middleware('auth');
+    }
+
     public function index(Request $request){
-    //     $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
-    //     $routes = $matches[0];
-    //     $action = $matches[2];
-    //     if (Auth::check()) {
+        $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
+        $routes = $matches[0];
+        $action = $matches[2];
+        if (Auth::check()) {
 
-    //         $id = Auth::id();
-    //        DB::beginTransaction();
+            $id = Auth::id();
+           DB::beginTransaction();
 
-    //     try {
-    //        $profile_data = User::find($id);
-    //          ActivityLog::create([
+        try {
+           $profile_data = User::find($id);
+             ActivityLog::create([
 
-    //             'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
-    //             'username' => $profile_data->username,
-    //             'application' =>$routes,
-    //             'creator' => "System",
-    //             'ip_user' => $request->ip(),
-    //             'action' => $action,
-    //             'description' => $profile_data->username. " is looking email queue",
-    //             'user_agent' => $request->server('HTTP_USER_AGENT')
-    //          ]);
+                'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
+                'username' => $profile_data->username,
+                'application' =>$routes,
+                'creator' => "System",
+                'ip_user' => $request->ip(),
+                'action' => $action,
+                'description' => $profile_data->username. " is looking email queue",
+                'user_agent' => $request->server('HTTP_USER_AGENT')
+             ]);
 
-    //          DB::commit();
-    //         } catch (\Exception $ex) {
-    //             DB::rollback();
-    //         }
+             DB::commit();
+            } catch (\Exception $ex) {
+                DB::rollback();
+            }
 
-    //     // $pagination = TRUE;
-        
-    // }else {
-
-    //     return view("login");
-    // }
-    $emailqueue =  EmailQueue::Orderby('id')->get();
+        // $pagination = TRUE;
+        $emailqueue =  EmailQueue::Orderby('id')->get();
         return view('emailqueue', ['emailqueue' => $emailqueue]);
+    }else {
+
+        return view("login");
+    }
+    
     }
 
     public function getEmail()
@@ -126,19 +132,56 @@ class EmailQueueController extends Controller
             return response()->json(['error' => $ex->getMessage()], 500);
         }
 
-        $cronState= Cron::where('app_name',$routes)->first();
+        if(Cron::where('app_name',$routes)->exists()) {
+            $cronState= Cron::where('app_name',$routes)->first();
 
-        if($cronState->is_running==1) {
-            return 'cron still running';
-            die();
+            if($cronState->is_running==1) {
+                return 'cron still running';
+                die();
+            }
 
+            Cron::where('app_name',$routes)->update(['is_running'=>1]);
+
+        }  
+        else {
+            DB::beginTransaction();
+            try {
+                Cron::create([
+                    'app_name'=>$routes,
+                    'is_running'=> 0
+                ]);
+                DB::commit();
+            } catch (\Exception $ex) {
+                DB::rollback();
+                Cron::where('app_name',$routes)->update(['is_running'=>0]);
+                return response()->json(['error' => $ex->getMessage()], 500);
+            }
+
+            Cron::where('app_name',$routes)->update(['is_running'=>1]);
         }
-
-        Cron::where('app_name',$routes)->update(['is_running'=>1]);
-
+        
         $key = 'EmailLimit';
-        $config = BasConfig::where('key',$key)->first();
-        $limit = intval($config->value);
+        if(BasConfig::where('key',$key)->exists()) {
+            $config = BasConfig::where('key',$key)->first();
+            $limit = intval($config->value);
+        } else {
+            DB::beginTransaction();
+            try {
+                BasConfig::create([
+                    'key'=> $key,
+                    'value'=> 5,
+                    'description' => 'Limit email sent every second one cron execution'
+                ]);
+                DB::commit();
+            } catch (\Exception $ex) {
+                DB::rollback();
+                Cron::where('app_name',$routes)->update(['is_running'=>0]);
+                return response()->json(['error' => $ex->getMessage()], 500);
+            }
+
+            $config = BasConfig::where('key',$key)->first();
+            $limit = intval($config->value);
+        }
 
         $emailQueues=EmailQueue::where('is_processed',0)
                     ->orderBy('created_at','asc')

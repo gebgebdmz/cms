@@ -19,52 +19,53 @@ class AppController extends Controller
 {
 
 
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+
+     
     public function index(Request $request)
     {
-    //     $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
-    //     $routes = $matches[0];
-    //     $action = $matches[2];
-    //     if (Auth::check()) {
+        $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
+        $routes = $matches[0];
+        $action = $matches[2];
+        if (Auth::check()) {
 
-    //         $id = Auth::id();
-    //        DB::beginTransaction();
+            $id = Auth::id();
+           DB::beginTransaction();
 
-    //     try {
-    //        $profile_data = User::find($id);
-    //          ActivityLog::create([
+        try {
+           $profile_data = User::find($id);
+             ActivityLog::create([
 
-    //             'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
-    //             'username' => $profile_data->username,
-    //             'application' =>$routes,
-    //             'creator' => "System",
-    //             'ip_user' => $request->ip(),
-    //             'action' => $action,
-    //             'description' => $profile_data->username. " is looking app",
-    //             'user_agent' => $request->server('HTTP_USER_AGENT')
-    //          ]);
+                'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
+                'username' => $profile_data->username,
+                'application' =>$routes,
+                'creator' => "System",
+                'ip_user' => $request->ip(),
+                'action' => $action,
+                'description' => $profile_data->username. " is looking app",
+                'user_agent' => $request->server('HTTP_USER_AGENT')
+             ]);
 
-    //          DB::commit();
-    //         } catch (\Exception $ex) {
-    //             DB::rollback();
-    //         }
+             DB::commit();
+            } catch (\Exception $ex) {
+                DB::rollback();
+            }
 
-    //     // $pagination = TRUE;
-    
-    // }else {
-        
-    //     // return view("login");
-    // }
-    $app = App::Orderby('id')->get();
+        // $pagination = TRUE;
+        $app = App::Orderby('id')->get();
         return view('/Showapp', ['app' => $app]);
+    }else {
+        return view("login");
+    }
+    
     }
 
 
@@ -170,68 +171,68 @@ class AppController extends Controller
      */
     public function update(Request $request, $id)
     {
-    //     $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
-    //     $routes = $matches[0];
-    //     $action = $matches[2];
-    //     if (Auth::check()) {
+        $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
+        $routes = $matches[0];
+        $action = $matches[2];
+        if (Auth::check()) {
 
-    //         $idd = Auth::id();
-    //        DB::beginTransaction();
-    //        $dataLama = App::find($id);
-    //        $oldData = array(
-    //            $dataLama->app_name,
-    //            $dataLama->app_type,
-    //            $dataLama->description,
-    //            $dataLama->menu_name,
-    //            $dataLama->menu_url,
-    //        );
-    //        $newData = array(
-    //            $request->app_name,
-    //            $request->app_type,
-    //            $request->description,
-    //            $request->menu_name,
-    //            $request->menu_url,
-    //        );
+            $idd = Auth::id();
+           DB::beginTransaction();
+           $dataLama = App::find($id);
+           $oldData = array(
+               $dataLama->app_name,
+               $dataLama->app_type,
+               $dataLama->description,
+               $dataLama->menu_name,
+               $dataLama->menu_url,
+           );
+           $newData = array(
+               $request->app_name,
+               $request->app_type,
+               $request->description,
+               $request->menu_name,
+               $request->menu_url,
+           );
 
-    //        $temp = array(
-    //            'app_name',
-    //            'app_type',
-    //            'description',
-    //            'menu_name',
-    //            'menu_url',
-    //        );
+           $temp = array(
+               'app_name',
+               'app_type',
+               'description',
+               'menu_name',
+               'menu_url',
+           );
 
-    //     try {
-    //        $profile_data = User::find($idd);
-    //        $desc = $profile_data->username. ' successfully changed app data<br>';
-    //        $descc = $desc . $this->descriptionLog($dataLama->id, $temp, $oldData, $newData);
-    //          ActivityLog::create([
+        try {
+           $profile_data = User::find($idd);
+           $desc = $profile_data->username. ' successfully changed app data<br>';
+           $descc = $desc . $this->descriptionLog($dataLama->id, $temp, $oldData, $newData);
+             ActivityLog::create([
 
-    //             'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
-    //             'username' => $profile_data->username,
-    //             'application' =>$routes,
-    //             'creator' => "System",
-    //             'ip_user' => $request->ip(),
-    //             'action' => $action,
-    //             'description' => $descc,
-    //             'user_agent' => $request->server('HTTP_USER_AGENT')
-    //          ]);
+                'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
+                'username' => $profile_data->username,
+                'application' =>$routes,
+                'creator' => "System",
+                'ip_user' => $request->ip(),
+                'action' => $action,
+                'description' => $descc,
+                'user_agent' => $request->server('HTTP_USER_AGENT')
+             ]);
 
-    //          DB::commit();
-    //         } catch (\Exception $ex) {
-    //             DB::rollback();
-    //         }
+             DB::commit();
+            } catch (\Exception $ex) {
+                DB::rollback();
+            }
 
-        App::where('id', $id)
+            App::where('id', $id)
             ->update(array('app_name' => $request->app_name, 'app_type' => $request->app_type,
              'description' => $request->description,'menu_name'=> $request->menu_name,'menu_url'=>
              $request->menu_url));
 
         return redirect('/app');
-    // } else {
+    } else {
 
-    //     return view("login");
-    // }
+        return view("login");
+    }
     }
 
     /**
@@ -240,7 +241,7 @@ class AppController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-        public function destroy(Request $request, App $app)
+    public function destroy(Request $request, App $app)
     {
         $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
         $routes = $matches[0];

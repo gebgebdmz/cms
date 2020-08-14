@@ -26,11 +26,11 @@ class ProfileController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    // public function __construct()
-    // {
-    //    $this->middleware(['auth', 'verified']);
-    //     //  $this->middleware('auth');
-    // }
+    public function __construct()
+    {
+       $this->middleware(['auth', 'verified']);
+        //  $this->middleware('auth');
+    }
 
     public function display(Request $request)
     {
@@ -44,10 +44,9 @@ class ProfileController extends Controller
         $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
         $routes = $matches[0];
         $action = $matches[2];
-        // if (Auth::check()) {
+        if (Auth::check()) {
 
-        //     $id = Auth::id();
-        $id = '5';
+            $id = Auth::id();
             $profile_data = User::find($id);
             // $a=DB::table('bas_user')->where('id', '=', $profile_data->id)->update([
             //     'activation_code' => Str::random(32),
@@ -88,14 +87,96 @@ class ProfileController extends Controller
                 DB::rollback();
                 //  return response()->json(['error' => $ex->getMessage()], 500);
             }
-        //     dd($profile_data);
+            // dd($profile_data);
             return view("myprofile.profile_isi", ['profile_data' => $profile_data]);
+            // return view('profile/profile_isi');
+        } else {
 
-        // } else {
-
-        //     return view("login");
-        // }
+            return view("login");
+        }
     }
+
+
+    public function edit_email(Request $request)
+    {
+        
+        $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
+        $routes = $matches[0];
+        $action = $matches[2];
+        if (Auth::check()) {
+
+            $id = Auth::id();
+            $profile_data = User::find($id);
+            DB::beginTransaction();
+
+            try {
+
+                ActivityLog::create([
+
+                    'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
+                    'username' => $profile_data->username,
+                    'application' => $routes,
+                    'creator' => "System",
+                    'ip_user' => $request->ip(),
+                    'action' => 'Display',
+                    'description' => "View update email",
+                    'user_agent' => $request->server('HTTP_USER_AGENT')
+                ]);
+
+                DB::commit();
+            } catch (\Exception $ex) {
+                DB::rollback();
+                //  return response()->json(['error' => $ex->getMessage()], 500);
+            }
+            // dd($profile_data);
+            return view("myprofile.profile_change_email", ['profile_data' => $profile_data]);
+        } else {
+
+            return view("login");
+        }
+    }
+
+
+
+    public function edit_password(Request $request)
+    {
+        
+        $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
+        $routes = $matches[0];
+        $action = $matches[2];
+        if (Auth::check()) {
+
+            $id = Auth::id();
+            $profile_data = User::find($id);
+            DB::beginTransaction();
+
+            try {
+
+                ActivityLog::create([
+
+                    'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
+                    'username' => $profile_data->username,
+                    'application' => $routes,
+                    'creator' => "System",
+                    'ip_user' => $request->ip(),
+                    'action' => 'Display',
+                    'description' => "View update password",
+                    'user_agent' => $request->server('HTTP_USER_AGENT')
+                ]);
+
+                DB::commit();
+            } catch (\Exception $ex) {
+                DB::rollback();
+                //  return response()->json(['error' => $ex->getMessage()], 500);
+            }
+            // dd($profile_data);
+            return view("myprofile.profile_change_password", ['profile_data' => $profile_data]);
+        } else {
+
+            return view("login");
+        }
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -151,39 +232,24 @@ class ProfileController extends Controller
 
     public function update(Request $req)
     {
-        //
-        //$profile_update= DB::table('bas_user')->find($id);
-        //dd($profile_update); //=> untuk cek isi dari output
-        //$profile_update->update($req->all());
-        //return view("profile/profile_isi", ['profile_update' => $profile_update]);
-        //return redirect("/profile")->with('YES KE UPDATE');
-        // update data pegawai
+       
 
         $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
         $routes = $matches[0];
         $action = $matches[2];
-        // $id = Auth::id();
-        $id = '5';
+        $id = Auth::id();
         $before_data = User::find($id);
 
         $validator = Validator::make($req->all(), [
-            // 'username' => ['required', 'string', 'max:255'],
-            // 'name' => ['required', 'string', 'max:255'],
-            // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            //'address' => ['required', 'string', 'max:255'],
-            // 'phone' => ['required', 'numeric', 'min:11'],
-            //'password' => ['required', 'string', 'min:8'],
 
             'username' => 'required|string|max:255',
             'name' => 'required|string|max:255',
-            'email' => 'required|string|max:255|email:rfc,dns',
             'address' => 'required|string|max:255',
             'phone' => 'required|numeric|min:11',
-            'password' => 'required|string| min:8',
         ]);
 
         if ($validator->fails()) {
-            $desc = 'Failed to change profile';
+            $desc = 'Failed to change profile, validation error';
             DB::beginTransaction();
             try {
                 ActivityLog::create([
@@ -207,66 +273,32 @@ class ProfileController extends Controller
                 ->withInput();
         }else{
 
-      //  dd($matches);
-        //     $id = Auth::id();
-       $dns = explode("@", $req->email);
-      // dd($dns);
+     
         DB::beginTransaction();
 
-        if (checkdnsrr($dns[1], "MX")) {
+      
         try {
 
        $dataLama = User::find($id);
-    //   dd($dataLama);
-   // $UpPas = $req->password
-    //    User::where('id', $id)->update
-
-
-    //    ([
-    //         'username' => $req->username,
-    //         'password' =>  Hash::make($req->password),
-    //         'name' => $req->name,
-    //         // 'email' => $req->email,
-    //         'new_email_candidate' => $req->email,
-    //         'phone' => $req->phone,
-    //         'address' => $req->address
-    //     ]);
-
         DB::table('bas_user')
         ->where('id', $id)
         ->update(array(
             'username' => $req->username,
-            'password' =>  Hash::make($req->password),
-          //  'password' =>  $req->password,
             'name' => $req->name,
-            // 'email' => $req->email,
-            'new_email_candidate' => $req->email,
             'phone' => $req->phone,
             'address' => $req->address
         ));
-
-
-        $password =$dataLama->password;
-        $password2 =$req->password;
-        $OldEmail = $dataLama->new_email_candidate;
-        $NewEmail =  $req->email;
- $password = "--";
- $password2 = "-";
      //   dd($password);
 
         $oldData = array(
             $dataLama->username,
             $dataLama->name,
-            $password,
-            $dataLama->new_email_candidate,
             $dataLama->phone,
             $dataLama->address,
         );
         $newData = array(
             $req->username,
             $req->name,
-            $password2,
-            $req->email,
             $req->phone,
             $req->address,
         );
@@ -274,8 +306,6 @@ class ProfileController extends Controller
         $field = array(
             'username',
             'name',
-            'password',
-            'new_email_candidate',
             'phone',
             'address',
         );
@@ -294,83 +324,30 @@ class ProfileController extends Controller
             'user_agent' => $req->server('HTTP_USER_AGENT')
          ]);
 
-        //  if($password!=$password2 ||  $dataLama->username!= $req->username ||   $dataLama->name!=$req->name || $dataLama->new_email_candidate!=$req->email ||  $dataLama->phone!= $req->phone|| $dataLama->address!= $req->address){
+         if($dataLama->username!= $req->username ||   $dataLama->name!=$req->name || $dataLama->phone!= $req->phone|| $dataLama->address!= $req->address){
 
 
-        //     $html = '<!DOCTYPE html>
-        //     <html lang="en">
+            $html = '<!DOCTYPE html>
+            <html lang="en">
 
-        //     <body>
+            <body>
 
-        //         <p>Dear ' . $dataLama->name . '</p>
-        //         <p>Your data has been changed in Myprofile
+                <p>Dear ' . $dataLama->name . '</p>
+                <p>Your data has been changed in Myprofile
 
-        //         <p>Thanks</p>
+                <p>Thanks</p>
 
-        //     </body>
+            </body>
 
-        //     </html>';
-        //     EmailQueue::create([
-        //         'destination_email' =>  $req->email,
-        //         'email_body' => $html,
-        //         'email_subject' => "Data Changed in myprofile",
-        //         'created_at' => Carbon::now()->TimeZone('asia/jakarta'),
-        //         'is_processed' => '0',
-        //     ]);
-        //  }
-
-        //  if($OldEmail!=$NewEmail){
-            
-           
-            
-        //   $user = DB::table('bas_user')->where('email', $before_data->email)->select('name', 'username', 'email', 'new_email_candidate')->first();
-        //     //Check if the user exists
-
-        //     // dd($user);
-        //     $username = $user->username;
-        //     $desc = "User with username: " . $username . " requested Update email.";
-
-
-        //     // Create Password Reset Token
-        //    $token= DB::table('bas_user')->where('email', '=', $before_data->email)->update([
-        //         'activation_code' => Str::random(32),
-        //     ]);
-
-
-        //     $coba= DB::table('bas_user')->where('email', $before_data->email)->select('*')->first();
-        //  //   dd($coba);
-
-        //     $html = '<!DOCTYPE html>
-        //     <html lang="en">
-    
-        //     <body>
-
-          
-        //         <p>Dear ' . $user->name . '</p>
-        //         <p>Your account requested to update email, by clicking this link you will change your email</p>
-                
-        //         <p><a href="' . url('verify_update_email', $coba->activation_code)  . '">
-        //         ' . url('verify_update_email', $coba->activation_code)  . '
-        //         </a></p>    
-    
-        //         <p>Thanks</p>
-                
-
-        //     </body>
-    
-        //     </html>';
-
-        //     EmailQueue::create([
-        //         'destination_email' => $user->new_email_candidate,
-        //         'email_body' => $html,
-        //         'email_subject' => "Request Update Email",
-        //         'created_at' => Carbon::now()->TimeZone('asia/jakarta'),
-        //         'is_processed' => '0',
-        //     ]);
-       
-
-
-        // }
+            </html>';
+            EmailQueue::create([
+                'destination_email' =>  $dataLama->email,
+                'email_body' => $html,
+                'email_subject' => "Data Changed in myprofile",
+                'created_at' => Carbon::now()->TimeZone('asia/jakarta'),
+                'is_processed' => '0',
+            ]);
+         }
 
 
         DB::commit();
@@ -380,8 +357,207 @@ class ProfileController extends Controller
        }      
         return redirect('/myprofile')->with('message', 'Edit profile success!');
        // return redirect('/myprofile')->with('message', 'Please check your mailbox to change your email!');
-    } else {
-        $desc = 'Failed to change profile';
+        }
+}
+
+
+public function update_password(Request $req)
+    {
+       
+
+        $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
+        $routes = $matches[0];
+        $action = $matches[2];
+        $id = Auth::id();
+        $before_data = User::find($id);
+
+
+        // if (Hash::check($req->old_password, $before_data->password) && $req->new_password == $req->confirm_new_password) {
+        //     die('bacot');
+        // }
+
+
+        $validator = Validator::make($req->all(), [
+
+            'old_password' => 'required|string| min:8',
+            'new_password' => 'required|string| min:8',
+            'confirm_new_password' => 'required|string| min:8',
+        ]);
+
+        if ($validator->fails()) {
+            $desc = 'Failed to change password, validatoin failed';
+            DB::beginTransaction();
+            try {
+                ActivityLog::create([
+
+                    'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
+                    'username' => $before_data->username,
+                    'application' => $routes,
+                    'creator' => "System",
+                    'ip_user' => $req->ip(),
+                    'action' => $action,
+                    'description' => $desc,
+                    'user_agent' => $req->server('HTTP_USER_AGENT')
+                ]);
+
+                DB::commit();
+            } catch (\Exception $ex) {
+                DB::rollback();
+            }
+            return redirect('/myprofile/edit_password')
+                ->withErrors($validator)
+                ->withInput();
+        }else{
+
+     
+        DB::beginTransaction();
+
+        if(Hash::check($req->old_password, $before_data->password)){
+           // die('true');
+            // $checkhash = 'kebenaran';
+
+            if($req->new_password!=$req->confirm_new_password){
+
+               // die('false double check');
+
+                $message = "Failed to change password, new password and confirm new password did not match";
+                ActivityLog::create([
+                    'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
+                    'username' => $before_data->username,
+                    'application' => $routes,
+                    'creator' => "System",
+                    'ip_user' => $req->ip(),
+                    'action' =>$action,
+                    'description' => $message,
+                    'user_agent' => $req->server('HTTP_USER_AGENT')
+                 ]);
+    
+                 return redirect('/myprofile/edit_password')
+                 ->withErrors($message)
+                 ->withInput();
+    
+                }elseif($req->new_password == $req->confirm_new_password){
+    
+                   // die('true all check');
+                    try {
+        
+                        $dataLama = User::find($id);
+                         DB::table('bas_user')
+                         ->where('id', $id)
+                         ->update(array(
+                             'password' =>  Hash::make($req->confirm_new_password)
+                         ));
+                      //   dd($password);
+                 
+                 $old_pw = $req->old_password;
+                 $new_pw = $req->confirm_new_password;
+                 $old_pw = '-';
+                 $new_pw = '--';
+                         $oldData = array(
+                             $old_pw,
+                         );
+                         $newData = array(
+                             $new_pw,
+                         );
+                 
+                         $field = array(
+                             'password',
+                         );
+                 
+                 
+                         $desc = 'Edit profile password<br>';
+                         $desc = $desc . $this->descriptionLog($dataLama->id, $field, $oldData, $newData);
+                         ActivityLog::create([
+                             'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
+                             'username' => $before_data->username,
+                             'application' => $routes,
+                             'creator' => "System",
+                             'ip_user' => $req->ip(),
+                             'action' =>$action,
+                             'description' => $desc,
+                             'user_agent' => $req->server('HTTP_USER_AGENT')
+                          ]);
+                 
+                         //  if($req->old_password!= $req->confirm_new_password ){
+                 
+                 
+                             $html = '<!DOCTYPE html>
+                             <html lang="en">
+                 
+                             <body>
+                 
+                                 <p>Dear ' . $dataLama->name . '</p>
+                                 <p>Your password has been changed in Myprofile.
+                 
+                                 <p>Thanks</p>
+                 
+                             </body>
+                 
+                             </html>';
+                             EmailQueue::create([
+                                 'destination_email' =>  $dataLama->email,
+                                 'email_body' => $html,
+                                 'email_subject' => "Data Changed in myprofile",
+                                 'created_at' => Carbon::now()->TimeZone('asia/jakarta'),
+                                 'is_processed' => '0',
+                             ]);
+                         //  }
+                 
+                 
+                         DB::commit();
+                        } catch (\Exception $ex) {
+                            DB::rollback();
+                           return response()->json(['error' => $ex->getMessage()], 500);
+                        }      
+                         return redirect('/myprofile')->with('message', 'Edit password success!');
+                         
+                   
+                }
+        }else{
+
+            //die('false pw on db');
+          //   die('false');
+            // $checkhash = 'kesalahan';
+            $message = "Failed to change password, cant find old password on database";
+            ActivityLog::create([
+                'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
+                'username' => $before_data->username,
+                'application' => $routes,
+                'creator' => "System",
+                'ip_user' => $req->ip(),
+                'action' =>$action,
+                'description' => $message,
+                'user_agent' => $req->server('HTTP_USER_AGENT')
+             ]);
+
+             return redirect('/myprofile/edit_password')
+             ->withErrors($message)
+             ->withInput();
+            }
+
+        }
+}
+
+
+
+
+public function update_email(Request $req)
+{
+
+
+    $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
+    $routes = $matches[0];
+    $action = $matches[2];
+    $id = Auth::id();
+    $before_data = User::find($id);
+
+    $validator = Validator::make($req->all(), [
+        'email' => 'required|string|max:255|email:rfc,dns',
+    ]);
+
+    if ($validator->fails()) {
+        $desc = 'Failed to change email';
+        DB::beginTransaction();
         try {
             ActivityLog::create([
 
@@ -398,17 +574,147 @@ class ProfileController extends Controller
             DB::commit();
         } catch (\Exception $ex) {
             DB::rollback();
-            return response()->json(['error' => $ex->getMessage()], 500);
         }
-
-        $messages = [
-            'email.required' => 'DNS you entered was not found',
-        ];
-        return redirect('/myprofile')
-            ->withErrors($messages)
+        return redirect('/myprofile/edit_email')
+            ->withErrors($validator)
             ->withInput();
-        }
+    }else{
+
+  //  dd($matches);
+    //     $id = Auth::id();
+   $dns = explode("@", $req->email);
+  // dd($dns);
+    DB::beginTransaction();
+
+    if (checkdnsrr($dns[1], "MX")) {
+    try {
+
+   $dataLama = User::find($id);
+
+
+    DB::table('bas_user')
+    ->where('id', $id)
+    ->update(array(
+        'new_email_candidate' => $req->email
+    ));
+
+    $OldEmail = $dataLama->new_email_candidate;
+    $NewEmail =  $req->email;
+
+    $oldData = array(
+        $dataLama->new_email_candidate,
+    );
+    $newData = array(
+        $req->email,
+    );
+
+    $field = array(
+        'new_email_candidate',
+    );
+
+
+    $desc = 'Add new email candidate from myprofile<br>';
+    $desc = $desc . $this->descriptionLog($dataLama->id, $field, $oldData, $newData);
+    ActivityLog::create([
+        'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
+        'username' => $before_data->username,
+        'application' => $routes,
+        'creator' => "System",
+        'ip_user' => $req->ip(),
+        'action' =>$action,
+        'description' => $desc,
+        'user_agent' => $req->server('HTTP_USER_AGENT')
+     ]);
+
+
+     if($OldEmail!=$NewEmail){
+                
+      $user = DB::table('bas_user')->where('email', $before_data->email)->select('name', 'username', 'email', 'new_email_candidate')->first();
+        //Check if the user exists
+
+        // dd($user);
+        $username = $user->username;
+        $desc = "User with username: " . $username . " requested Update email.";
+
+
+        // Create Password Reset Token
+       $token= DB::table('bas_user')->where('email', '=', $before_data->email)->update([
+            'activation_code' => Str::random(32),
+        ]);
+
+
+        $coba= DB::table('bas_user')->where('email', $before_data->email)->select('*')->first();
+     //   dd($coba);
+
+        $html = '<!DOCTYPE html>
+        <html lang="en">
+
+        <body>
+
+      
+            <p>Dear ' . $user->name . '</p>
+            <p>Your account requested to update email, by clicking this link you will change your old email into this one</p>
+            
+            <p><a href="' . url('verify_update_email', $coba->activation_code)  . '">
+            ' . url('verify_update_email', $coba->activation_code)  . '
+            </a></p>    
+
+            <p>Thanks</p>
+            
+
+        </body>
+
+        </html>';
+
+        EmailQueue::create([
+            'destination_email' => $req->email,
+            'email_body' => $html,
+            'email_subject' => "Request Update Email",
+            'created_at' => Carbon::now()->TimeZone('asia/jakarta'),
+            'is_processed' => '0',
+        ]);
+   
+
+
     }
+
+
+    DB::commit();
+   } catch (\Exception $ex) {
+       DB::rollback();
+      return response()->json(['error' => $ex->getMessage()], 500);
+   }      
+    return redirect('/myprofile')->with('message', 'Edit email success! Please check your mail box to confirm your new email');
+   // return redirect('/myprofile')->with('message', 'Please check your mailbox to change your email!');
+} else {
+    $desc = 'Failed to change profile';
+    try {
+        ActivityLog::create([
+
+            'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
+            'username' => $before_data->username,
+            'application' => $routes,
+            'creator' => "System",
+            'ip_user' => $req->ip(),
+            'action' => $action,
+            'description' => $desc,
+            'user_agent' => $req->server('HTTP_USER_AGENT')
+        ]);
+
+        DB::commit();
+    } catch (\Exception $ex) {
+        DB::rollback();
+        return response()->json(['error' => $ex->getMessage()], 500);
+    }
+
+    $messages = [
+        'email.required' => 'DNS you entered was not found',
+    ];
+    return redirect('/myprofile')
+        ->withErrors($messages)
+        ->withInput();
+    }
+}
 }
 
     /**
@@ -434,7 +740,7 @@ class ProfileController extends Controller
                 'application' => $routes,
                 'creator' => 'System',
                 'ip_user' => $request->ip(),
-                'action' => $request->method(),
+                'action' => 'update',
                 'description' => $desc,
                 'user_agent' => $request->server('HTTP_USER_AGENT'),
             ]);
@@ -468,7 +774,7 @@ class ProfileController extends Controller
             $user->update([
                 'email' => $user->new_email_candidate,
                 'activation_code' => ' ',
-                'new_email_candidate' => null,
+                'new_email_candidate' => ' ',
             ]);
             makeLog($routes, $request, $desc, $username);
             DB::commit();

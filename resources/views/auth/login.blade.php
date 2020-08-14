@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('frontend.master_login')
 @section('title','Login')
 
 @section('content')

@@ -51,12 +51,16 @@ class HomeController extends Controller
 
 
             $isi_aset= DB::table('cms_item_event')
-            ->select('cms_item_event.name', 'cms_item_event.description','cms_item_event.price', 'cms_item_event.currency')
-            ->get();
+            ->select('cms_item_event.name', 'cms_item_event.description',
+            'cms_item_event.price', 'cms_item_event.currency','cms_item_event.start_date',
+            'cms_item_event.end_date')
+            // ->get();
+            ->paginate(3);
+            
 
             // $item_event= CmsItemEvent::get()->orderBy('id', 'asc');
 
-            // dd($item_event);
+            // dd($isi_aset);
     
             DB::commit();
         } catch (\Exception $ex) {
@@ -66,6 +70,8 @@ class HomeController extends Controller
         return view('home',['isi_aset' => $isi_aset]);
         // return view('layouts.frontend');
     }
+
+    
 
 
 
