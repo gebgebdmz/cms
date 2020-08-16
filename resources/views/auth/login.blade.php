@@ -21,6 +21,7 @@
                         <span class="login100-form-title p-b-48">
                         </span>
 
+                        <label for="username">Username</label>
                         <div class="wrap-input100 validate-input">
                             <input class="input100 @error('username') is-invalid @enderror" value="{{ old('username') }}" required autocomplete="username" autofocus type="text" name="username">
                             <span class="focus-input100" data-placeholder="username"></span>
@@ -31,6 +32,7 @@
                             @enderror
                         </div>
 
+                        <label for="password">Password</label>  
                         <div class="wrap-input100 validate-input" data-validate="Enter password">
                             <span class="btn-show-pass">
                             </span>
