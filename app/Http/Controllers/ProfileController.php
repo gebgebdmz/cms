@@ -665,6 +665,7 @@ public function update_email(Request $req)
       
             <p>Dear ' . $user->name . '</p>
             <p>Your account requested to update email, by clicking this link you will change your old email into this one</p>
+            <p>From '.$user->email.' into '.$user->new_email_candidate.'</p>
             
             <p><a href="'   .$urlsite->value .'/'.'verify_update_email/'.$coba->activation_code  . '">
             ' .$urlsite->value .'/'.'verify_update_email/'.$coba->activation_code  . '
