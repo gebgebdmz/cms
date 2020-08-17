@@ -32,10 +32,9 @@
 
 
             var table = $('#tabel_bas_config').DataTable({
-
                 "processing": true,
                 "serverSide": true,
-                "ajax": "{{ route('ajaxdata.getdata') }}",
+                "ajax": "{{ route('ajaxdata.getsomething') }}",
                 "lengthMenu" : [[20, 50, 100, 500, 1000, -1],[20, 50, 100, 500, 1000, "All"]],
                 "columns":[
                     { "data": "id" },
