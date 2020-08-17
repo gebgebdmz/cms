@@ -651,12 +651,7 @@ public function update_email(Request $req)
         $urlsite= DB::table('bas_config')->where('key', 'site_url')->select('*')->first();
 
         // dd($urlsite);
-
-        // <p><a href="' . url('verify_update_email', $coba->activation_code)  . '">
-        // ' . url('verify_update_email', $coba->activation_code)  . '
-        // </a></p>  
         
-
         $html = '<!DOCTYPE html>
         <html lang="en">
 
