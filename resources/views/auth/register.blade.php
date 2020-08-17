@@ -27,6 +27,7 @@
                         </div>
                         @endif
 
+                        <label for="username">username:</label>
                         <div class="wrap-input100 validate-input">
                             <input class="input100 @error('username') is-invalid @enderror" type="text" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
                             <span class="focus-input100" data-placeholder="username"></span>
@@ -37,6 +38,7 @@
                             @enderror
                         </div>
 
+                        <label for="name">name:</label>
                         <div class="wrap-input100 validate-input">
                             <input class="input100 @error('name') is-invalid @enderror" type="text" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
                             <span class="focus-input100" data-placeholder="name"></span>
@@ -47,6 +49,8 @@
                             </span>
                             @enderror
                         </div>
+
+                        <label for="email">email:</label>
                         <div class="wrap-input100 validate-input">
                             </span>
                             <input class="input100 @error('email') is-invalid @enderror" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
@@ -58,6 +62,8 @@
                             </span>
                             @enderror
                         </div>
+
+                        <label for="phone">phone:</label>
                         <div class="wrap-input100 validate-input">
                             </span>
                             <input class="input100  @error('phone') is-invalid @enderror" type="text" name="phone" value="{{ old('phone') }}" required autocomplete="phone" autofocus>
@@ -69,6 +75,8 @@
                             </span>
                             @enderror
                         </div>
+
+                        <label for="address">address:</label>
                         <div class="wrap-input100 validate-input">
                             </span>
                             <input class="input100  @error('address') is-invalid @enderror" type="text" name="address" value="{{ old('address') }}" required autocomplete="address" autofocus>
@@ -80,6 +88,8 @@
                             </span>
                             @enderror
                         </div>
+
+                        <label for="password">password:</label>
                         <div class="wrap-input100 validate-input">
                             </span>
                             <input class="input100  @error('password') is-invalid @enderror" type="password" name="password" required autocomplete="new-password">
@@ -91,6 +101,8 @@
                             </span>
                             @enderror
                         </div>
+
+                        <label for="confirm_password">confirm password:</label>
                         <div class="wrap-input100 validate-input">
                             </span>
                             <input class="input100" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password"">
