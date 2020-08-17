@@ -165,7 +165,7 @@ class RoleAppController extends Controller
             } catch (\Exception $ex) {
                 DB::rollback();
             }
-            // return redirect('/roleapp')->with('message', 'Role App data update success!');
+            return redirect('/roleapp')->with('message', 'Role App data update success!');
         } else {
 
             return view("login");
