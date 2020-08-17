@@ -110,7 +110,7 @@ class AppController extends Controller
             'menu_name' => $request->menu_name,
             'menu_url' => $request->menu_url,
         ]);
-        return redirect('/app');
+        return redirect('/app')->with('status','Created App Success');
     } else {
 
         return view("login");
@@ -228,7 +228,7 @@ class AppController extends Controller
              'description' => $request->description,'menu_name'=> $request->menu_name,'menu_url'=>
              $request->menu_url));
 
-        return redirect('/app');
+        return redirect('/app')->with('status','App Updated Success');
     } else {
 
         return view("login");
