@@ -14,9 +14,64 @@ use App\BasConfig;
 use DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use DataTables;
+
 
 class EmailQueueController extends Controller
 {
+
+    public function __construct()
+    {
+       $this->middleware(['auth', 'verified']);
+        //  $this->middleware('auth');
+    }
+
+    public function index(Request $request){
+        $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
+        $routes = $matches[0];
+        $action = $matches[2];
+        if (Auth::check()) {
+
+            $id = Auth::id();
+           DB::beginTransaction();
+
+        try {
+           $profile_data = User::find($id);
+             ActivityLog::create([
+
+                'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
+                'username' => $profile_data->username,
+                'application' =>$routes,
+                'creator' => "System",
+                'ip_user' => $request->ip(),
+                'action' => $action,
+                'description' => $profile_data->username. " is looking email queue",
+                'user_agent' => $request->server('HTTP_USER_AGENT')
+             ]);
+
+             DB::commit();
+            } catch (\Exception $ex) {
+                DB::rollback();
+            }
+
+        // $pagination = TRUE;
+        $emailqueue =  EmailQueue::Orderby('id')->get();
+        return view('emailqueue', ['emailqueue' => $emailqueue]);
+    }else {
+
+        return view("login");
+    }
+    
+    }
+
+    public function getEmail()
+    {
+        $emailQueue = EmailQueue::all();
+        return DataTables::of($emailQueue)
+                ->rawColumns(['email_body'])
+                ->make(true);
+    }
+
     public function create(array $data)
     {
         return EmailQueue::create([
