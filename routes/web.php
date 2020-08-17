@@ -127,8 +127,13 @@ Route::get('ajaxdata/getapp', 'RoleAppController@getroleapp')->name('ajaxdata.ge
 Route::get('/roleapp/search', 'RoleAppController@search');
 
 
+//Cron Config
 
-// //BasConfig
+Route::get('/test', 'BasConfigCronController@cek');
+//BasConfig
+
+
+Route::get('ajaxdata/getsomething', 'BasConfigController@getsomething')->name('ajaxdata.getsomething');
 
 Route::get('/BasConfig/Insert', 'BasConfigController@create');
 
@@ -136,7 +141,7 @@ Route::get('/BasConfig', 'BasConfigController@index');
 Route::get('/BasConfig/{BasConfig}', 'BasConfigController@show');
 Route::get('/BasConfig/Update/{BasConfig}', 'BasConfigController@edit');
 
-Route::get('ajaxdata/getdata', 'BasConfigController@getdata')->name('ajaxdata.getdata');
+
 Route::patch('/BasConfig/Update/{BasConfig}', 'BasConfigController@update');
 Route::post('/BasConfig/Insert', 'BasConfigController@store');
 

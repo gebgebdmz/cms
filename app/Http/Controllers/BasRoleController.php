@@ -6,6 +6,12 @@ use App\ActivityLog;
 use App\Role;
 use Illuminate\Http\Request;
 use DataTables;
+use DB;
+use App\User;
+
+use Illuminate\Support\Facades\Auth;
+
+
 
 class BasRoleController extends Controller
 {
@@ -14,12 +20,39 @@ class BasRoleController extends Controller
      *  @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+     
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+    }
+
+
     public function index(Request $request)
     {
-        //
-        $thisapp = App::where( 'app_name',  'BasRoleController@index')->first();
-        $this->insertActivityLog($thisapp->app_name,$thisapp->app_type,$thisapp->description,"",$request);
-        return view('BasRole');
+        if (Auth::check()) {
+
+            DB::begintransaction();
+            try {
+                $thisapp = App::where( 'app_name',  'BasRoleController@index')->first();
+                $userlogin=User::find(Auth::id());
+                $this->insertActivityLog($thisapp->app_name,$thisapp->app_type,$thisapp->description,$userlogin->username,$request);
+               
+                DB::commit();
+                return view('BasRole');
+            } catch (\Throwable $e) {
+                DB::rollback();
+                throw $e;
+            }
+        } else {
+            return view("login");
+        }
+
+
+
+      
+   
     }
 
     /**
@@ -30,10 +63,31 @@ class BasRoleController extends Controller
     public function create(Request $request)
     {
         //
-        $thisapp = App::where( 'app_name',  'BasRoleController@create')->first();
-        
-        $this->insertActivityLog($thisapp->app_name,$thisapp->app_type,$thisapp->description,"",$request);
-        return view('BasRoleInsert');
+
+
+        if (Auth::check()) {
+
+            DB::begintransaction();
+            try {
+               
+                $thisapp = App::where( 'app_name',  'BasRoleController@create')->first();
+                $userlogin=User::find(Auth::id());
+                $this->insertActivityLog($thisapp->app_name,$thisapp->app_type,$thisapp->description,$userlogin->username,$request);
+     
+                DB::commit();
+                return view('BasRoleInsert');
+            } catch (\Throwable $e) {
+                DB::rollback();
+                throw $e;
+            }
+        } else {
+            return view("login");
+        }
+
+
+
+
+       
     }
 
     /**
@@ -45,19 +99,40 @@ class BasRoleController extends Controller
     public function store(Request $request)
     {
         //
-        $thisapp = App::where( 'app_name',  'BasRoleController@store')->first();
-        
-        $this->insertActivityLog($thisapp->app_name,$thisapp->app_type,$thisapp->description,"",$request);
-        $id=Role::max('id');
-        $id++;
-        $basRole= new Role;
-        $basRole->id=$id;
-        $basRole->name=$request->name;
-        $basRole->remark=$request->remark;
-        $basRole->save();
+
+
+        if (Auth::check()) {
+
+            DB::begintransaction();
+            try {
+               
+                $thisapp = App::where( 'app_name',  'BasRoleController@store')->first();
+                $userlogin=User::find(Auth::id());
+                $this->insertActivityLog($thisapp->app_name,$thisapp->app_type,$thisapp->description,$userlogin->username,$request);
+                $id=Role::max('id');
+                $id++;
+                $basRole= new Role;
+                $basRole->id=$id;
+                $basRole->name=$request->name;
+                $basRole->remark=$request->remark;
+                $basRole->save();
+                DB::commit();
+                return redirect('/BasRole');
+            } catch (\Throwable $e) {
+                DB::rollback();
+                throw $e;
+            }
+        } else {
+            return view("login");
+        }
+
+
+
+
+     
 
         
-        return redirect('/BasRole');
+       
     }
 
     /**
@@ -70,10 +145,33 @@ class BasRoleController extends Controller
     {
         //
 
-        $thisapp = App::where( 'app_name',  'BasRoleController@show')->first();
-        $this->insertActivityLog($thisapp->app_name,$thisapp->app_type,$thisapp->description,"",$request);
-        $basrole= Role::findOrFail($basRole);
-        return view('BasRoleDetails',['list'=>$basrole]);
+        if (Auth::check()) {
+
+            DB::begintransaction();
+            try {
+                $userlogin=User::find(Auth::id());
+
+                $thisapp = App::where( 'app_name',  'BasRoleController@show')->first();
+                $this->insertActivityLog($thisapp->app_name,$thisapp->app_type,$thisapp->description,$userlogin->username,$request);
+                $basrole= Role::findOrFail($basRole);
+               
+                DB::commit();
+                    
+                return view('BasRoleDetails',['list'=>$basrole]);
+            } catch (\Throwable $e) {
+                DB::rollback();
+                throw $e;
+            }
+        } else {
+            return view("login");
+        }
+
+
+
+
+
+
+   
 
     }
 
@@ -87,10 +185,32 @@ class BasRoleController extends Controller
     {
         //
 
-        $thisapp = App::where( 'app_name',  'BasRoleController@edit')->first();
-        $this->insertActivityLog($thisapp->app_name,$thisapp->app_type,$thisapp->description,"",$request);
-        $basRole= Role::findOrFail($basRole);
-        return view('BasRoleUpdate',['list'=>$basRole]);
+
+        if (Auth::check()) {
+
+            DB::begintransaction();
+            try {
+                $userlogin=User::find(Auth::id());
+
+                $thisapp = App::where( 'app_name',  'BasRoleController@edit')->first();
+                $this->insertActivityLog($thisapp->app_name,$thisapp->app_type,$thisapp->description,$userlogin->username,$request);
+                $basRole= Role::findOrFail($basRole);
+               
+                DB::commit();
+                return view('BasRoleUpdate',['list'=>$basRole]);
+            } catch (\Throwable $e) {
+                DB::rollback();
+                throw $e;
+            }
+        } else {
+            return view("login");
+        }
+
+
+
+
+
+      
     }
 
     /**
@@ -103,6 +223,14 @@ class BasRoleController extends Controller
     public function update(Request $request,$basRole)
     {
         //
+
+
+        if (Auth::check()) {
+
+            DB::begintransaction();
+            try {
+               
+                $userlogin=User::find(Auth::id());
 
         $basRole= Role::findOrFail($basRole);
        
@@ -133,7 +261,7 @@ class BasRoleController extends Controller
         ";
 
         $thisapp = App::where( 'app_name',  'BasRoleController@update')->first();
-        $this->insertActivityLog($thisapp->app_name,$thisapp->app_type,$description,"",$request);
+        $this->insertActivityLog($thisapp->app_name,$thisapp->app_type,$description,$userlogin->username,$request);
         Role::where('id',$basRole->id)
                 ->update([
 
@@ -141,7 +269,19 @@ class BasRoleController extends Controller
                     'remark'=>$request->remark
                 ]);
 
-        return redirect('/BasRole');
+               
+                DB::commit();
+                return redirect('/BasRole');
+            } catch (\Throwable $e) {
+                DB::rollback();
+                throw $e;
+            }
+        } else {
+            return view("login");
+        }
+
+
+       
     }
 
     /**
@@ -152,7 +292,12 @@ class BasRoleController extends Controller
      */
     public function destroy($basRole,Request $request)
     {
-        //
+        
+
+
+
+
+
         $thisapp = App::where( 'app_name',  'BasRoleController@destroy')->first();
             $fail=false;
              try {
@@ -164,16 +309,13 @@ class BasRoleController extends Controller
                 }
               
             } catch (\Exception $ex) {
-                  // echo"<script>alert('role tidak bisa di hapus')</script>";
-                  //  $text="Role cant be deleted because there is user who has this role";
-                  // $this->insertActivityLog($thisapp->app_name,$thisapp->app_type,$text,"",$request);
+                
                     return redirect('/BasRole')->with('failure','Role cant be deleted because there is user who has this role');
                 } catch (\Exception $ex) {
                 
                    
                 }
-               // $text="A role is deleted";
-               // $this->insertActivityLog($thisapp->app_name,$thisapp->app_type,$text,"",$request);
+
                if($fail){
                 $text="Role cant be deleted because there is user who has this role";
              $this->insertActivityLog($thisapp->app_name,$thisapp->app_type,$text,"",$request);
