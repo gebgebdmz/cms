@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\User;
 use App\ActivityLog;
 use App\EmailQueue;
+use App\BasConfig;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -40,7 +41,9 @@ class ResetPasswordController extends Controller
         //Retrieve the user from the database
         $user = DB::table('bas_user')->where('email', $email)->select('name', 'username', 'email')->first();
         //Generate, the password reset link. The token generated is embedded in the link
-        $link = url('/') . '/password/reset/' . $token . '?email=' . urlencode($user->email);
+        $key= 'site_url';
+        $urlsite = BasConfig::where('key',$key)->first();
+        $link = $urlsite->value . '/password/reset/' . $token . '?email=' . urlencode($user->email);
 
         $html = '<!DOCTYPE html>
         <html lang="en">
