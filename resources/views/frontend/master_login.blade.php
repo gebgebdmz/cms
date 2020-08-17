@@ -12,7 +12,7 @@
     </head>
     <body class="bg-secondary">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <a class="navbar-brand" href=""><strong>CMS</strong>GLC</a>
+            <a class="navbar-brand" href="{{route('home')}}"><strong>CMS</strong>GLC</a>
             <!-- Navbar-->
             <ul class="navbar-nav ml-auto ml-md-0">
                 <li class="nav-item dropdown">
