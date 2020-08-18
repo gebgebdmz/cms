@@ -30,6 +30,9 @@ class HomeController extends Controller
     public function display(Request $request)
     {
 
+
+        // $la=env('APP_URL');
+        // dd($la);
         $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
         $routes = $matches[0];
         $action = $matches[2];
@@ -55,9 +58,14 @@ class HomeController extends Controller
             'cms_item_event.price', 'cms_item_event.currency','cms_item_event.start_date',
             'cms_item_event.end_date')
             // ->get();
-            ->paginate(3);
-            
+            ->orderBy('id', 'asc')
+            ->paginate(9);
 
+            $discount=DB::table('cms_discountprogram')
+            ->select('*')
+            ->first();
+            
+         //   dd($discount);
             // $item_event= CmsItemEvent::get()->orderBy('id', 'asc');
 
             // dd($isi_aset);
@@ -67,7 +75,7 @@ class HomeController extends Controller
             DB::rollback();
             return response()->json(['error' => $ex->getMessage()], 500);
         }
-        return view('home',['isi_aset' => $isi_aset]);
+        return view('home',['isi_aset' => $isi_aset, 'discount' => $discount]);
         // return view('layouts.frontend');
     }
 

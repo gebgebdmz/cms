@@ -5,52 +5,32 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6  ">
-            <div class="card">
-
-                <div class="card-body">
-                    <form class="login100-form validate-form" method="POST" action="{{ route('login') }}">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
+                    <div class="card-body">
+                        <form method="post" action="{{route('login')}}">
                         @csrf
-
-                        <br>
-                        <span class="login100-form-title p-b-26 ">
-
-                            <center> Login </center>
-
-                        </span>
-                        <br>
-                        <span class="login100-form-title p-b-48">
-                        </span>
-
-                        <div class="wrap-input100 validate-input">
-                            <input class="input100 @error('username') is-invalid @enderror" value="{{ old('username') }}" required autocomplete="username" autofocus type="text" name="username">
-                            <span class="focus-input100" data-placeholder="username"></span>
+                        <div class="form-group">
+                            <label class="small mb-1" for="username">Username</label>
+                            <input class="form-control py-4 @error('username') is-invalid @enderror" id="username" name="username" type="text" placeholder="Enter username" value="{{ old('username') }}" required autocomplete="username" autofocus />
                             @error('username')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
-                        </div>
-
-                        <div class="wrap-input100 validate-input" data-validate="Enter password">
-                            <span class="btn-show-pass">
-                            </span>
-                            <input class="input100  @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" type="password">
-                            <span class="focus-input100" data-placeholder="Password"></span>
-                            @error('username')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-
-                        <div class="container-login100-form-btn">
-                            <div class="wrap-login100-form-btn">
-                                <div class="login100-form-bgbtn"></div>
-                                <button class="login100-form-btn">
-                                    Login
-                                </button>
                             </div>
-                        </div>
+                                     
+                        <div class="form-group">
+                            <label class="small mb-1" for="inputPassword">Password</label>
+                            <input class="form-control py-4  @error('password') is-invalid @enderror" id="password" type="password" placeholder="Enter password" name="password" required autocomplete="new-password" />
+                            @error('password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>       
+                            
+                       <button type="submit" class="btn btn-primary btn-block">Login</button>
 
                         <div class="text-center p-t-100">
                             <span class="txt1">
@@ -64,10 +44,13 @@
                                 {{ __('Forgot Your Password?') }}
                             </a>
                         </div>
-                    </form>
+                        
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+

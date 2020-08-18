@@ -114,16 +114,11 @@ class RoleAppController extends Controller
     {
         if (Auth::check()) {
             try {
-                DB::beginTransaction();
-                //    $id = $request->id;
-                //  dd($id);
-                //    $oldRoleApp =  DB::table('bas_role_app')->where('id', $id)->get();
+                // DB::beginTransaction();
 
-                //   DB::enableQueryLog();
                 $RoleApp = RoleApp::findOrFail($id);
                 $bas_app = App::where('app_name',  $RoleApp->app_name)->first();
                 $bas_role = Role::findorFail($RoleApp->role_id);
-                echo $id . '<br>' . $request->role_name . '<br>' . $request->app_name;
 
                 DB::table('bas_role_app')
                     ->where('id', $id)
@@ -166,7 +161,7 @@ class RoleAppController extends Controller
                     'user_agent' => $request->server('HTTP_USER_AGENT')
                 ]);
 
-                DB::commit();
+                // DB::commit();
             } catch (\Exception $ex) {
                 DB::rollback();
             }
@@ -235,20 +230,8 @@ class RoleAppController extends Controller
             $id = Auth::id();
 
             try {
-                //    $profile_data = User::find($id);
-                //      ActivityLog::create([
+                $profile_data = User::find($id);
 
-                //         'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
-                //         'username' => $profile_data->username,
-                //         'application' =>$routes,
-                //         'creator' => "System",
-                //         'ip_user' => $request->ip(),
-                //         'action' => $action,
-                //         'description' => $profile_data->username. " managed to add a role app <br>The App is ",
-                //         'user_agent' => $request->server('HTTP_USER_AGENT')
-                //      ]);
-
-                //     dd($request->app_name);
                 $bas_role = Role::findOrFail($request->role_name);
                 //  dd($bas_app);
 

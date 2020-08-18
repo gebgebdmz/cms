@@ -555,6 +555,8 @@ public function update_email(Request $req)
         'email' => 'required|string|max:255|email:rfc,dns',
     ]);
 
+
+
     if ($validator->fails()) {
         $desc = 'Failed to change email';
         DB::beginTransaction();
@@ -646,6 +648,10 @@ public function update_email(Request $req)
         $coba= DB::table('bas_user')->where('email', $before_data->email)->select('*')->first();
      //   dd($coba);
 
+        $urlsite= DB::table('bas_config')->where('key', 'site_url')->select('*')->first();
+
+        // dd($urlsite);
+        
         $html = '<!DOCTYPE html>
         <html lang="en">
 
@@ -654,9 +660,10 @@ public function update_email(Request $req)
       
             <p>Dear ' . $user->name . '</p>
             <p>Your account requested to update email, by clicking this link you will change your old email into this one</p>
+            <p>From '.$user->email.' into '.$user->new_email_candidate.'</p>
             
-            <p><a href="' . url('verify_update_email', $coba->activation_code)  . '">
-            ' . url('verify_update_email', $coba->activation_code)  . '
+            <p><a href="'   .$urlsite->value .'/'.'verify_update_email/'.$coba->activation_code  . '">
+            ' .$urlsite->value .'/'.'verify_update_email/'.$coba->activation_code  . '
             </a></p>    
 
             <p>Thanks</p>
@@ -731,7 +738,7 @@ public function update_email(Request $req)
     {
        // die('rollback die');
         $routes =  preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(), $matches);
-        $routes = $matches[0];
+         $routes = $matches[0];
         function makeLog($routes, $request, $desc, $username)
         {
             return ActivityLog::create([

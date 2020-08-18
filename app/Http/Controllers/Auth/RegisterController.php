@@ -14,6 +14,7 @@ use Illuminate\Auth\Events\Registered;
 use DB;
 use App\ActivityLog;
 use App\EmailQueue;
+use App\BasConfig;
 use Illuminate\Support\Facades\Route;
 
 
@@ -138,6 +139,10 @@ class RegisterController extends Controller
                 'description' => $desc,
                 'user_agent' => $request->server('HTTP_USER_AGENT'),
             ]);
+
+            $key= 'site_url';
+            $urlsite = BasConfig::where('key',$key)->first();
+      
             $html = '<!DOCTYPE html>
             <html lang="en">
 
@@ -145,8 +150,8 @@ class RegisterController extends Controller
 
                 <p>Dear ' . $user->name . '</p>
                 <p>Your account has been created, please activate your account by clicking this link</p>
-                <p><a href="' . route("verify", $user->activation_code) . '">
-                        ' . route("verify", $user->activation_code) . '
+                <p><a href="'   .$urlsite->value .'/'.'verify/'.$user->activation_code  .'">
+                        '   .$urlsite->value .'/'.'verify/'.$user->activation_code  . '
                     </a></p>
 
                 <p>Thanks</p>
