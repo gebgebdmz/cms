@@ -4,11 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CmsCourseCategory extends Model
+class Category extends Model
 {
     protected $table = 'cms_coursecategory';
-    public $timestampz = false;
+    public $timestamps = false;
     protected $fillable = [
+        'id',
         'category_code',
         'category_name',
         'category_fullname',

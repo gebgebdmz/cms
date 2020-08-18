@@ -37,7 +37,8 @@ Route::get('/store', 'StoreController@display');
 
 // /**=============================dashboard================================================== **/
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/dashboard', 'AdminController@index');
+    Route::get('/dashboard', 'AdminController@index')->name('dashboard');
+
 });
 
 // /**=============================Activity-Log================================================== **/
@@ -82,7 +83,7 @@ Route::get('/user/delete-user/{user}', 'UserController@deleteUser')->name('delet
 Route::get('/studymaterial', 'StudyMaterialController@index');
 
 
-Route::get('/dashboard', 'AdminController@index');
+Route::get('/dashboard', 'AdminController@index')->name('dashboard');
 /**=============================Profile================================================== **/
 Route::get('/myprofile', 'ProfileController@display');
 Route::get('/myprofile/edit_email', 'ProfileController@edit_email');
@@ -155,8 +156,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/menu', 'MenuController@index')->name('menu');
     Route::post('/menu/create', 'MenuController@create')->name('create');
-    Route::get('/menu/destroy/{id}', 'MenuController@destroy');
     Route::post('/menu/update/{id}', 'MenuController@update');
+    Route::get('/menu/destroy/{id}', 'MenuController@destroy');
     Route::get('/ajaxdata/getdata', 'MenuController@getData')->name('ajaxdata.datajax');
 });
 
@@ -165,6 +166,13 @@ Route::group(['prefix' => 'cms-course-user'], function () {
     Route::get('/ajaxdata/getcourseuser', 'CmsCourseController@getcourseUser')->name('ajaxdata.getcourseuser');
 });
 
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/category', 'CategoryController@index')->name('category');
+    Route::post('/category/create', 'CategoryController@create')->name('category.create');
+    Route::post('/category/update/{id}','CategoryController@update');
+    Route::get('/category/destroy/{id}', 'CategoryController@destroy');
+    Route::get('/ajaxdata/getcategory', 'CategoryController@getCategory')->name('ajaxdata.getcategory');
+}); 
 /**=============================VerifyCertificate================================================== **/
 /**=============================Manage cms_location================================================== **/
 Route::get('/location', 'LocationController@display');
