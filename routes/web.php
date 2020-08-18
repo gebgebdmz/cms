@@ -164,3 +164,15 @@ Route::group(['prefix' => 'cms-course-user'], function () {
     Route::get('/', 'CmsCourseUserController@index')->name('cms-course-user');
     Route::get('/ajaxdata/getcourseuser', 'CmsCourseController@getcourseUser')->name('ajaxdata.getcourseuser');
 });
+
+/**=============================VerifyCertificate================================================== **/
+/**=============================Manage cms_location================================================== **/
+Route::get('/location', 'LocationController@display');
+Route::post('/location/create', 'LocationController@create');
+Route::post('/location/update/{id}', 'LocationController@update');
+Route::get('ajaxdata/getlocation', 'LocationController@getlocation')->name('ajaxdata.getlocation');
+/**=============================Manage cms_course================================================== **/
+Route::get('/course', 'CourseController@display');
+Route::post('/course/create', 'CourseController@create');
+Route::post('/course/update/{id}', 'CourseController@update');
+Route::get('ajaxdata/getcourse', 'CourseController@getcourse')->name('ajaxdata.getcourse');

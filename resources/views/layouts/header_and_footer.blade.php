@@ -65,10 +65,11 @@
       <nav class="site-navigation text-right text-md-center" role="navigation">
         <div class="container">
           <ul class="site-menu js-clone-nav d-none d-md-block">
-		  <li><a href="{{route ('home')}}">Home</a></li>
-          <li><a href="{{url ('/store')}}">Shop</a></li>
-			<li><a href="{{route ('login')}}">Login</a></li>
-			<li><a href="{{route ('register')}}">Register</a></li>
+		        <li><a href="{{route ('home')}}">Home</a></li>
+            <li><a href="{{url ('/store')}}">Shop</a></li>
+            <li><a href="{{url ('/certificate')}}">Certificate</a></li>
+			      <li><a href="{{route ('login')}}">Login</a></li>
+			      <li><a href="{{route ('register')}}">Register</a></li>
           </ul>
         </div>
       </nav>
