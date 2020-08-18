@@ -266,10 +266,7 @@ Menu::where('id', $id)
                 'description' => $user->username . " Delete Menu<br>Menu Is " . $delete->app_name,
                 'user_agent' => $request->server('HTTP_USER_AGENT')
                 ]);
-                DB::commit();
-        }catch(\Exception $x){
-            DB::rollback();
-        }
+                
         $menu = Role::where('id', $id)->get();
 
         // if (count($menu)) {
@@ -277,18 +274,15 @@ Menu::where('id', $id)
         // }
 
         Menu::where('id', $id)->delete();
+        DB::commit();
+        }catch(\Exception $x){
+            DB::rollback();
+            return response()->json(['error' => $x->getMessage()], 500);
+        }
         return redirect('/menu');
     } else{
         return view('login');
     }
     }
-    public function searchMenu(Request $request){
-
-        $menu= Menu::where('app_name','like','%' . $request->get('searchQuest') . '%' )
-        ->Orwhere('parent_menu_id','like','%' . $request->get('searchQuest') . '%' )
-        ->Orwhere('role_id','like','%' . $request->get('searchQuest') . '%' )
-        ->get();
-
-    return json_encode($menu);
-    }
+  
 }
