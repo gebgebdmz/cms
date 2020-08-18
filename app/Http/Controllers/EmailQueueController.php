@@ -77,19 +77,56 @@ class EmailQueueController extends Controller
             return response()->json(['error' => $ex->getMessage()], 500);
         }
 
-        $cronState= Cron::where('app_name',$routes)->first();
+        if(Cron::where('app_name',$routes)->exists()) {
+            $cronState= Cron::where('app_name',$routes)->first();
 
-        if($cronState->is_running==1) {
-            return 'cron still running';
-            die();
+            if($cronState->is_running==1) {
+                return 'cron still running';
+                die();
+            }
 
+            Cron::where('app_name',$routes)->update(['is_running'=>1]);
+
+        }  
+        else {
+            DB::beginTransaction();
+            try {
+                Cron::create([
+                    'app_name'=>$routes,
+                    'is_running'=> 0
+                ]);
+                DB::commit();
+            } catch (\Exception $ex) {
+                DB::rollback();
+                Cron::where('app_name',$routes)->update(['is_running'=>0]);
+                return response()->json(['error' => $ex->getMessage()], 500);
+            }
+
+            Cron::where('app_name',$routes)->update(['is_running'=>1]);
         }
-
-        Cron::where('app_name',$routes)->update(['is_running'=>1]);
-
+        
         $key = 'EmailLimit';
-        $config = BasConfig::where('key',$key)->first();
-        $limit = intval($config->value);
+        if(BasConfig::where('key',$key)->exists()) {
+            $config = BasConfig::where('key',$key)->first();
+            $limit = intval($config->value);
+        } else {
+            DB::beginTransaction();
+            try {
+                BasConfig::create([
+                    'key'=> $key,
+                    'value'=> 5,
+                    'description' => 'Limit email sent every second one cron execution'
+                ]);
+                DB::commit();
+            } catch (\Exception $ex) {
+                DB::rollback();
+                Cron::where('app_name',$routes)->update(['is_running'=>0]);
+                return response()->json(['error' => $ex->getMessage()], 500);
+            }
+
+            $config = BasConfig::where('key',$key)->first();
+            $limit = intval($config->value);
+        }
 
         $emailQueues=EmailQueue::where('is_processed',0)
                     ->orderBy('created_at','asc')
