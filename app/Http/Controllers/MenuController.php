@@ -229,7 +229,7 @@ Menu::where('id', $id)
 
         for ($k = 0; $k < count($oldData); $k++) {
             if ($oldData[$k] != $newData[$k]) {
-                $arr = '<tr><td><b>' . $field[$k] . '</b></td><td>' . $oldData[$k] . '</td><td>' . $newData[$k] . '</td></tr>';
+                $arr = $arr . '<tr><td><b>' . $field[$k] . '</b></td><td>' . $oldData[$k] . '</td><td>' . $newData[$k] . '</td></tr>';
             }
         }
 
@@ -237,7 +237,6 @@ Menu::where('id', $id)
 
         return $newString;
     }
-
     /**
      * Remove the specified resource from storage.
      *

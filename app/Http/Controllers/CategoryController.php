@@ -105,7 +105,7 @@ class CategoryController extends Controller
             ]);
      
         // alihkan halaman ke halaman pegawai
-        return redirect('category');
+        return redirect('category')->with('message', 'Data has been successfully created!');
              } else{
                  return view('login');
              }
@@ -217,7 +217,7 @@ class CategoryController extends Controller
                 ));
       
       
-           return redirect('/category')->with('success', 'Data has been successfully send!');
+           return redirect('/category')->with('message', 'Data has been successfully updated!');
           }else{
               return view('login');
           }
@@ -231,7 +231,7 @@ class CategoryController extends Controller
 
         for ($k = 0; $k < count($oldData); $k++) {
             if ($oldData[$k] != $newData[$k]) {
-                $arr = '<tr><td><b>' . $field[$k] . '</b></td><td>' . $oldData[$k] . '</td><td>' . $newData[$k] . '</td></tr>';
+                $arr = $arr . '<tr><td><b>' . $field[$k] . '</b></td><td>' . $oldData[$k] . '</td><td>' . $newData[$k] . '</td></tr>';
             }
         }
 
@@ -282,7 +282,7 @@ class CategoryController extends Controller
             DB::rollback();
             return response()->json(['error' => $x->getMessage()], 500);
         }
-        return redirect('/category');
+        return redirect('/category')->with('message', 'Data has been successfully deleted!');
     } else{
         return view('login');
     }

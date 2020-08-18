@@ -4,6 +4,24 @@
  <div class="container mt-5">
     <div class="row">
         <div class="col-12">
+            @if($errors->any())
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ implode(', ', $errors->all(':message')) }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @endif
+                @if(session()->has('message'))
+                <div class="alert alert-success">
+                    {{ session()->get('message') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @endif  
+
+
             <!-- button modal  -->
             <div class="float-left">
             <div class="form-group mx-sm-3 mb-2">
