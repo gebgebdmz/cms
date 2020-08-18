@@ -174,6 +174,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/ajaxdata/getcategory', 'CategoryController@getCategory')->name('ajaxdata.getcategory');
 }); 
 /**=============================VerifyCertificate================================================== **/
+Route::get('/verify_certificate', 'VerifyCertificateController@display');
+Route::get('/verify_certificate/search', 'VerifyCertificateController@search');
 /**=============================Manage cms_location================================================== **/
 Route::get('/location', 'LocationController@display');
 Route::post('/location/create', 'LocationController@create');
