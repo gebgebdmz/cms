@@ -173,3 +173,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/category/destroy/{id}', 'CategoryController@destroy');
     Route::get('/ajaxdata/getcategory', 'CategoryController@getCategory')->name('ajaxdata.getcategory');
 }); 
+/**=============================VerifyCertificate================================================== **/
+/**=============================Manage cms_location================================================== **/
+Route::get('/location', 'LocationController@display');
+Route::post('/location/create', 'LocationController@create');
+Route::post('/location/update/{id}', 'LocationController@update');
+Route::get('ajaxdata/getlocation', 'LocationController@getlocation')->name('ajaxdata.getlocation');
+/**=============================Manage cms_course================================================== **/
+Route::get('/course', 'CourseController@display');
+Route::post('/course/create', 'CourseController@create');
+Route::post('/course/update/{id}', 'CourseController@update');
+Route::get('ajaxdata/getcourse', 'CourseController@getcourse')->name('ajaxdata.getcourse');

@@ -34,8 +34,15 @@
                 {{ csrf_field() }}
                  
 
+                <div class="form-group"> 
+                    <label for="email">Old Email:</label>
+                    <div class="form-inline"> 
+                        <input type="email" class="form-control" name="email" value="{{$profile_data -> email}}" disabled>
+                    </div>
+                </div>
+
                     <div class="form-group">
-                        <label for="email">e-mail:</label>
+                        <label for="email">New Email:</label>
                         <input type="email" class="form-control" name="email" value=" " >
                       </div>
 
