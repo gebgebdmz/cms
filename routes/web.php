@@ -45,9 +45,10 @@ Route::group(['middleware' => ['auth']], function () {
 
 
 // Route::group(['middleware' => ['auth','CheckRole:1']], function () {
+Route::group(['middleware' => ['auth']], function () {
 Route::get('/activitylog', 'ActivitylogController@index')->name('activitylog');
 Route::get('/activitylog/get-activity', 'ActivitylogController@getDataActivity')->name('activity.getData');
-// });
+});
 
 // /**=============================Roles================================================== **/
 // Route::group(['middleware' => ['auth','CheckRole:1']], function () {
@@ -64,18 +65,20 @@ Route::get('/user/delete-user/{user}', 'UserController@deleteUser')->name('delet
 
 // /**=============================Application================================================== **/
 // Route::group(['middleware' => ['auth','CheckRole:1']], function () {
+Route::group(['middleware' => ['auth']], function () {
     Route::get('/app', 'appController@index');
     Route::post('/app/create', 'appController@create');
     Route::get('/destroy/{app}', 'appController@destroy');
     Route::post('/update/{app_id}', 'appController@update');
     Route::get('/ajaxdata/get-app','appController@getapp')->name('ajaxdata.app');
-    // });
+    });
 
 /**=============================EmailQueue================================================== **/
 // Route::group(['middleware' => ['auth','CheckRole:1']], function () {
+Route::group(['middleware' => ['auth']], function () {
     Route::get('/email', 'EmailQueueController@index');
     Route::get('/ajaxdata/get-email','EmailQueueController@getEmail')->name('ajaxdata.email');
-    // });
+});
 // Route::get('/', function () {
 //     return view('welcome');
 // });

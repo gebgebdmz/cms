@@ -59,7 +59,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function hasVerifiedEmail()
     {
-        // return (($this->is_active)); //($this->activation_code === $this->generateActivationCode()));
-        return true; //($this->activation_code === $this->generateActivationCode()));
+        return (($this->is_active)); //($this->activation_code === $this->generateActivationCode()));
+        // return true; //($this->activation_code === $this->generateActivationCode()));
     }
 }
