@@ -67,7 +67,7 @@
           <ul class="site-menu js-clone-nav d-none d-md-block">
 		        <li><a href="{{route ('home')}}">Home</a></li>
             <li><a href="{{url ('/store')}}">Shop</a></li>
-            <li><a href="{{url ('/certificate')}}">Certificate</a></li>
+            <li><a href="{{url ('/verify_certificate')}}">Certificate</a></li>
 			      <li><a href="{{route ('login')}}">Login</a></li>
 			      <li><a href="{{route ('register')}}">Register</a></li>
           </ul>
@@ -103,7 +103,7 @@
             </a>
           </div>
           <div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
-            <a class="block-2-item" href="#">
+            <a class="block-2-item" href="{{url ('/verify_certificate')}}">
               <figure class="image">
                 <img src="template/images/blank.jpg" alt="" class="img-fluid">
               </figure>
