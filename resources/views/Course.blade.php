@@ -38,7 +38,7 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Add New Role</h5>
+                                <h5 class="modal-title" id="exampleModalLongTitle">Add New Course</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
@@ -63,9 +63,24 @@
                                         <input type="text" class="form-control" name="course_idnumber" required>
                                     </div>
 
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         <label class="control-label">Category:</label>
-                                        <input type="text" class="form-control" name="course_category" required>
+                                        <select class="form-control select2" data-placeholder="Choose Category" tabindex="1" name="course_category" style="width: 100%;" required>
+                                            <option value="">Choose Category Name.......</option>
+                                                 @foreach ($c_category as $category)
+                                                    <option value="{{ $category->category_code}}">{{ $category->category_name}}</option>
+                                                 @endforeach
+                                        </select>
+                                    </div> --}}
+
+                                      <div class="form-group">
+                                        <label class="control-label">Category:</label>
+                                        <select class="selectpicker" data-live-search="true" data-placeholder="Choose Category" tabindex="1" name="course_category" style="width: 100%;" required>
+                                            <option value="">Choose Category Name.......</option>
+                                                 @foreach ($c_category as $category)
+                                                    <option value="{{ $category->category_code}}">{{ $category->category_name}}</option>
+                                                 @endforeach
+                                        </select>
                                     </div>
 
                                     <div class="form-group">
@@ -132,7 +147,13 @@
 
                                     <div class="form-group">
                                         <label class="control-label">Category:</label>
-                                        <input type="text" class="form-control" name="course_category" value="{{$p->course_category}}" required>
+                                        {{-- <input type="text" class="form-control" name="course_category" value="{{$p->course_category}}" required> --}}
+                                        <select class="selectpicker" data-live-search="true" data-placeholder="Choose Category" tabindex="1" name="course_category" style="width: 100%;" required>
+                                            <option value="{{$p->category_code}}">{{$p->category_name}}</option>
+                                                 @foreach ($c_category as $category)
+                                                    <option value="{{ $category->category_code}}">{{ $category->category_name}}</option>
+                                                 @endforeach
+                                        </select>
                                     </div>
 
                                     <div class="form-group">
@@ -232,7 +253,7 @@
                         "data": "course_idnumber"
                     },
                     {
-                        "data": "course_category"
+                        "data": "category_name"
                     },
                     {
                         "data": "course_duration"

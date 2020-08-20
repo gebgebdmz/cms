@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 use App\ActivityLog;
 use App\CmsCourse;
+use App\Category;
 use  DataTables;
 use DB;
 use App\User;
@@ -47,17 +48,28 @@ class CourseController extends Controller
                     'user_agent' => $request->server('HTTP_USER_AGENT')
                 ]);
 
-                $app = CmsCourse::Orderby('id')
-                    ->select('*')
+                // $app = CmsCourse::Orderby('id')
+                //     ->select('*')
+                //     ->get();
+                $app = DB::table('cms_course')
+                    ->Orderby('cms_course.id')
+                    ->select('cms_course.id','cms_course.course_fullname','cms_course.course_shortname',
+                        'cms_course.course_idnumber','cms_course.course_category', 
+                        'cms_course.course_duration', 'cms_coursecategory.category_name',
+                        'cms_coursecategory.category_code')
+                    ->from('cms_coursecategory')
+                    ->join('cms_course','cms_course.course_category','=','cms_coursecategory.category_code')
                     ->get();
-
+                $c_category = Category::distinct()->Orderby('category_name')->select('category_code','category_name')->get();
+                //  dd($app);  
+               // dd($c_category);    
                 DB::commit();
             } catch (\Exception $ex) {
                 DB::rollback();
                 return response()->json(['error' => $ex->getMessage()], 500);
             }
 
-            return view('/course', ['app' => $app]);
+            return view('/course', ['app' => $app, 'c_category' => $c_category]);
         } else {
 
             return view("login");
@@ -67,8 +79,13 @@ class CourseController extends Controller
     public function getcourse()
     {
 
-        $app = CmsCourse::Orderby('id')
-        ->select('*')
+        $app = DB::table('cms_course')
+        ->Orderby('cms_course.id')
+        ->select('cms_course.id','cms_course.course_fullname','cms_course.course_shortname',
+            'cms_course.course_idnumber','cms_course.course_category', 
+            'cms_course.course_duration', 'cms_coursecategory.category_name')
+        ->from('cms_coursecategory')
+        ->join('cms_course','cms_course.course_category','=','cms_coursecategory.category_code')
         ->get();
         return Datatables::of($app)->make(true);
     }
@@ -106,6 +123,17 @@ class CourseController extends Controller
                 'course_category' => $request ->course_category,
                 'course_duration' => $request ->course_duration,
             ]);
+
+            // $newData = array(
+            //     $request ->course_fullname,
+            //     $request ->course_shortname,
+            //     $request ->course_idnumber,
+            //     $request ->course_category,
+            //     $request ->course_duration,
+            //    );
+            
+            //     dd($newData);
+            
      
         // alihkan halaman ke halaman pegawai
         return redirect('/course')->with('message', 'Add new course data success!');
@@ -124,24 +152,33 @@ class CourseController extends Controller
   if (Auth::check()) {
 
     $idd = Auth::id();
+
+    $course = CmsCourse::findOrFail($id);
+    $c_category = Category::where('category_code',  $course ->course_category)->first();
+    $new_c_category = Category::where('category_code',   $request ->course_category)->first();
+    
    DB::beginTransaction();
    $dataLama = CmsCourse::find($id);
    $oldData = array(
        $dataLama->course_fullname,
        $dataLama->course_shortname,
        $dataLama->course_idnumber,
-       $dataLama->course_category,
+    //    $dataLama->course_category,
+       $c_category->category_name,
        $dataLama->course_duration,
    );
+
+   //dd($oldData);
    $newData = array(
     $request ->course_fullname,
     $request ->course_shortname,
     $request ->course_idnumber,
-    $request ->course_category,
+    // $c_category->category_name,
+    $new_c_category ->category_name,
     $request ->course_duration,
    );
 
-//    dd($newData);
+    // dd($newData);
 
    $temp = array(
        'course_fullname',
@@ -192,6 +229,21 @@ try {
 
     }
 
+    public function descriptionLog($id, $field, $oldData, $newData)
+    {
+        $newString = '<div><table class="table table-striped"><tr><td scope="col"><b>ID: </b></td><td>' . $id . '</td><td></td></tr><tr><td><b>Field</b></td><td>Old Data</td><td>New Data</td></tr>';
 
+        $arr = '';
+
+        for ($k = 0; $k < count($oldData); $k++) {
+            if ($oldData[$k] != $newData[$k]) {
+                $arr = $arr . '<tr><td><b>' . $field[$k] . '</b></td><td>' . $oldData[$k] . '</td><td>' . $newData[$k] . '</td></tr>';
+            }
+        }
+
+        $newString = $newString . $arr . '</table></div>';
+
+        return $newString;
+    }
     
 }

@@ -7,9 +7,9 @@
     </a>
   -->
 
-  <div class="sb-sidenav-menu-heading">Navigasi</div>
+  <div class="sb-sidenav-menu-heading">Navigasi</div> 
     <?php 
-    
+     
     use App\Menu;
     use App\App;
     use App\Role;
