@@ -63,10 +63,19 @@
                                         <input type="text" class="form-control" name="course_idnumber" required>
                                     </div>
 
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         <label class="control-label">Category:</label>
-                                        {{-- <input type="text" class="form-control" name="course_category" required> --}}
                                         <select class="form-control select2" data-placeholder="Choose Category" tabindex="1" name="course_category" style="width: 100%;" required>
+                                            <option value="">Choose Category Name.......</option>
+                                                 @foreach ($c_category as $category)
+                                                    <option value="{{ $category->category_code}}">{{ $category->category_name}}</option>
+                                                 @endforeach
+                                        </select>
+                                    </div> --}}
+
+                                      <div class="form-group">
+                                        <label class="control-label">Category:</label>
+                                        <select class="selectpicker" data-live-search="true" data-placeholder="Choose Category" tabindex="1" name="course_category" style="width: 100%;" required>
                                             <option value="">Choose Category Name.......</option>
                                                  @foreach ($c_category as $category)
                                                     <option value="{{ $category->category_code}}">{{ $category->category_name}}</option>
@@ -139,7 +148,7 @@
                                     <div class="form-group">
                                         <label class="control-label">Category:</label>
                                         {{-- <input type="text" class="form-control" name="course_category" value="{{$p->course_category}}" required> --}}
-                                        <select class="form-control select2" data-placeholder="Choose Category" tabindex="1" name="course_category" style="width: 100%;" required>
+                                        <select class="selectpicker" data-live-search="true" data-placeholder="Choose Category" tabindex="1" name="course_category" style="width: 100%;" required>
                                             <option value="{{$p->category_code}}">{{$p->category_name}}</option>
                                                  @foreach ($c_category as $category)
                                                     <option value="{{ $category->category_code}}">{{ $category->category_name}}</option>
