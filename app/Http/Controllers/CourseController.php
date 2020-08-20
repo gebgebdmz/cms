@@ -60,7 +60,7 @@ class CourseController extends Controller
                     ->from('cms_coursecategory')
                     ->join('cms_course','cms_course.course_category','=','cms_coursecategory.category_code')
                     ->get();
-                $c_category = Category::distinct()->select('category_code','category_name')->get();
+                $c_category = Category::distinct()->Orderby('category_name')->select('category_code','category_name')->get();
                 //  dd($app);  
                // dd($c_category);    
                 DB::commit();
@@ -152,24 +152,33 @@ class CourseController extends Controller
   if (Auth::check()) {
 
     $idd = Auth::id();
+
+    $course = CmsCourse::findOrFail($id);
+    $c_category = Category::where('category_code',  $course ->course_category)->first();
+    $new_c_category = Category::where('category_code',   $request ->course_category)->first();
+    
    DB::beginTransaction();
    $dataLama = CmsCourse::find($id);
    $oldData = array(
        $dataLama->course_fullname,
        $dataLama->course_shortname,
        $dataLama->course_idnumber,
-       $dataLama->course_category,
+    //    $dataLama->course_category,
+       $c_category->category_name,
        $dataLama->course_duration,
    );
+
+   //dd($oldData);
    $newData = array(
     $request ->course_fullname,
     $request ->course_shortname,
     $request ->course_idnumber,
-    $request ->course_category,
+    // $c_category->category_name,
+    $new_c_category ->category_name,
     $request ->course_duration,
    );
 
-//    dd($newData);
+    // dd($newData);
 
    $temp = array(
        'course_fullname',
