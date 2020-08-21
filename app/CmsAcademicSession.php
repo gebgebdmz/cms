@@ -10,6 +10,7 @@ class CmsAcademicSession extends Model
     public $timestampz = false;
 
     protected $fillable = [
-       'session'
+        'id',
+       'session',
     ];
 }

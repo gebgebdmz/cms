@@ -176,6 +176,15 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/category/destroy/{id}', 'CategoryController@destroy');
     Route::get('/ajaxdata/getcategory', 'CategoryController@getCategory')->name('ajaxdata.getcategory');
 }); 
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/academicsession', 'AcademicSessionController@index')->name('academicsession');
+    Route::post('/academicsession/create', 'AcademicSessionController@create')->name('academicsession.create');
+    Route::post('/academicsession/update/{id}','AcademicSessionController@update');
+    Route::get('/academicsession/destroy/{id}', 'AcademicSessionController@destroy');
+    Route::get('/ajaxdata/getAllAcadSess', 'AcademicSessionControllerr@getAllAcadSess')->name('ajaxdata.getAllAcadSess');
+}); 
+
 /**=============================VerifyCertificate================================================== **/
 Route::get('/verify_certificate', 'VerifyCertificateController@display');
 Route::get('/verify_certificate/search', 'VerifyCertificateController@search');

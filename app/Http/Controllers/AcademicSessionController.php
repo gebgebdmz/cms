@@ -17,8 +17,8 @@ use DB;
 class AcademicSessionController extends Controller
 {
     public function getAllAcadSess() {
-        $academicSession= CmsAcademicSession::all();
-        return Datatables::of($academicSession)-make(true);
+        $academicsession= CmsAcademicSession::all();
+        return Datatables::of($academicsession)->make(true);
     }
 
     /**
@@ -53,8 +53,8 @@ class AcademicSessionController extends Controller
                 DB::rollback();
             }
 
-            $academicSession = CmsAcademicSession::all();
-            return view('academicsession',['academicsession'=>$academicSession]);
+            $academicsession = CmsAcademicSession::all();
+            return view('academicsession',['academicsession'=>$academicsession]);
         } else {
             return view('login');
         }
@@ -85,7 +85,7 @@ class AcademicSessionController extends Controller
                     'creator' => "System",
                     'ip_user' => $request->ip(),
                     'action' => $action,
-                    'description' =>" Display Menu",
+                    'description' => $user->username,"Manage Add Session<br>". $request->session,
                     'user_agent' => $request->server('HTTP_USER_AGENT')
                     ]);
                     DB::commit();
@@ -94,8 +94,7 @@ class AcademicSessionController extends Controller
             }
 
             CmsAcademicSession::create([
-                'id' => $request->id,
-                'session' => $request->session.
+                'session' => $request->session,
             ]);
             return redirect('academicsession')->with('message','Session has been successfully created!');
         } else {
@@ -110,7 +109,7 @@ class AcademicSessionController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $sessId)
     {
         $routes = preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(),$matches);
         $routes = $matches[0];
@@ -124,6 +123,9 @@ class AcademicSessionController extends Controller
             $newData = $request->session;
 
             try{
+                $user = User::find($id);
+                $log = $user->username. 'successfully changed academi session <br>';
+                $log_desc = $log. $this->descriptionLog($oldData->id, $temp, $oldData, $newdata);
                 ActivityLog::create([
 
                     'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
@@ -132,7 +134,7 @@ class AcademicSessionController extends Controller
                     'creator' => "System",
                     'ip_user' => $request->ip(),
                     'action' => $action,
-                    'description' =>" Display Menu",
+                    'description' => $log_desc,
                     'user_agent' => $request->server('HTTP_USER_AGENT')
                     ]);
                     DB::commit();
@@ -140,7 +142,7 @@ class AcademicSessionController extends Controller
                 DB::rollback();
             }
 
-            CmsAcademicSession::where('id',$id)->update('session'=> $request->session)
+            CmsAcademicSession::where('id',$sessId)->update(['session'=> $request->session]);
             return redirect('academicsession')->with('message','Session has been succesfully updated.');
         } else {
             return view('login');
@@ -149,13 +151,30 @@ class AcademicSessionController extends Controller
 
     }
 
+    public function descriptionLog($id, $field, $oldData, $newData)
+    {
+        $newString = '<div><table class="table table-striped"><tr><td scope="col"><b>ID: </b></td><td>' . $id . '</td><td></td></tr><tr><td><b>Field</b></td><td>Old Data</td><td>New Data</td></tr>';
+
+        $arr = '';
+
+        for ($k = 0; $k < count($oldData); $k++) {
+            if ($oldData[$k] != $newData[$k]) {
+                $arr = $arr . '<tr><td><b>' . $field[$k] . '</b></td><td>' . $oldData[$k] . '</td><td>' . $newData[$k] . '</td></tr>';
+            }
+        }
+
+        $newString = $newString . $arr . '</table></div>';
+
+        return $newString;
+    }
+
     /**
      * Remove the specified resource from storage.
      * 
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request, $sessId)
     {
         $routes = preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(),$matches);
         $routes = $matches[0];
@@ -164,7 +183,7 @@ class AcademicSessionController extends Controller
             $id = Auth::id();
             $user = User::find($id);
             DB::beginTransaction();
-            $sessId= CmsAcademicSession::find($id);
+            $session= CmsAcademicSession::find($sessId);
 
             try{
                 ActivityLog::create([
@@ -175,12 +194,12 @@ class AcademicSessionController extends Controller
                     'creator' => "System",
                     'ip_user' => $request->ip(),
                     'action' => $action,
-                    'description' =>" Display Menu",
+                    'description' => $user->username. "Manage Delete Session<br>". $session->session,
                     'user_agent' => $request->server('HTTP_USER_AGENT')
                     ]);
                     
-                $academicSession = CmsAcademicSession::where('id',$id)-get();
-                CmsAcademicSession::where('id',$id)->delete();
+                $academicsession = CmsAcademicSession::where('id',$id)->get();
+                CmsAcademicSession::where('id',$sessId)->delete();
                 DB::commit();
             }catch(\Exception $x){
                 DB::rollback();
