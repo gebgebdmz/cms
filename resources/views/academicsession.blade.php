@@ -142,8 +142,8 @@
     var row = 0;
 
     $(document).ready(function() {
-        $('#academicsession thead tr').clone(true).appendTo('#academicsession thead');
-        $('#academicsession thead tr:eq(1) th').each(function(i) {
+        $('#session thead tr').clone(true).appendTo('#session thead');
+        $('#session thead tr:eq(1) th').each(function(i) {
             if (row < 2) {
                 var title= $(this).text();
                 $(this).html('<input type="text" placeholder="Search ' + title + '"/>');
@@ -161,7 +161,7 @@
             });
         });
 
-        var table = $('#academicsession').DataTable({
+        var table = $('#session').DataTable({
 
             "processing": true,
             "serverSide": true,
