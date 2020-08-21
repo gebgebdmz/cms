@@ -16,16 +16,7 @@ use DB;
 
 class AcademicSessionController extends Controller
 {
-    public function getAllAcadSess() {
-        $academicsession= CmsAcademicSession::all();
-        return Datatables::of($academicsession)->make(true);
-    }
 
-    /**
-     * Display a listing of the resource
-     * 
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         $routes = preg_match('/([a-z]*)@([a-z]*)/i', Route::currentRouteAction(),$matches);
@@ -40,7 +31,7 @@ class AcademicSessionController extends Controller
                 ActivityLog::create([
 
                     'inserted_date' => Carbon::now()->TimeZone('asia/jakarta'),
-                    'username' => $user->$username,
+                    'username' => $user->username,
                     'application' =>$routes,
                     'creator' => "System",
                     'ip_user' => $request->ip(),
@@ -48,18 +39,42 @@ class AcademicSessionController extends Controller
                     'description' =>" Display Academic Session",
                     'user_agent' => $request->server('HTTP_USER_AGENT')
                     ]);
-                    DB::commit();
-            }catch(\Exception $x){
-                DB::rollback();
-            }
+           
 
             $academicsession = CmsAcademicSession::all();
+          //  dd($academicsession);
+
+            DB::commit();
+        }catch(\Exception $ex){
+            DB::rollback();
+            return response()->json(['error' => $ex->getMessage()], 500);
+        }
             return view('academicsession',['academicsession'=>$academicsession]);
         } else {
             return view('login');
         }
 
     }
+
+    public function getAllAcadSess() {
+        DB::beginTransaction();
+
+        try{
+        $academicsession= CmsAcademicSession::all();
+        // dd($academicsession);
+        DB::commit();
+    }catch(\Exception $ex){
+        DB::rollback();
+        return response()->json(['error' => $ex->getMessage()], 500);
+    }
+        return Datatables::of($academicsession)->make(true);
+    }
+
+    /**
+     * Display a listing of the resource
+     * 
+     * @return \Illuminate\Http\Response
+     */
 
     /**
      * Show the form for creating a new resource
