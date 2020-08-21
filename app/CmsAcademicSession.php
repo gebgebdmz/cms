@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class CmsAcademicSession extends Model
 {
     protected $table = 'cms_academic_session';
-    public $timestampz = false;
+    public $timestamps = false;
 
     protected $fillable = [
         'id',

@@ -45,7 +45,7 @@ class AcademicSessionController extends Controller
                     'creator' => "System",
                     'ip_user' => $request->ip(),
                     'action' => $action,
-                    'description' =>" Display Menu",
+                    'description' =>" Display Academic Session",
                     'user_agent' => $request->server('HTTP_USER_AGENT')
                     ]);
                     DB::commit();
@@ -117,7 +117,7 @@ class AcademicSessionController extends Controller
         if(Auth::check()){
             $id = Auth::id();
             DB::beginTransaction();
-            $oldData = CmsAcademicsesion::find($id);
+            $oldData = CmsAcademicSession::find($id);
             $oldDataArr = $oldData->session;
 
             $newData = $request->session;

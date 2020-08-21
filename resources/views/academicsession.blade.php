@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','academic_session')
+@section('title','Academic Session')
 @section('content')
 
 <div class="container mt-5">
@@ -36,7 +36,8 @@
             <!-- page view modal -->
             <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-header">
+                    <div class="modal-content">
+                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLongTitle">Add Session</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -50,7 +51,7 @@
                                 <label for="username">Session</label>
                                 <input type="text" class="form-control" name="session" required>
                             </div>
-                        </div>
+                    </div>
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</i></button>
@@ -79,7 +80,7 @@
 
             <!-- edit modal -->
             @foreach ($academicsession as $a)
-            <div class="modal fade" id="modal_edit{{$a->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" id="modal_edit_{{$a->id}}" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -143,9 +144,9 @@
     $(document).ready(function() {
         $('#academicsession thead tr').clone(true).appendTo('#academicsession thead');
         $('#academicsession thead tr:eq(1) th').each(function(i) {
-            if (row<5) {
-                var title=$(this).text();
-                $this.html('<input type="text" placeholder="Search ' + title + '"/>');
+            if (row < 2) {
+                var title= $(this).text();
+                $(this).html('<input type="text" placeholder="Search ' + title + '"/>');
             } else {
                 $(this).html('');
             }
@@ -163,18 +164,18 @@
         var table = $('#academicsession').DataTable({
 
             "processing": true,
-            "serverside": true,
-            "ajax": "{{ route('ajaxdata.getAllAcadSess') }}",
-            "lenghtMenu": [
-                [50, -1],
-                [50, "All"]
+            "serverSide": true,
+            "ajax": "{{ route('ajaxdata.getacadsess') }}",
+            "lengthMenu": [
+                [100, -1],
+                [100, "All"]
             ],
             "columns" : [{
                 "data": "session"
                 },
                 {
-                    sortable: false;
-                    "render":function(data, type, full, meta) {
+                    sortable: false,
+                    "render": function(data, type, full, meta) {
                         return '<div class="btn-group" role="group"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_edit_' + full.id + '">Edit <i class="ni ni-single-02"></i></button><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_delete_' + full.id + '">Delete <i class="ni ni-fat-delete"></i></button></div>';
                     }
                 },
