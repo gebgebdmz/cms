@@ -167,8 +167,8 @@
             "serverSide": true,
             "ajax": "{{ route('ajaxdata.getacadsess') }}",
             "lengthMenu": [
-                [100, -1],
-                [100, "All"]
+                [20, 50, 100, 500, 1000, -1],
+                [20, 50, 100, 500, 1000, "All"]
             ],
             "columns" : [{
                 "data": "session"
@@ -182,9 +182,9 @@
             ],
         });
 
-        $('.selectpicker').selectpicker({
-            style: 'btn-default',
-        });
+        // $('.selectpicker').selectpicker({
+        //     style: 'btn-default',
+        // });
     });
 </script>
 @endsection
